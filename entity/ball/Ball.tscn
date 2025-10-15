@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddusrysb8jer"]
+
+[ext_resource type="Texture2D" uid="uid://cryuquuadj1rg" path="res://assets/ball/black_ball.svg" id="1_1a30b"]
+[ext_resource type="Script" uid="uid://ckqwo1jgeytm0" path="res://entity/ball/Ball.gd" id="1_qviuk"]
+[ext_resource type="Script" uid="uid://b0g7bq0g8qh52" path="res://entity/ball/BallInputController.gd" id="2_dq6q2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dq6q2"]
+radius = 256.0
+
+[node name="Ball" type="CharacterBody2D"]
+script = ExtResource("1_qviuk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_1a30b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dq6q2")
+debug_color = Color(0.7382041, 0.39665356, 0.6529497, 0.41960785)
+
+[node name="BallInputController" type="Node" parent="."]
+script = ExtResource("2_dq6q2")

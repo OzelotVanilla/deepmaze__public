@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://ddusrysb8jer"]
 
-[ext_resource type="Texture2D" uid="uid://cryuquuadj1rg" path="res://assets/ball/black_ball.svg" id="1_1a30b"]
+[ext_resource type="Texture2D" uid="uid://cryuquuadj1rg" path="res://assets/vector_graphics/maze_entities/black_ball.svg" id="1_1a30b"]
 [ext_resource type="Script" uid="uid://ckqwo1jgeytm0" path="res://entity/ball/Ball.gd" id="1_qviuk"]
 [ext_resource type="Script" uid="uid://b0g7bq0g8qh52" path="res://entity/ball/BallInputController.gd" id="2_dq6q2"]
 

@@ -12,4 +12,4 @@ const length_of_tile := 16
 
 
 func _init() -> void:
-    self.tile_set = preload("res://assets/maze/monocolour_tileset.tres")
+    self.tile_set = preload("res://assets/tilesets/maze/monocolour_tileset.tres")

@@ -1,14 +1,21 @@
 class_name MazeGenerator
 extends Node
+## Generate a maze represented in 2D array
+##
+## For the data, [code]0[/code] is path,
+##  [code]1[/code] is wall,
+##  [code]3[/code] is exit.
 
 
+## Generate the whole maze.[br]
+##
+## [param exit_gate__coord] is the coord of last level.
 static func generate(
     width:  int = MazeGame.initial_width,
-    height: int = MazeGame.initial_height
+    height: int = MazeGame.initial_height,
+    exit_gate__coord: Vector2i = Vector2i.ZERO
 ) -> Maze:
     var maze := Maze.new()
-    ## For the data, [code]0[/code] is path,
-    ##  [code]1[/code] is wall.
     var map: Array[PackedInt32Array] = Array([], Variant.Type.TYPE_PACKED_INT32_ARRAY, "", null)
     # Make map filled with wall.
     map.resize(height)
@@ -18,12 +25,19 @@ static func generate(
         map[i].fill(1)
 
     MazeGenerator.carve(map, 1, 1)
+    MazeGenerator.generateExit(map)
+
     for y in range(map.size()):
         for x in range(map[y].size()):
             var atlas_coords: Vector2i
             match map[y][x]:
-                0: atlas_coords = Maze.white_tile__atlas_coord
-                1: atlas_coords = Maze.black_tile__atlas_coord
+                0: # Path
+                    atlas_coords = Maze.white_tile__atlas_coord
+                1: # Wall
+                    atlas_coords = Maze.black_tile__atlas_coord
+                3: # Exit gate
+                    atlas_coords = Maze.white_tile__atlas_coord
+                    maze.exit_gate__coord = Vector2i(x, y)
 
             maze.set_cell(
                 Vector2i(x, y),
@@ -42,14 +56,18 @@ static func carve(map: Array[PackedInt32Array], starting_x: int, starting_y: int
             "Initialise your map with PackedInt32Array of same size."
         )
 
+    var maze_height := map.size()
+    var maze_width  := map[0].size()
+
     # Make current point a "path".
-    map[starting_y][starting_x] = 0
+    if (
+        starting_x > 0 and starting_x < maze_width - 1
+        and starting_y > 0 and starting_y < maze_height - 1
+    ):
+        map[starting_y][starting_x] = 0
 
     var directions = [[0,2],[2,0],[0,-2],[-2,0]]
     directions.shuffle()
-
-    var maze_height := map.size()
-    var maze_width  := map[0].size()
 
     # Carve path in 4 directions.
     for direction in directions:
@@ -60,7 +78,8 @@ static func carve(map: Array[PackedInt32Array], starting_x: int, starting_y: int
 
         if (
             # Is inside maze.
-            new_x > 0 and new_x < maze_width and new_y > 0 and new_y < maze_height
+            new_x > 0 and new_x < maze_width - 1
+            and new_y > 0 and new_y < maze_height - 1
             # And is a wall
             and map[new_y][new_x] == 1
         ):
@@ -80,3 +99,22 @@ static func carve(map: Array[PackedInt32Array], starting_x: int, starting_y: int
         if random_x > 0 and random_x < maze_width and random_y > 0 and random_y < maze_height:
             # Then make it path.
             map[random_y][random_x] = 0
+
+## Generate an exit gate on a maze map.
+static func generateExit(map: Array[PackedInt32Array]):
+    var maze_height := map.size()
+    var maze_width  := map[0].size()
+
+    var exit_gate__x := 0
+    var exit_gate__y := 0
+    var should_continue_generation := true
+
+    # Randomly pick a place in the maze until got qualified exit gate position.
+    while should_continue_generation:
+        exit_gate__x = floori(randf() * (maze_width  - 2)) + 1
+        exit_gate__y = floori(randf() * (maze_height - 2)) + 1
+
+        should_continue_generation = map[exit_gate__y][exit_gate__x] != 0 \
+            or (exit_gate__y < 3 and exit_gate__x < 3)
+
+    map[exit_gate__y][exit_gate__x] = 3

@@ -16,6 +16,8 @@ static func generate(
     exit_gate__coord: Vector2i = Vector2i.ZERO
 ) -> Maze:
     var maze := Maze.new()
+    maze.width  = width
+    maze.height = height
     var map: Array[PackedInt32Array] = Array([], Variant.Type.TYPE_PACKED_INT32_ARRAY, "", null)
     # Make map filled with wall.
     map.resize(height)
@@ -114,6 +116,7 @@ static func generateExit(map: Array[PackedInt32Array]):
         exit_gate__x = floori(randf() * (maze_width  - 2)) + 1
         exit_gate__y = floori(randf() * (maze_height - 2)) + 1
 
+        #TODO Avoid exit gate too near the ball.
         should_continue_generation = map[exit_gate__y][exit_gate__x] != 0 \
             or (exit_gate__y < 3 and exit_gate__x < 3)
 

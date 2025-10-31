@@ -103,7 +103,11 @@ static func carve(map: Array[PackedInt32Array], starting_x: int, starting_y: int
             map[random_y][random_x] = 0
 
 ## Generate an exit gate on a maze map.
-static func generateExit(map: Array[PackedInt32Array]):
+## [param last_exit_gate__coord] is the coord of last level.
+static func generateExit(
+    map: Array[PackedInt32Array],
+    last_exit_gate__coord: Vector2i = Vector2i.ZERO
+):
     var maze_height := map.size()
     var maze_width  := map[0].size()
 
@@ -115,9 +119,17 @@ static func generateExit(map: Array[PackedInt32Array]):
     while should_continue_generation:
         exit_gate__x = floori(randf() * (maze_width  - 2)) + 1
         exit_gate__y = floori(randf() * (maze_height - 2)) + 1
+        var exit_gate__coord := Vector2i(exit_gate__x, exit_gate__y)
+
+        var is_not_a_path := map[exit_gate__y][exit_gate__x] != 0
+        var is_impossible_for_exit_gate := (exit_gate__y < 3 and exit_gate__x < 3)
+        var is_too_close_to_last_exit := \
+            last_exit_gate__coord.distance_to(exit_gate__coord) < 3
 
         #TODO Avoid exit gate too near the ball.
-        should_continue_generation = map[exit_gate__y][exit_gate__x] != 0 \
-            or (exit_gate__y < 3 and exit_gate__x < 3)
+        should_continue_generation = \
+               is_not_a_path \
+            or is_impossible_for_exit_gate \
+            or is_too_close_to_last_exit
 
     map[exit_gate__y][exit_gate__x] = 3

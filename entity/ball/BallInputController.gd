@@ -10,7 +10,7 @@ enum InputSource
 }
 
 
-## Normalised move vector for ball.[br][br]
+## Normalised raw input move vector for ball.[br][br]
 ##
 ## Will be updated if the [BallInputController] is enabled by [method enable].
 static var move_vector: Vector2 = Vector2.ZERO

@@ -18,7 +18,7 @@ var height: int
 var exit_gate__coord := Vector2i.ZERO
 
 
-## The coord is
+## Check whether the cell at given maze coord, is not a path.
 func isNotPathAt(x: int, y: int):
     return x > self.width - 1 or y > self.height - 1 \
         or self.get_cell_atlas_coords(Vector2i(x, y)) == Maze.black_tile__atlas_coord

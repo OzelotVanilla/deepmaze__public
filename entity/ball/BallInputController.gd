@@ -15,6 +15,12 @@ enum BallInputSource
 ## Will be updated if the [BallInputController] is enabled by [method enable].
 static var move_vector: Vector2 = Vector2.ZERO
 
+## Normalised adjusted (e.g., special level) ball moving intention.[br][br]
+##
+## Equals to [member move_vector] if using gylo or controller,
+##  calculated along with velocity if using keyboard.
+static var move_intension: Vector2 = Vector2.ZERO
+
 ## Calculated velocity for the ball.
 static var velocity: Vector2 = Vector2.ZERO
 
@@ -47,7 +53,7 @@ static func disable():
 
 static func detectInputSource() -> BallInputSource:
     # If there is a gyro.
-    if Input.get_accelerometer().length() != 0:
+    if Input.get_accelerometer() != Vector3.ZERO:
         return BallInputSource.gylo
 
     # Otherwise, assume getting input from keyboard.
@@ -63,11 +69,21 @@ func __onProcess__(delta: float):
             pass
 
         BallInputSource.keyboard_or_controller:
-            BallInputController.move_vector = \
+            var new_move_vector = \
                 Input.get_vector("move_left", "move_right", "move_up", "move_down")
+            BallInputController.move_vector = new_move_vector
+
+            if InputManager.input_source == InputManager.InputSource.keyboard:
+                BallInputController.move_intension = BallInputController.move_intension.lerp(
+                    new_move_vector,
+                    1
+                ).normalized()
+            else:
+                BallInputController.move_intension = new_move_vector.normalized()
+
             BallInputController.velocity = \
                 BallInputController.velocity.lerp(
-                    BallInputController.move_vector * BallInputController.speed,
+                    new_move_vector * BallInputController.speed,
                     BallInputController.acceleration * delta
                 )
 

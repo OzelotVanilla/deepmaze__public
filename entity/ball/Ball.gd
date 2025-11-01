@@ -21,6 +21,7 @@ var ref__maze_game: MazeGame
 ## Should be set-ed by the [MazeGame].
 var ref__dark_mask_shader_material: ShaderMaterial
 
+
 func _process(delta: float) -> void: self.__onProcess__()
 func _physics_process(delta: float) -> void: self.__physicsProcess__()
 
@@ -44,7 +45,8 @@ func __onProcess__():
 
 func __physicsProcess__():
     self.velocity = BallInputController.velocity * self.velocity_factor
-    if self.should_reverse_input: self.velocity *= -1
+    if self.should_reverse_input:
+        self.velocity *= -1
     var had_collide := self.move_and_slide()
     if had_collide:
         var normal := self.get_last_slide_collision().get_normal()
@@ -72,3 +74,31 @@ func startSendingCoord():
 ## Stop sending coord to the dark mask of maze.
 func stopSendingCoord():
     self.set_process(false)
+
+## Get the coord offset of ball's intension of moving, in context of a maze.[br][br]
+##
+## Example: moving to left-bottom corner will be [code Vector2i(1, 1)],
+##  since array representing a maze grows to the bottom and to the right.
+func getMazeCoordOffset() -> Vector2i:
+    var direction := BallInputController.move_intension
+    const threshold_1 := sqrt(0.2)
+    const threshold_2 := sqrt(0.5)
+
+    var result_x := 0
+    var result_y := 0
+    if abs(direction.x) >= threshold_1:
+        result_x = 1
+        if abs(direction.x) >= threshold_2:
+            result_x = 2
+    if abs(direction.y) >= threshold_1:
+        result_y = 1
+        if abs(direction.y) >= threshold_2:
+            result_y = 2
+    return Vector2i(
+        result_x * sign(direction.x),
+        result_y * sign(direction.y)
+    )
+
+## Move the ball to a new global position.
+func moveTo(new_global_position: Vector2):
+    self.global_position = new_global_position

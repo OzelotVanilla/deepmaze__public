@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://faba1wxdyl15"]
+[gd_scene load_steps=5 format=3 uid="uid://faba1wxdyl15"]
 
 [ext_resource type="FontVariation" uid="uid://5dpqciyxuybc" path="res://assets/fonts/deepmare_no_descent.tres" id="1_jr3tj"]
+[ext_resource type="Script" uid="uid://dtsjrjh6xvhfm" path="res://scenes/maze_game/ui_element/hud/HUD.gd" id="1_vqbsr"]
 [ext_resource type="StyleBox" uid="uid://b4gujmqotovg8" path="res://scenes/maze_game/ui_element/hud/pause_button_stylebox.tres" id="2_vqbsr"]
 [ext_resource type="PackedScene" uid="uid://bcq6p1gbnsf4c" path="res://scenes/maze_game/ui_element/equip_button/EquipButton.tscn" id="3_opfel"]
 
@@ -12,6 +13,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+script = ExtResource("1_vqbsr")
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 1

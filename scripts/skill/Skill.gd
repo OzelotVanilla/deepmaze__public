@@ -15,6 +15,12 @@ var is_active_now: bool = false
 ## Max count of this skill.
 var max_count: int = 3
 
+## Whether the skill could only be use once per level.
+var only_one_time_per_level: bool = false
+
+## Whether the skill is used in current level (should be refreshed at next level).
+var had_used_in_this_level: bool = false
+
 
 ## Activate the skill.[br][br]
 ##

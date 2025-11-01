@@ -2,7 +2,7 @@ class_name BallInputController
 extends Node
 
 
-enum InputSource
+enum BallInputSource
 {
     none,
     gylo,
@@ -21,9 +21,9 @@ static var velocity: Vector2 = Vector2.ZERO
 static var speed: float = 400.0
 
 ## The way player control the ball.
-static var input_source: InputSource = InputSource.none
+static var input_source: BallInputSource = BallInputSource.none
 
-## When input device is [constant InputSource.keyboard_or_controller],
+## When input device is [constant BallInputSource.keyboard_or_controller],
 ##  make the movement of ball with inertia.
 static var acceleration: float = 4.0
 
@@ -43,15 +43,15 @@ static func enable():
 static func disable():
     BallInputController.singleton.set_process(false)
     BallInputController.move_vector = Vector2.ZERO
-    BallInputController.input_source = InputSource.none
+    BallInputController.input_source = BallInputSource.none
 
-static func detectInputSource() -> InputSource:
+static func detectInputSource() -> BallInputSource:
     # If there is a gyro.
     if Input.get_accelerometer().length() != 0:
-        return InputSource.gylo
+        return BallInputSource.gylo
 
     # Otherwise, assume getting input from keyboard.
-    return InputSource.keyboard_or_controller
+    return BallInputSource.keyboard_or_controller
 
 func _init() -> void:
     self.set_process(false)
@@ -59,10 +59,10 @@ func _init() -> void:
 ## For input device of keyboard_or_controller, add inertia.
 func __onProcess__(delta: float):
     match BallInputController.input_source:
-        InputSource.gylo:
+        BallInputSource.gylo:
             pass
 
-        InputSource.keyboard_or_controller:
+        BallInputSource.keyboard_or_controller:
             BallInputController.move_vector = \
                 Input.get_vector("move_left", "move_right", "move_up", "move_down")
             BallInputController.velocity = \

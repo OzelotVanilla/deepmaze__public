@@ -22,6 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
 
 [node name="LevelAndPauseMargin" type="MarginContainer" parent="VBox"]
 layout_mode = 2
@@ -54,7 +55,59 @@ theme_override_styles/hover = ExtResource("2_vqbsr")
 theme_override_styles/focus = ExtResource("2_vqbsr")
 text = "PAUSE"
 
-[node name="Spacer" type="Control" parent="VBox"]
+[node name="Spacer_1" type="Control" parent="VBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="TimeLabelHBox" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="MinuteLabel" type="Label" parent="VBox/TimeLabelHBox"]
+custom_minimum_size = Vector2(84, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jr3tj")
+theme_override_font_sizes/font_size = 160
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Colon" type="Label" parent="VBox/TimeLabelHBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jr3tj")
+theme_override_font_sizes/font_size = 160
+text = ":"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SecondLabel" type="Label" parent="VBox/TimeLabelHBox"]
+custom_minimum_size = Vector2(84, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jr3tj")
+theme_override_font_sizes/font_size = 160
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Point" type="Label" parent="VBox/TimeLabelHBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jr3tj")
+theme_override_font_sizes/font_size = 160
+text = "."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MilliSecondLabel" type="Label" parent="VBox/TimeLabelHBox"]
+custom_minimum_size = Vector2(84, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_jr3tj")
+theme_override_font_sizes/font_size = 160
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer_2" type="Control" parent="VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 

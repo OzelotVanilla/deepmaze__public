@@ -15,10 +15,10 @@ func activate() -> Error:
     #self.game_ref.game_remain_timer.paused = true
     self.game_ref.get_tree().paused = true
 
+    self.is_active_now = true
     var timer := self.game_ref.get_tree().create_timer(self.period_of_pause)
-    timer.timeout.connect(func():
-        #self.game_ref.game_remain_timer.paused = false
-        self.game_ref.get_tree().paused = false,
+    timer.timeout.connect(
+        self.deactivate,
         ConnectFlags.CONNECT_ONE_SHOT
     )
 
@@ -27,7 +27,8 @@ func activate() -> Error:
     return Error.OK
 
 func deactivate() -> Error:
-    # No need to deactivate.
+    self.game_ref.get_tree().paused = false
+    self.is_active_now = false
     return Error.OK
 
 func _init() -> void:

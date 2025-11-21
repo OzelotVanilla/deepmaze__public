@@ -10,10 +10,14 @@ func activate() -> Error:
     if self.remain_count <= 0 or self.had_used_in_this_level:
         return Error.ERR_UNAVAILABLE
 
-    self.game_ref.game_remain_timer.paused = true
+    # Pause the entire process of the game
+    #self.game_ref.game_remain_timer.paused = true
+    self.game_ref.get_tree().paused = true
+
     var timer := self.game_ref.get_tree().create_timer(self.period_of_pause)
     timer.timeout.connect(func():
-        self.game_ref.game_remain_timer.paused = false,
+        #self.game_ref.game_remain_timer.paused = false
+        self.game_ref.get_tree().paused = false,
         ConnectFlags.CONNECT_ONE_SHOT
     )
 

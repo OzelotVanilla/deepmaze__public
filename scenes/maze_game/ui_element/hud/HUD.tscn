@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bcq6p1gbnsf4c" path="res://scenes/maze_game/ui_element/equip_button/EquipButton.tscn" id="3_opfel"]
 
 [node name="HUD" type="ColorRect"]
+process_mode = 3
 anchors_preset = -1
 anchor_left = 0.7
 anchor_right = 1.0

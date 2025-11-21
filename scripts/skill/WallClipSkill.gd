@@ -22,7 +22,7 @@ func activate() -> Error:
         return Error.ERR_QUERY_FAILED
 
     # Get coord-in-maze for the ball and the directions.
-    var ball_coord_in_maze := self.getBallCoordOfMaze()
+    var ball_coord_in_maze := self.game_ref.getBallCoordOfMaze()
     var move_intension := BallInputController.move_intension
     var offset := ball_ref.getMazeCoordOffset()
     # Check if move result is still the same side.

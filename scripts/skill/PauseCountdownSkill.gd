@@ -32,6 +32,6 @@ func deactivate() -> Error:
 func _init() -> void:
     self.icon_path = "res://assets/vector_graphics/equipment/pause_countdown_skill.svg"
     self.max_count = 3
-    self.only_one_time_per_level = true
+    self.only_one_time_per_level = false
 
     self.period_of_pause = 5.0

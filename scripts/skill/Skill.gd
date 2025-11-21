@@ -1,7 +1,7 @@
 @abstract
 class_name Skill
 extends Equipment
-# Abstract class for all skill.
+## Abstract class for all skill, which has limited number to be used.
 
 
 ## The remaining time that you can use this skill.[br][br]

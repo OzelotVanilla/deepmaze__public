@@ -1,6 +1,7 @@
 @abstract
 class_name Ability
 extends Equipment
+## Base class for all ability, which is effective as long as it is equipped.
 
 
 ## Enable the ability, so the player will benefit from that.

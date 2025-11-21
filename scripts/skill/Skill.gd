@@ -21,8 +21,19 @@ var only_one_time_per_level: bool = false
 ## Whether the skill is used in current level (should be refreshed at next level).
 var had_used_in_this_level: bool = false
 
+## See if the skill could still be used in one level.[br][br]
+##
+## Check remain count and if the skill could only be used one time in the same level.
+var could_be_used_in_this_level: bool:
+    get:
+        return not (self.only_one_time_per_level and self.had_used_in_this_level) \
+           and self.remain_count > 0
 
 ## Activate the skill.[br][br]
+##
+## Remember to check availability through [member could_be_used_in_this_level].
+## Also, decrease the [member remain_count], set [member had_used_in_this_level],
+##  if the skill is successfully activated.
 ##
 ## Should pass the game ref.
 @abstract func activate() -> Error;

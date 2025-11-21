@@ -6,8 +6,9 @@ extends Skill
 var period_of_pause: float = 5.0
 
 
+## Return [constant Error.ERR_UNAVAILABLE] if the skill is not available.
 func activate() -> Error:
-    if self.remain_count <= 0 or self.had_used_in_this_level:
+    if not self.could_be_used_in_this_level:
         return Error.ERR_UNAVAILABLE
 
     # Pause the entire process of the game

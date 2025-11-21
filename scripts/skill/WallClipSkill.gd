@@ -3,13 +3,13 @@ extends Skill
 ## Let player clip the wall which is attached to
 
 
-## Return [constant Error.ERR_UNAVAILABLE] if the skill remains 0 times to use.
+## Return [constant Error.ERR_UNAVAILABLE] if the skill is not available.
 ## Return [constant Error.ERR_QUERY_FAILED] if the ball is not attaching to the wall.
 ## Return [constant Error.Error.ERR_ALREADY_EXISTS]
 ##  if wall-clip target is the same as ball's position.
 ## Return [constant Error.ERR_DOES_NOT_EXIST] if wall-clip target is not a path.
 func activate() -> Error:
-    if self.remain_count <= 0:
+    if not self.could_be_used_in_this_level:
         return Error.ERR_UNAVAILABLE
 
     var ball_ref := self.game_ref.ball_ref

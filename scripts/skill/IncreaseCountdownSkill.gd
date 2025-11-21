@@ -5,7 +5,11 @@ extends Skill
 var amount_of_increase: float = 5.0
 
 
+## Return [constant Error.ERR_UNAVAILABLE] if the skill is not available.
 func activate() -> Error:
+    if not self.could_be_used_in_this_level:
+        return Error.ERR_UNAVAILABLE
+
     var timer := self.game_ref.game_remain_timer
     timer.start(timer.time_left + 5)
 

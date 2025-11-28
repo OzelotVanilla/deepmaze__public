@@ -4,9 +4,9 @@ extends Node
 
 enum BallInputSource
 {
-	none,
-	gylo,
-	keyboard_or_controller
+    none,
+    gylo,
+    keyboard_or_controller
 }
 
 
@@ -42,50 +42,50 @@ func _ready() -> void: self.__onReady__()
 
 ## Start listening to the input device and updating [member BallInputController.move_vector].
 static func enable():
-	BallInputController.singleton.set_process(true)
-	BallInputController.input_source = BallInputController.detectInputSource()
+    BallInputController.singleton.set_process(true)
+    BallInputController.input_source = BallInputController.detectInputSource()
 
 ## Stop listening to the input device and reset.
 static func disable():
-	BallInputController.singleton.set_process(false)
-	BallInputController.move_vector = Vector2.ZERO
-	BallInputController.input_source = BallInputSource.none
+    BallInputController.singleton.set_process(false)
+    BallInputController.move_vector = Vector2.ZERO
+    BallInputController.input_source = BallInputSource.none
 
 static func detectInputSource() -> BallInputSource:
-	# If there is a gyro.
-	if Input.get_accelerometer() != Vector3.ZERO:
-		return BallInputSource.gylo
+    # If there is a gyro.
+    if Input.get_accelerometer() != Vector3.ZERO:
+        return BallInputSource.gylo
 
-	# Otherwise, assume getting input from keyboard.
-	return BallInputSource.keyboard_or_controller
+    # Otherwise, assume getting input from keyboard.
+    return BallInputSource.keyboard_or_controller
 
 func _init() -> void:
-	self.set_process(false)
+    self.set_process(false)
 
 ## For input device of keyboard_or_controller, add inertia.
 func __onProcess__(delta: float):
-	match BallInputController.input_source:
-		BallInputSource.gylo:
-			pass
+    match BallInputController.input_source:
+        BallInputSource.gylo:
+            pass
 
-		BallInputSource.keyboard_or_controller:
-			var new_move_vector = \
-				Input.get_vector("move_left", "move_right", "move_up", "move_down")
-			BallInputController.move_vector = new_move_vector
+        BallInputSource.keyboard_or_controller:
+            var new_move_vector = \
+                Input.get_vector("move_left", "move_right", "move_up", "move_down")
+            BallInputController.move_vector = new_move_vector
 
-			if InputManager.input_source == InputManager.InputSource.keyboard:
-				BallInputController.move_intension = BallInputController.move_intension.lerp(
-					new_move_vector,
-					1
-				).normalized()
-			else:
-				BallInputController.move_intension = new_move_vector.normalized()
+            if InputManager.input_source == InputManager.InputSource.keyboard:
+                BallInputController.move_intension = BallInputController.move_intension.lerp(
+                    new_move_vector,
+                    1
+                ).normalized()
+            else:
+                BallInputController.move_intension = new_move_vector.normalized()
 
-			BallInputController.velocity = \
-				BallInputController.velocity.lerp(
-					new_move_vector * BallInputController.speed,
-					BallInputController.acceleration * delta
-				)
+            BallInputController.velocity = \
+                BallInputController.velocity.lerp(
+                    new_move_vector * BallInputController.speed,
+                    BallInputController.acceleration * delta
+                )
 
 func __onReady__():
-	BallInputController.disable()
+    BallInputController.disable()

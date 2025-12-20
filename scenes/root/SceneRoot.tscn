@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7tcsyvpnkt0b"]
+
+[ext_resource type="Script" uid="uid://dpn2b0q8jhupx" path="res://scenes/root/SceneRoot.gd" id="1_o3rl4"]
+[ext_resource type="Script" uid="uid://ctkplhbb8806x" path="res://scenes/root/InputManager.gd" id="2_wvhe5"]
+[ext_resource type="Shader" uid="uid://d0preoe28o5jc" path="res://assets/materials/maze_crt_screen_mask/crt_screen_material.gdshader" id="3_e5gpt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_trlxp"]
+shader = ExtResource("3_e5gpt")
+shader_parameter/curve_strength = 0.5310000252225
+shader_parameter/zoom = 1.0870000516325
+shader_parameter/vignette_intensity = 0.4050000192375
+shader_parameter/aberration_amount = 0.554000026315
+shader_parameter/brightness = 1.3250000629375
+shader_parameter/scanline_count = 250.5770119024075
+shader_parameter/scanline_opacity = 0.9210000437475
+shader_parameter/horizontal_shake = 0.0030000001425
+shader_parameter/color_bleeding = 0.1200000057
+shader_parameter/static_noise_intensity = 0.1230000058425
+shader_parameter/interference_lines = 0.2510000119225
+shader_parameter/grill_opacity = 0.28800001368
+shader_parameter/resolution_scale = Vector2(640, 480)
+
+[node name="MainScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o3rl4")
+
+[node name="CurrentScene" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InputManager" type="Node" parent="."]
+script = ExtResource("2_wvhe5")
+
+[node name="CRTLayer" type="CanvasLayer" parent="."]
+
+[node name="CRTScreen" type="ColorRect" parent="CRTLayer"]
+material = SubResource("ShaderMaterial_trlxp")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

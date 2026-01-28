@@ -13,3 +13,13 @@ func _ready() -> void:
     while scene_root__try is not SceneRoot and scene_root__try != null:
         scene_root__try = scene_root__try.get_parent()
     self.main_scene__ref = scene_root__try
+
+func _enter_tree() -> void:
+    # This will make `_ready` called again when enters tree again.
+    self.request_ready()
+
+## Do some post init work.[br][br]
+##
+## Useful when the previous scene need to bring data to next scene.
+func postInit(...args) -> void:
+    pass

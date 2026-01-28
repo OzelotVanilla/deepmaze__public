@@ -20,11 +20,12 @@ func __onReady__():
 func quitGame():
     self.get_tree().quit()
 
-func changeSceneToFile(tscn_file: PackedScene):
+func changeSceneToFile(tscn_file: PackedScene, ...postInit__args):
     if self.current_scene != null:
         self.current_scene.queue_free()
 
-    var scene = tscn_file.instantiate()
+    var scene: BaseGameScene = tscn_file.instantiate()
+    scene.postInit(postInit__args)
     self.add_child(scene)
     self.current_scene = scene
 
@@ -32,7 +33,7 @@ func switchToMazeGame():
     self.changeSceneToFile(preload("res://scenes/maze_game/MazeGame.tscn"))
 
 func switchToPressAnyKeyPage():
-    self.changeSceneToFile(load("res://scenes/press_any_key_title/GamePressAnyKeyPage.tscn"))
+    self.changeSceneToFile(preload("res://scenes/press_any_key_title/GamePressAnyKeyPage.tscn"))
 
 func switchToTitle():
-    self.changeSceneToFile(load("res://scenes/title/GameTitlePage.tscn"))
+    self.changeSceneToFile(preload("res://scenes/title/GameTitlePage.tscn"))

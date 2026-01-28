@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c7tcsyvpnkt0b"]
+[gd_scene format=3 uid="uid://c7tcsyvpnkt0b"]
 
 [ext_resource type="Script" uid="uid://dpn2b0q8jhupx" path="res://scenes/root/SceneRoot.gd" id="1_o3rl4"]
 [ext_resource type="Script" uid="uid://ctkplhbb8806x" path="res://scenes/root/InputManager.gd" id="2_wvhe5"]
@@ -20,7 +20,7 @@ shader_parameter/interference_lines = 0.2510000119225
 shader_parameter/grill_opacity = 0.28800001368
 shader_parameter/resolution_scale = Vector2(640, 480)
 
-[node name="MainScene" type="Control"]
+[node name="MainScene" type="Control" unique_id=346799866]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +29,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_o3rl4")
 
-[node name="CurrentScene" type="Control" parent="."]
+[node name="CurrentScene" type="Control" parent="." unique_id=1133049622]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,12 +37,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="InputManager" type="Node" parent="."]
+[node name="InputManager" type="Node" parent="." unique_id=161071059]
 script = ExtResource("2_wvhe5")
 
-[node name="CRTLayer" type="CanvasLayer" parent="."]
+[node name="CRTLayer" type="CanvasLayer" parent="." unique_id=2123293185]
 
-[node name="CRTScreen" type="ColorRect" parent="CRTLayer"]
+[node name="CRTScreen" type="ColorRect" parent="CRTLayer" unique_id=1504450881]
 material = SubResource("ShaderMaterial_trlxp")
 anchors_preset = 15
 anchor_right = 1.0

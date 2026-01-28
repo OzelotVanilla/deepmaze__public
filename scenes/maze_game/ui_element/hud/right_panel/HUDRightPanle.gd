@@ -1,17 +1,20 @@
-class_name HUD
+class_name HUDRightPanel
 extends ColorRect
 ## UI of [MazeGame].
 
 
 var game_ref: MazeGame
 
-@onready var level_text__label: Label = $VBox/LevelAndPauseMargin/LevelAndPauseHBox/LevelText
+@onready var level_text__label: Label = $VBox/LevelText
 
 @onready var minute__label: Label = $VBox/TimeLabelHBox/MinuteLabel
 
 @onready var second__label: Label = $VBox/TimeLabelHBox/SecondLabel
 
 @onready var millisecond__label: Label = $VBox/TimeLabelHBox/MilliSecondLabel
+
+
+func _input(event: InputEvent) -> void: self.__handleInput__(event)
 
 
 func setLevel(new_level: int):
@@ -27,3 +30,13 @@ func setGameRemainingTime(time: float):
     self.second__label.text = str(mini(99, int(fmod(time, 60)))).pad_zeros(2)
     var number_after_decimal_point := time - int(time)
     self.millisecond__label.text = str(number_after_decimal_point).pad_decimals(2).substr(2)
+
+
+func __handleInput__(event: InputEvent) -> void:
+    # # Handling pause.
+    if event.is_action_pressed("pause"):
+        # Should check if already paused.
+        if self.game_ref.get_tree().paused:
+            self.game_ref.resumeGame()
+        else:
+            self.game_ref.pauseGame()

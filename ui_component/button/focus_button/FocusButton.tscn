@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cms7mkt0qqc3t"]
+
+[ext_resource type="Script" uid="uid://c2cxwcq308f7p" path="res://ui_component/button/focus_button/FocusButton.gd" id="1_k5mt8"]
+
+[node name="FocusButton" type="Button" unique_id=580179029]
+script = ExtResource("1_k5mt8")

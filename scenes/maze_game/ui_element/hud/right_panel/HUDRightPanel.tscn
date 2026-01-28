@@ -1,0 +1,132 @@
+[gd_scene format=3 uid="uid://faba1wxdyl15"]
+
+[ext_resource type="Script" uid="uid://dtsjrjh6xvhfm" path="res://scenes/maze_game/ui_element/hud/right_panel/HUDRightPanle.gd" id="1_vqbsr"]
+[ext_resource type="FontVariation" uid="uid://bwnse1lj43o75" path="res://assets/fonts/PressStart2P-Regular_no_descent.tres" id="2_h7d1v"]
+[ext_resource type="FontVariation" uid="uid://btyym5lg37du2" path="res://assets/fonts/deepmare_no_descent__timer.tres" id="3_h7d1v"]
+[ext_resource type="PackedScene" uid="uid://bcq6p1gbnsf4c" path="res://scenes/maze_game/ui_element/equip_button/EquipButton.tscn" id="3_opfel"]
+
+[node name="HUD" type="ColorRect" unique_id=1450105194]
+process_mode = 3
+anchors_preset = -1
+anchor_left = 0.7
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_vqbsr")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1240020649]
+custom_minimum_size = Vector2(298, 0)
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -185.5
+offset_right = 185.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Spacer_1" type="Control" parent="VBox" unique_id=1977960846]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+
+[node name="LevelText" type="Label" parent="VBox" unique_id=698802814]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_h7d1v")
+theme_override_font_sizes/font_size = 40
+text = "LEVEL 01"
+
+[node name="Spacer_2" type="Control" parent="VBox" unique_id=1707366724]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="TimeLabelHBox" type="HBoxContainer" parent="VBox" unique_id=1644851606]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="MinuteLabel" type="Label" parent="VBox/TimeLabelHBox" unique_id=203941126]
+custom_minimum_size = Vector2(84, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_h7d1v")
+theme_override_font_sizes/font_size = 160
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer_1" type="Control" parent="VBox/TimeLabelHBox" unique_id=17367475]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Colon" type="Label" parent="VBox/TimeLabelHBox" unique_id=2028872477]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_h7d1v")
+theme_override_font_sizes/font_size = 160
+text = ":"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer_2" type="Control" parent="VBox/TimeLabelHBox" unique_id=241899960]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SecondLabel" type="Label" parent="VBox/TimeLabelHBox" unique_id=1498386182]
+custom_minimum_size = Vector2(84, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_h7d1v")
+theme_override_font_sizes/font_size = 160
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer_3" type="Control" parent="VBox/TimeLabelHBox" unique_id=1364446228]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Point" type="Label" parent="VBox/TimeLabelHBox" unique_id=790666910]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_h7d1v")
+theme_override_font_sizes/font_size = 160
+text = "."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer_4" type="Control" parent="VBox/TimeLabelHBox" unique_id=506616613]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MilliSecondLabel" type="Label" parent="VBox/TimeLabelHBox" unique_id=18882346]
+custom_minimum_size = Vector2(84, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_h7d1v")
+theme_override_font_sizes/font_size = 160
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer_3" type="Control" parent="VBox" unique_id=1024609914]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EquipSlotMargin" type="MarginContainer" parent="VBox" unique_id=245466319]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 80
+
+[node name="EquipSlotHBox" type="HBoxContainer" parent="VBox/EquipSlotMargin" unique_id=1943724137]
+layout_mode = 2
+alignment = 1
+
+[node name="EquipButton_1" parent="VBox/EquipSlotMargin/EquipSlotHBox" unique_id=1976939778 instance=ExtResource("3_opfel")]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="VBox/EquipSlotMargin/EquipSlotHBox" unique_id=237175073]
+custom_minimum_size = Vector2(58, 0)
+layout_mode = 2
+
+[node name="EquipButton_2" parent="VBox/EquipSlotMargin/EquipSlotHBox" unique_id=653654083 instance=ExtResource("3_opfel")]
+layout_mode = 2

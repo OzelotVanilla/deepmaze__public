@@ -1,0 +1,153 @@
+[gd_scene format=3 uid="uid://dl5kikibnnp5d"]
+
+[ext_resource type="Script" uid="uid://cs2leqxrdf7wa" path="res://scenes/setting/GameSettingPage.gd" id="1_nx3u7"]
+[ext_resource type="Script" uid="uid://dgd8ce37i8cwq" path="res://ui_component/button/dotted_bg_button/DottedBgButton.gd" id="2_nx3u7"]
+[ext_resource type="PackedScene" uid="uid://davg3b3njxf8g" path="res://scenes/setting/ui_component/setting_option_row/SettingOptionRow.tscn" id="3_dyuab"]
+[ext_resource type="Script" uid="uid://d4m1l6bxl15ue" path="res://scenes/setting/ui_component/setting_option_row/widget/SettingStepperWidgetParam.gd" id="5_mcagc"]
+[ext_resource type="Script" uid="uid://bjsdg76avrgw" path="res://scenes/setting/ui_component/setting_option_row/widget/SettingToggleWidgetParam.gd" id="6_hfk24"]
+[ext_resource type="Script" uid="uid://dsvbch0868r6u" path="res://scenes/setting/ui_component/setting_option_row/widget/SettingSliderWidgetParam.gd" id="7_04d4p"]
+
+[sub_resource type="Resource" id="Resource_hfk24"]
+script = ExtResource("5_mcagc")
+stepper_list = Array[String](["1280 X 720", "1920 X 1080", "3840 X 2160"])
+label_text = "RESOLUTION"
+config_name = "resolution"
+metadata/_custom_type_script = "uid://d4m1l6bxl15ue"
+
+[sub_resource type="Resource" id="Resource_04d4p"]
+script = ExtResource("6_hfk24")
+label_text = "FULLSCREEN"
+config_name = "fullscreen"
+metadata/_custom_type_script = "uid://bjsdg76avrgw"
+
+[sub_resource type="Resource" id="Resource_lwotb"]
+script = ExtResource("7_04d4p")
+label_text = "MASTER VOLUME"
+config_name = "master_volume"
+metadata/_custom_type_script = "uid://dsvbch0868r6u"
+
+[sub_resource type="Resource" id="Resource_rpkk4"]
+script = ExtResource("7_04d4p")
+label_text = "MUSIC VOLUME"
+config_name = "music_volume"
+metadata/_custom_type_script = "uid://dsvbch0868r6u"
+
+[sub_resource type="Resource" id="Resource_14wlb"]
+script = ExtResource("7_04d4p")
+label_text = "SFX VOLUME"
+config_name = "sfx_volume"
+metadata/_custom_type_script = "uid://dsvbch0868r6u"
+
+[sub_resource type="Resource" id="Resource_lxh7l"]
+script = ExtResource("5_mcagc")
+stepper_list = Array[String](["ENGLISH", "S. CHINESE"])
+label_text = "LANGUAGES"
+config_name = "languages"
+metadata/_custom_type_script = "uid://d4m1l6bxl15ue"
+
+[node name="GameSettingPage" type="ColorRect" unique_id=2100504973]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nx3u7")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=372125379]
+custom_minimum_size = Vector2(900, 0)
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="FixedSpacer_1" type="Control" parent="VBox" unique_id=969886871]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="VBox" unique_id=2010754883]
+custom_minimum_size = Vector2(212, 62)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_neighbor_bottom = NodePath("../ResolutionOption")
+focus_next = NodePath("../ResolutionOption")
+text = "BACK"
+script = ExtResource("2_nx3u7")
+metadata/_custom_type_script = "uid://dgd8ce37i8cwq"
+
+[node name="FixedSpacer_2" type="Control" parent="VBox" unique_id=1983799020]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="ResolutionOption" parent="VBox" unique_id=991941183 instance=ExtResource("3_dyuab")]
+layout_mode = 2
+focus_neighbor_top = NodePath("../BackButton")
+focus_neighbor_bottom = NodePath("../FullscreenOption")
+focus_next = NodePath("../FullscreenOption")
+focus_previous = NodePath("../BackButton")
+param = SubResource("Resource_hfk24")
+
+[node name="FixedSpacer_3" type="Control" parent="VBox" unique_id=440513974]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="FullscreenOption" parent="VBox" unique_id=1520867745 instance=ExtResource("3_dyuab")]
+layout_mode = 2
+focus_neighbor_top = NodePath("../ResolutionOption")
+focus_neighbor_bottom = NodePath("../MasterVolumeOption")
+focus_next = NodePath("../MasterVolumeOption")
+focus_previous = NodePath("../ResolutionOption")
+param = SubResource("Resource_04d4p")
+
+[node name="FixedSpacer_4" type="Control" parent="VBox" unique_id=37834941]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="MasterVolumeOption" parent="VBox" unique_id=1134806320 instance=ExtResource("3_dyuab")]
+layout_mode = 2
+focus_neighbor_top = NodePath("../FullscreenOption")
+focus_neighbor_bottom = NodePath("../MusicVolumeOption")
+focus_next = NodePath("../MusicVolumeOption")
+focus_previous = NodePath("../FullscreenOption")
+param = SubResource("Resource_lwotb")
+
+[node name="FixedSpacer_5" type="Control" parent="VBox" unique_id=1114004877]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="MusicVolumeOption" parent="VBox" unique_id=959823434 instance=ExtResource("3_dyuab")]
+layout_mode = 2
+focus_neighbor_top = NodePath("../MasterVolumeOption")
+focus_neighbor_bottom = NodePath("../SFXVolumeOption")
+focus_next = NodePath("../SFXVolumeOption")
+focus_previous = NodePath("../MasterVolumeOption")
+param = SubResource("Resource_rpkk4")
+
+[node name="FixedSpacer_6" type="Control" parent="VBox" unique_id=1265087713]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="SFXVolumeOption" parent="VBox" unique_id=244650329 instance=ExtResource("3_dyuab")]
+layout_mode = 2
+focus_neighbor_top = NodePath("../MusicVolumeOption")
+focus_neighbor_bottom = NodePath("../LanguagesOption")
+focus_next = NodePath("../LanguagesOption")
+focus_previous = NodePath("../MusicVolumeOption")
+param = SubResource("Resource_14wlb")
+
+[node name="FixedSpacer_7" type="Control" parent="VBox" unique_id=1988945918]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+
+[node name="LanguagesOption" parent="VBox" unique_id=1764511375 instance=ExtResource("3_dyuab")]
+layout_mode = 2
+focus_neighbor_top = NodePath("../SFXVolumeOption")
+focus_neighbor_bottom = NodePath("../ResolutionOption")
+focus_next = NodePath("../ResolutionOption")
+focus_previous = NodePath("../SFXVolumeOption")
+param = SubResource("Resource_lxh7l")
+
+[connection signal="pressed" from="VBox/BackButton" to="." method="goBack"]

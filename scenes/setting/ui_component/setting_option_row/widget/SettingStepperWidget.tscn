@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://cdejl7ov50lw5"]
+
+[ext_resource type="Script" uid="uid://bemopo3qr7323" path="res://scenes/setting/ui_component/setting_option_row/widget/SettingStepperWidget.gd" id="1_syeud"]
+[ext_resource type="Texture2D" uid="uid://dwxhbubwcuk6" path="res://assets/vector_graphics/ui_elements/left_filled_triangle.svg" id="2_m8gjd"]
+[ext_resource type="FontVariation" uid="uid://bwnse1lj43o75" path="res://assets/fonts/PressStart2P-Regular_no_descent.tres" id="3_oaeoe"]
+[ext_resource type="Texture2D" uid="uid://rbediwinasut" path="res://assets/vector_graphics/ui_elements/right_filled_triangle.svg" id="3_osvgl"]
+
+[node name="SettingStepperWidget" type="HBoxContainer" unique_id=1358634458]
+custom_minimum_size = Vector2(444, 0)
+offset_right = 49.0
+offset_bottom = 32.0
+theme_override_constants/separation = 0
+script = ExtResource("1_syeud")
+
+[node name="LeftArrow" type="TextureRect" parent="." unique_id=723530214]
+layout_mode = 2
+texture = ExtResource("2_m8gjd")
+
+[node name="Spacer_1" type="Control" parent="." unique_id=255000464]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="." unique_id=1258897697]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_oaeoe")
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer_2" type="Control" parent="." unique_id=1850055892]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RightArrow" type="TextureRect" parent="." unique_id=1020189161]
+layout_mode = 2
+texture = ExtResource("3_osvgl")

@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://bmw73i3078xn"]
+
+[ext_resource type="Script" uid="uid://cxoobt80g1ptd" path="res://scenes/setting/ui_component/setting_option_row/widget/SettingToggleWidget.gd" id="1_ffa7p"]
+[ext_resource type="FontVariation" uid="uid://bwnse1lj43o75" path="res://assets/fonts/PressStart2P-Regular_no_descent.tres" id="2_3v2b1"]
+[ext_resource type="Texture2D" uid="uid://bvmbknom22ju8" path="res://assets/vector_graphics/ui_elements/black_cross.svg" id="3_yr58r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yr58r"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yr58r"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vwwog"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tv73n"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g8v07"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h0igy"]
+
+[node name="SettingToggleWidget" type="HBoxContainer" unique_id=887072177]
+theme_override_constants/separation = 0
+script = ExtResource("1_ffa7p")
+
+[node name="OnLabel" type="Label" parent="." unique_id=1204693333]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_3v2b1")
+theme_override_font_sizes/font_size = 32
+text = "ON"
+
+[node name="Spacer_1" type="Control" parent="." unique_id=1172469439]
+custom_minimum_size = Vector2(18, 0)
+layout_mode = 2
+
+[node name="OnIndicator" type="PanelContainer" parent="." unique_id=345450927]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yr58r")
+
+[node name="Margin" type="MarginContainer" parent="OnIndicator" unique_id=1825848917]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="X" type="TextureRect" parent="OnIndicator/Margin" unique_id=1683381428]
+layout_mode = 2
+texture = ExtResource("3_yr58r")
+stretch_mode = 3
+
+[node name="Button" type="Button" parent="OnIndicator" unique_id=808630481]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_yr58r")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_vwwog")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tv73n")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_g8v07")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_h0igy")
+
+[node name="Spacer_2" type="Control" parent="." unique_id=893863671]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="OffLabel" type="Label" parent="." unique_id=696741193]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_3v2b1")
+theme_override_font_sizes/font_size = 32
+text = "OFF"
+
+[node name="Spacer_3" type="Control" parent="." unique_id=284154588]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="OffIndicator" type="PanelContainer" parent="." unique_id=1846427203]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_yr58r")
+
+[node name="Margin" type="MarginContainer" parent="OffIndicator" unique_id=1672473095]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="X" type="TextureRect" parent="OffIndicator/Margin" unique_id=634652036]
+layout_mode = 2
+texture = ExtResource("3_yr58r")
+stretch_mode = 3
+
+[node name="Button" type="Button" parent="OffIndicator" unique_id=53237274]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_yr58r")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_vwwog")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tv73n")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_g8v07")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_h0igy")
+
+[connection signal="pressed" from="OnIndicator/Button" to="." method="turnToOn"]
+[connection signal="pressed" from="OffIndicator/Button" to="." method="turnToOff"]

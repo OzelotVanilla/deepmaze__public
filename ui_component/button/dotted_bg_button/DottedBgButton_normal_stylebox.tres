@@ -2,7 +2,7 @@
 
 [resource]
 content_margin_left = 34.0
-bg_color = Color(1, 1, 1, 1)
+bg_color = Color(0, 0, 0, 0)
 border_width_left = 6
 border_width_top = 6
 border_width_right = 6

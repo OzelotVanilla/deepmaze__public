@@ -17,16 +17,33 @@ const focus_stylebox = preload(
 )
 
 
+var should_show_focus_style: bool = false:
+    set(value):
+        if should_show_focus_style != value:
+            should_show_focus_style = value
+            self.refreshHoverStylebox()
+
+
 func refreshHoverStylebox():
+    self.remove_theme_stylebox_override("normal")
     self.remove_theme_stylebox_override("hover")
     self.remove_theme_color_override("font_hover_color")
 
+    # Check if should show "focused" stylebox.
+    if self.should_show_focus_style:
+        self.add_theme_stylebox_override("normal", DottedBgButton.focus_stylebox)
+        self.add_theme_stylebox_override("hover", DottedBgButton.focus_stylebox)
+        self.add_theme_color_override("font_hover_color", Color("#000000"))
+        return
+    else:
+        self.add_theme_stylebox_override("normal", DottedBgButton.normal_stylebox)
+
     # Check focus state and give proper stylebox.
     if self.has_focus():
-        self.add_theme_stylebox_override("hover", focus_stylebox)
+        self.add_theme_stylebox_override("hover", DottedBgButton.focus_stylebox)
         self.add_theme_color_override("font_hover_color", Color("#000000"))
     else:
-        self.add_theme_stylebox_override("hover", normal_stylebox)
+        self.add_theme_stylebox_override("hover", DottedBgButton.normal_stylebox)
         self.add_theme_color_override("font_hover_color", Color("#000000"))
 
 func _ready() -> void:

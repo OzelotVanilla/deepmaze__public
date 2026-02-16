@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://b0y7gj865irrc"]
+
+[ext_resource type="Texture2D" uid="uid://cphc4yo2bawxm" path="res://assets/vector_graphics/maze_entities/quater.svg" id="1_cj1op"]
+[ext_resource type="Script" uid="uid://c85p07dhtg4ki" path="res://ui_component/quater_widget/QuaterWidget.gd" id="1_gvho5"]
+[ext_resource type="FontVariation" uid="uid://bwnse1lj43o75" path="res://assets/fonts/PressStart2P-Regular_no_descent.tres" id="3_il5mr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dwcf8"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="QuaterWidget" type="PanelContainer" unique_id=152661240]
+custom_minimum_size = Vector2(0, 50)
+offset_right = 102.0
+offset_bottom = 42.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dwcf8")
+script = ExtResource("1_gvho5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=162135929]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Spacer_1" type="Control" parent="HBoxContainer" unique_id=1835954576]
+custom_minimum_size = Vector2(14, 0)
+layout_mode = 2
+
+[node name="QuaterIcon" type="TextureRect" parent="HBoxContainer" unique_id=1623569765]
+layout_mode = 2
+texture = ExtResource("1_cj1op")
+
+[node name="Spacer_2" type="Control" parent="HBoxContainer" unique_id=2131506730]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=2122612300]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_il5mr")
+text = "0"
+
+[node name="Spacer_3" type="Control" parent="HBoxContainer" unique_id=1571487221]
+custom_minimum_size = Vector2(14, 0)
+layout_mode = 2

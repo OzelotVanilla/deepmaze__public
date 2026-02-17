@@ -61,11 +61,19 @@ func changeScene(scene_name: StringName):
     self.scene_stack.push_back(scene)
     self.current_scene = scene
 
-func __onReady__():
-    #TODO: Just for test.
-    #self.pushScene("maze_game")
+static func isFirstTimeRun():
+    return not ConfigManager.isLocalConfigFileExist() \
+       and not SaveManager.isLocalSaveFileExist()
 
-    # Should be:
+func __onReady__():
+    # Test if it is first time enter this game.
+    if SceneRoot.isFirstTimeRun():
+        config_manager.createConfig()
+    else:
+        config_manager.loadFromLocalFile() # Will auto create default config, if not exist.
+        if SaveManager.isLocalSaveFileExist():
+            save_manager.loadFromLocalFile()
+
     self.pushScene("press_any_key_title")
 
 func quitGame():

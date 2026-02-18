@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://ufen8n5dfwg5"]
+
+[ext_resource type="Script" uid="uid://3o03u18hu22j" path="res://scenes/relic/GameRelicPage.gd" id="1_tqjao"]
+[ext_resource type="Script" uid="uid://dgd8ce37i8cwq" path="res://ui_component/button/dotted_bg_button/DottedBgButton.gd" id="2_xdo14"]
+[ext_resource type="PackedScene" uid="uid://b0y7gj865irrc" path="res://ui_component/quater_widget/QuaterWidget.tscn" id="3_yga70"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xdo14"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="GameRelicPage" type="ColorRect" unique_id=1187104327]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tqjao")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1476072146]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 30
+
+[node name="VBox" type="VBoxContainer" parent="Margin" unique_id=353614758]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="BackAndQuaterHBox" type="HBoxContainer" parent="Margin/VBox" unique_id=1769591055]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="BackButton" type="Button" parent="Margin/VBox/BackAndQuaterHBox" unique_id=1965338981]
+custom_minimum_size = Vector2(212, 62)
+layout_mode = 2
+text = "BACK"
+script = ExtResource("2_xdo14")
+metadata/_custom_type_script = "uid://dgd8ce37i8cwq"
+
+[node name="Spacer_1" type="Control" parent="Margin/VBox/BackAndQuaterHBox" unique_id=855876275]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="QuaterWidget" parent="Margin/VBox/BackAndQuaterHBox" unique_id=152661240 instance=ExtResource("3_yga70")]
+custom_minimum_size = Vector2(204, 62)
+layout_mode = 2
+
+[node name="Spacer_1" type="Control" parent="Margin/VBox" unique_id=697286690]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+
+[node name="PanelsHBox" type="HBoxContainer" parent="Margin/VBox" unique_id=1492874665]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LeftPanel" type="PanelContainer" parent="Margin/VBox/PanelsHBox" unique_id=737098293]
+custom_minimum_size = Vector2(612, 563)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xdo14")
+
+[node name="Spacer_1" type="Control" parent="Margin/VBox/PanelsHBox" unique_id=575450837]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InfoVBox" type="VBoxContainer" parent="Margin/VBox/PanelsHBox" unique_id=1962732222]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="RightTopPanel" type="PanelContainer" parent="Margin/VBox/PanelsHBox/InfoVBox" unique_id=66804950]
+custom_minimum_size = Vector2(512, 312)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xdo14")
+
+[node name="Spacer_1" type="Control" parent="Margin/VBox/PanelsHBox/InfoVBox" unique_id=572194304]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RightBottomPanel" type="PanelContainer" parent="Margin/VBox/PanelsHBox/InfoVBox" unique_id=693932056]
+custom_minimum_size = Vector2(512, 200)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xdo14")

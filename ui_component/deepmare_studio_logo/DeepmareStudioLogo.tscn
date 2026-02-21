@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bj5q4nds6pl23"]
+
+[ext_resource type="Texture2D" uid="uid://b8opttxrwcxoq" path="res://assets/pic/deepmare_studio_logo.png" id="1_es151"]
+[ext_resource type="Texture2D" uid="uid://dn3gi3glf287y" path="res://assets/vector_graphics/ui_elements/deepmare_studio_text.svg" id="2_ubbh5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ddj5m"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[node name="DeepmareStudioLogo" type="HBoxContainer" unique_id=1207761821]
+offset_right = 442.0
+offset_bottom = 62.0
+theme_override_constants/separation = 0
+
+[node name="IconContainer" type="PanelContainer" parent="." unique_id=1253877466]
+custom_minimum_size = Vector2(62, 62)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ddj5m")
+
+[node name="Icon" type="TextureRect" parent="IconContainer" unique_id=655620527]
+layout_mode = 2
+texture = ExtResource("1_es151")
+expand_mode = 1
+
+[node name="Spacer" type="Control" parent="." unique_id=2109053671]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="Text" type="TextureRect" parent="." unique_id=2118124426]
+custom_minimum_size = Vector2(350, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_ubbh5")
+expand_mode = 2

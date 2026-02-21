@@ -13,7 +13,8 @@ const scene__dict: Dictionary[StringName, PackedScene] = {
     "press_any_key_title": preload("res://scenes/press_any_key_title/GamePressAnyKeyPage.tscn"),
     "title": preload("res://scenes/title/GameTitlePage.tscn"),
     "menu": preload("res://scenes/menu/GameMenuPage.tscn"),
-    "setting": preload("res://scenes/setting/GameSettingPage.tscn")
+    "setting": preload("res://scenes/setting/GameSettingPage.tscn"),
+    "credits": preload("res://scenes/creadits/GameCreditsPage.tscn")
 }
 
 

@@ -14,6 +14,12 @@ var velocity_factor: float = 1.0
 ## Whether the input should be reversed.
 var should_reverse_input := false
 
+## Type of the ball.
+var type: MazeGame.BallType = MazeGame.BallType.wall_clip:
+    set(new_type):
+        type = new_type
+        self.updateBallFromType()
+
 ## Reference of the game.
 var ref__maze_game: MazeGame
 
@@ -58,6 +64,13 @@ func __onVisibilityChange__(being_hidden: bool):
         self.stopReceivingInput()
     else:
         self.startReceivingInput()
+
+## Update all parameter and looks of the ball according to its type.
+func updateBallFromType():
+    match self.type:
+        MazeGame.BallType.wall_clip:
+            self.bounce_factor = 0.8
+            self.velocity_factor = 1.0
 
 func startReceivingInput():
     self.process_mode = ProcessMode.PROCESS_MODE_INHERIT

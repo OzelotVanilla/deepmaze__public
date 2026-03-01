@@ -28,7 +28,7 @@ var maze_level: int = 1
 var special_level_type: MazeGame.SpecialLevel = MazeGame.SpecialLevel.none
 
 ## Type of the ball that player choosed for current game.
-var ball_type: int = MazeGame.BallType.wall_clip
+var ball_type: MazeGame.BallType = MazeGame.BallType.wall_clip
 
 
 ## Generate the init arg from a game save data.

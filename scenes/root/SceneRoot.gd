@@ -34,9 +34,10 @@ var scene_stack: Array[BaseGameScene] = []
 
 ## Push a new scene into the stack.
 ## The scene pushed before will be alived.
-func pushScene(scene_name: StringName):
+func pushScene(scene_name: StringName, ...postInit__args):
     var scene: BaseGameScene = self.scene__dict[scene_name].instantiate()
     self.scene_stack.push_back(scene)
+    scene.postInit(postInit__args)
     self.current_scene = scene
 
 ## Pop a scene from stack.
@@ -54,8 +55,9 @@ func popScene():
     self.current_scene = self.scene_stack.back()
 
 ## Change the active scene to a new scene.
-func changeScene(scene_name: StringName):
+func changeScene(scene_name: StringName, ...postInit__args):
     var scene: BaseGameScene = self.scene__dict[scene_name].instantiate()
+    scene.postInit(postInit__args)
 
     var poped_scene: BaseGameScene = self.scene_stack.pop_back()
     poped_scene.queue_free.call_deferred()

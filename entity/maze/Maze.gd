@@ -23,5 +23,13 @@ func isNotPathAt(x: int, y: int):
     return x > self.width - 1 or y > self.height - 1 \
         or self.get_cell_atlas_coords(Vector2i(x, y)) != Maze.white_tile__atlas_coord
 
+## Update [TileMapLayer]'s internal,
+##  then update [member width] and [member height].
+func updateInternals():
+    self.update_internals()
+    var used_rect = self.get_used_rect()
+    self.width = used_rect.size.x
+    self.height = used_rect.size.y
+
 func _init() -> void:
     self.tile_set = preload("res://assets/tilesets/maze/monocolour_tileset.tres")

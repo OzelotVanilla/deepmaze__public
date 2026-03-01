@@ -21,5 +21,6 @@ func _enter_tree() -> void:
 ## Do some post init work.[br][br]
 ##
 ## Useful when the previous scene need to bring data to next scene.
-func postInit(...args) -> void:
+## Having an empty default implementation if the child class does not need [code]postInit[/code].
+func postInit(args: Array[Variant]) -> void:
     pass

@@ -1,3 +1,4 @@
+@tool
 class_name SettingStepperWidget
 extends SettingWidget
 ## The actual widget in the right side of [SettingOptionRow] enabling choosing in list.

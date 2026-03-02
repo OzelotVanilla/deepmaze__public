@@ -23,6 +23,7 @@ expand_margin_bottom = 9.0
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wtfyn"]
 
 [node name="SettingSliderWidget" type="HBoxContainer" unique_id=65179952]
+modulate = Color(0, 0, 0, 1)
 theme_override_constants/separation = 0
 script = ExtResource("1_ydq4x")
 

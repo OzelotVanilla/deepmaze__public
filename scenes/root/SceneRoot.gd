@@ -66,8 +66,8 @@ func changeScene(scene_name: StringName, ...postInit__args):
     self.current_scene = scene
 
 static func isFirstTimeRun():
-    return not ConfigManager.isLocalConfigFileExist() \
-       and not SaveManager.isLocalSaveFileExist()
+    return not config_manager.isLocalConfigFileExist() \
+       and not save_manager.isLocalSaveFileExist()
 
 func __onReady__():
     # Test if it is first time enter this game.
@@ -75,7 +75,7 @@ func __onReady__():
         config_manager.createConfig()
     else:
         config_manager.loadFromLocalFile() # Will auto create default config, if not exist.
-        if SaveManager.isLocalSaveFileExist():
+        if save_manager.isLocalSaveFileExist():
             save_manager.loadFromLocalFile()
 
     self.pushScene("press_any_key_title")

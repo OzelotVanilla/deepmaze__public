@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://d4b8gx1g21337"]
+
+[ext_resource type="Script" uid="uid://dlruaahm3xfuk" path="res://scripts/game_system/config/ConfigManager.gd" id="1_t463f"]
+[ext_resource type="Script" uid="uid://dsvy640jl4p0u" path="res://scripts/game_system/save/SaveManager.gd" id="2_ntvp4"]
+
+[node name="DebugSceneDoNotSaveThis" type="Node" unique_id=949887768]
+
+[node name="ConfigManager" type="Node" parent="." unique_id=1051808141]
+script = ExtResource("1_t463f")
+
+[node name="SaveManager" type="Node" parent="." unique_id=2077795400]
+script = ExtResource("2_ntvp4")

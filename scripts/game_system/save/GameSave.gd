@@ -1,3 +1,4 @@
+@tool
 class_name GameSave
 extends Resource
 ## The save file of the game

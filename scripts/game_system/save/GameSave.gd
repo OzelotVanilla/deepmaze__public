@@ -12,6 +12,8 @@ extends Resource
 @export var game__last_save_timestamp: int
 ## Game state: The player's coord when saving.
 @export var game__player_coord: Vector2i = Vector2i(1, 1)
+## Game state: The maze exit's coord when saving.
+@export var game__exit_coord: Vector2i = Vector2i(1, 1)
 ## Game state: Time lefted (for [Timer]) when player exited.
 @export var game__time_left: float = 0.0
 ## Game state: The [member TileMapLayer.tile_map_data] of the maze when player saved.
@@ -20,6 +22,8 @@ extends Resource
 @export var game__maze_level: int = 1
 ## Game state: Special level type of the last played maze.
 @export var game__special_level_type: MazeGame.SpecialLevel = MazeGame.SpecialLevel.none
+## Game state: Type of the ball that player choosed for current game.
+@export var game__ball_type: int = MazeGame.BallType.wall_clip
 
 @export_group("Currency", "coin__")
 ## Currency (coin): Earned quater's count.

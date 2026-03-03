@@ -6,21 +6,23 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_trlxp"]
 shader = ExtResource("3_e5gpt")
-shader_parameter/curve_strength = 0.5310000252225
-shader_parameter/zoom = 1.0870000516325
-shader_parameter/vignette_intensity = 0.4050000192375
-shader_parameter/aberration_amount = 0.554000026315
-shader_parameter/brightness = 1.3250000629375
-shader_parameter/scanline_count = 250.5770119024075
-shader_parameter/scanline_opacity = 0.9210000437475
-shader_parameter/horizontal_shake = 0.0030000001425
-shader_parameter/color_bleeding = 0.1200000057
-shader_parameter/static_noise_intensity = 0.1230000058425
-shader_parameter/interference_lines = 0.2510000119225
-shader_parameter/grill_opacity = 0.28800001368
+shader_parameter/curve_strength = 0.170000008075
+shader_parameter/zoom = 1.010000047975
+shader_parameter/vignette_intensity = 1.73200008227
+shader_parameter/aberration_amount = 0.270000012825
+shader_parameter/brightness = 6.0
+shader_parameter/scanline_count = 210.000009975
+shader_parameter/scanline_opacity = 0.770000036575
+shader_parameter/horizontal_shake = 0.00069999998229
+shader_parameter/color_bleeding = 0.270000012825
+shader_parameter/static_noise_intensity = 0.0400000019
+shader_parameter/interference_lines = 0.0990000047025
+shader_parameter/grill_opacity = 0.0
 shader_parameter/resolution_scale = Vector2(640, 480)
+shader_parameter/blur_strength = 0.30000001425
+shader_parameter/blur_radius_px = 3.0000001425
 
-[node name="MainScene" type="Control" unique_id=346799866]
+[node name="SceneRoot" type="Control" unique_id=346799866]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

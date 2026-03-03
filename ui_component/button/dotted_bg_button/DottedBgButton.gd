@@ -46,6 +46,20 @@ func refreshHoverStylebox():
         self.add_theme_stylebox_override("hover", DottedBgButton.normal_stylebox)
         self.add_theme_color_override("font_hover_color", Color("#000000"))
 
+func on_mouse_entered():
+    if not self.disabled:
+        self.grab_focus()
+
+func on_mouse_exited():
+    if self.has_focus():
+        self.release_focus()
+
+func on_focus_entered():
+    self.refreshHoverStylebox()
+
+func on_focus_exited():
+    self.refreshHoverStylebox()
+
 func _ready() -> void:
     # Container sizing.
     self.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
@@ -81,12 +95,7 @@ func _ready() -> void:
     )
 
     # Signal.
-    self.mouse_entered.connect(self.refreshHoverStylebox)
-    self.mouse_exited.connect(self.refreshHoverStylebox)
-    self.focus_entered.connect(self.refreshHoverStylebox)
-    self.focus_exited.connect(self.refreshHoverStylebox)
-
-    self.mouse_entered.connect(
-        func():
-            self.grab_focus()
-    )
+    self.mouse_entered.connect(self.on_mouse_entered)
+    self.mouse_exited.connect(self.on_mouse_exited)
+    self.focus_entered.connect(self.on_focus_entered)
+    self.focus_exited.connect(self.on_focus_exited)

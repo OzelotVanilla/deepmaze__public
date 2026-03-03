@@ -11,3 +11,6 @@ extends Resource
 
 ## Whether this item is newly obtained, and not seen yet.
 @export var whether_new: bool = false
+
+## Resource path for the picture of the collected item.
+@export var pic_path: StringName = ""

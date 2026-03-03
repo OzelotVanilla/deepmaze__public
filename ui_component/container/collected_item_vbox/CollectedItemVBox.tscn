@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://d33c055ktnsv1"]
+
+[ext_resource type="Script" uid="uid://diko6sv5mfjd7" path="res://ui_component/container/collected_item_vbox/CollectedItemVBox.gd" id="1_uf32m"]
+[ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_cmc3f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b2v60"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="CollectedItemVBox" type="PanelContainer" unique_id=277842898]
+custom_minimum_size = Vector2(612, 562)
+theme_override_styles/panel = SubResource("StyleBoxFlat_b2v60")
+script = ExtResource("1_uf32m")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1165482717]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Scroll" type="ScrollContainer" parent="Margin" unique_id=846534216]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Margin/Scroll" unique_id=288658030]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="NothingToSeeLabel" type="Label" parent="Margin" unique_id=630844609]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_cmc3f")
+theme_override_font_sizes/font_size = 32
+text = "ui.nothing_to_see_here"

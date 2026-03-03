@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://bilfabr7empmr"]
+
+[ext_resource type="Script" uid="uid://c4spxpjmxlw4" path="res://ui_component/container/scrollable_text_box/ScrollableTextBox.gd" id="1_1bxqc"]
+[ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_ji3nj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ji3nj"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bxqc"]
+bg_color = Color(0, 0, 0, 1)
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vt0rx"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6blqp"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ofef8"]
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 3.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yx1gv"]
+
+[sub_resource type="Theme" id="Theme_jskjt"]
+VScrollBar/constants/padding_left = 3
+VScrollBar/constants/padding_right = 6
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_1bxqc")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_vt0rx")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_6blqp")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_ofef8")
+VScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_yx1gv")
+
+[node name="ScrollableTextBox" type="PanelContainer" unique_id=868374136]
+custom_minimum_size = Vector2(512, 312)
+theme_override_styles/panel = SubResource("StyleBoxFlat_ji3nj")
+script = ExtResource("1_1bxqc")
+
+[node name="Scroll" type="ScrollContainer" parent="." unique_id=1858203272]
+layout_mode = 2
+theme = SubResource("Theme_jskjt")
+draw_focus_border = true
+
+[node name="Label" type="Label" parent="Scroll" unique_id=19373874]
+custom_minimum_size = Vector2(450, 250)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_ji3nj")
+autowrap_mode = 3

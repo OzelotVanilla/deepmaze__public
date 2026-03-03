@@ -26,25 +26,31 @@ script = ExtResource("1_gvho5")
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=162135929]
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_constants/separation = 0
 
 [node name="Spacer_1" type="Control" parent="HBoxContainer" unique_id=1835954576]
 custom_minimum_size = Vector2(14, 0)
 layout_mode = 2
+size_flags_vertical = 4
 
 [node name="QuaterIcon" type="TextureRect" parent="HBoxContainer" unique_id=1623569765]
 layout_mode = 2
+size_flags_vertical = 4
 texture = ExtResource("1_cj1op")
 
 [node name="Spacer_2" type="Control" parent="HBoxContainer" unique_id=2131506730]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
 
 [node name="Label" type="Label" parent="HBoxContainer" unique_id=2122612300]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_il5mr")
+theme_override_font_sizes/font_size = 28
 text = "0"
 
 [node name="Spacer_3" type="Control" parent="HBoxContainer" unique_id=1571487221]
 custom_minimum_size = Vector2(14, 0)
 layout_mode = 2
+size_flags_vertical = 4

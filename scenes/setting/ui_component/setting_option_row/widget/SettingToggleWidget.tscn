@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bmw73i3078xn"]
 
 [ext_resource type="Script" uid="uid://cxoobt80g1ptd" path="res://scenes/setting/ui_component/setting_option_row/widget/SettingToggleWidget.gd" id="1_ffa7p"]
-[ext_resource type="FontVariation" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_3v2b1"]
+[ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_3v2b1"]
 [ext_resource type="Texture2D" uid="uid://bvmbknom22ju8" path="res://assets/vector_graphics/ui_elements/black_cross.svg" id="3_yr58r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yr58r"]

@@ -97,7 +97,11 @@ func _ready() -> void:
     )
 
     # Signal.
-    self.mouse_entered.connect(self.on_mouse_entered)
-    self.mouse_exited.connect(self.on_mouse_exited)
-    self.focus_entered.connect(self.on_focus_entered)
-    self.focus_exited.connect(self.on_focus_exited)
+    if not self.mouse_entered.is_connected(self.on_mouse_entered):
+        self.mouse_entered.connect(self.on_mouse_entered)
+    if not self.mouse_exited.is_connected(self.on_mouse_exited):
+        self.mouse_exited.connect(self.on_mouse_exited)
+    if not self.focus_entered.is_connected(self.on_focus_entered):
+        self.focus_entered.connect(self.on_focus_entered)
+    if not self.focus_exited.is_connected(self.on_focus_exited):
+        self.focus_exited.connect(self.on_focus_exited)

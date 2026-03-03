@@ -28,6 +28,7 @@ expand_margin_right = 10.0
 expand_margin_bottom = 10.0
 
 [node name="PauseMask" type="ColorRect" unique_id=858237062]
+process_mode = 2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -80,7 +81,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_8mpqx")
 theme_override_font_sizes/font_size = 64
-text = "PAUSE"
+text = "ui.pause_mask.title"
 horizontal_alignment = 1
 
 [node name="Spacer_2" type="Control" parent="ColorRect/VBoxContainer" unique_id=1910184690]
@@ -94,7 +95,7 @@ size_flags_horizontal = 4
 focus_neighbor_top = NodePath("../QuitButton")
 focus_next = NodePath("../OptionButton")
 focus_previous = NodePath("../QuitButton")
-text = "RESUME"
+text = "ui.pause_mask.resume"
 
 [node name="Spacer_3" type="Control" parent="ColorRect/VBoxContainer" unique_id=1025297396]
 custom_minimum_size = Vector2(0, 20)
@@ -106,7 +107,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_next = NodePath("../QuitButton")
 focus_previous = NodePath("../ResumeButton")
-text = "OPTIONS"
+text = "ui.pause_mask.options"
 
 [node name="Spacer_4" type="Control" parent="ColorRect/VBoxContainer" unique_id=180844280]
 custom_minimum_size = Vector2(0, 20)
@@ -119,6 +120,8 @@ size_flags_horizontal = 4
 focus_neighbor_bottom = NodePath("../ResumeButton")
 focus_next = NodePath("../ResumeButton")
 focus_previous = NodePath("../OptionButton")
-text = "QUIT"
+text = "ui.pause_mask.quit"
 
 [connection signal="pressed" from="ColorRect/VBoxContainer/ResumeButton" to="." method="_on_ResumeButton_pressed"]
+[connection signal="pressed" from="ColorRect/VBoxContainer/OptionButton" to="." method="_on_OptionButton_pressed"]
+[connection signal="pressed" from="ColorRect/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]

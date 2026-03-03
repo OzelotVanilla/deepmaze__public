@@ -9,10 +9,18 @@ var game_ref: MazeGame
 
 
 func _ready() -> void: self.__onReady__()
+func _unhandled_input(event: InputEvent) -> void: self.__handleUnprocessedInput__(event)
 
 
 func __onReady__():
     self.visibility_changed.connect(self._on_self_visibility_changed)
+
+func __handleUnprocessedInput__(event: InputEvent) -> void:
+    if not self.visible:
+        return
+    if event.is_action_pressed("pause"):
+        self.game_ref.resumeGame()
+        get_viewport().set_input_as_handled()
 
 func _on_self_visibility_changed() -> void:
     # Auto-focus a button to enable navigation.
@@ -21,3 +29,9 @@ func _on_self_visibility_changed() -> void:
 
 func _on_ResumeButton_pressed() -> void:
     self.game_ref.resumeGame()
+
+func _on_OptionButton_pressed() -> void:
+    self.game_ref.root_scene__ref.pushScene("setting")
+
+func _on_QuitButton_pressed() -> void:
+    self.game_ref.quitToMenu()

@@ -63,8 +63,10 @@ func __onFocusEntered():
     self.item_whether_new = false
 
 func __onFocusExited():
-    self.dotted_bg_button__ref.should_show_focus_style = false
-    self.dotted_bg_button__ref.release_focus()
+    # In case this scene is under gc.
+    if self.dotted_bg_button__ref.is_inside_tree():
+        self.dotted_bg_button__ref.should_show_focus_style = false
+        self.dotted_bg_button__ref.release_focus()
 
 func __onReady__():
     self.mouse_entered.connect(self.__onMouseEntered)

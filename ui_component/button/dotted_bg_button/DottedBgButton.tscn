@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bqfvskp436755"]
+
+[ext_resource type="Script" uid="uid://dgd8ce37i8cwq" path="res://ui_component/button/dotted_bg_button/DottedBgButton.gd" id="1_ou416"]
+
+[node name="DottedBgButton" type="Button" unique_id=242066000]
+script = ExtResource("1_ou416")

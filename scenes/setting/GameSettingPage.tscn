@@ -46,6 +46,7 @@ config_name = "languages"
 metadata/_custom_type_script = "uid://d4m1l6bxl15ue"
 
 [node name="GameSettingPage" type="ColorRect" unique_id=2100504973]
+process_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

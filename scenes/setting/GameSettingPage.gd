@@ -88,6 +88,7 @@ func __onReady__():
 
 func __handleUnprocessedInput__(event: InputEvent):
     if   event.is_action_pressed("ui_cancel"):
+        get_viewport().set_input_as_handled()
         self.root_scene__ref.popScene()
 
 func __onExitTree__():

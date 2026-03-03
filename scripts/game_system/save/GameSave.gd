@@ -33,14 +33,11 @@ extends Resource
 
 @export_group("Collected Items", "collected__")
 ## Collected Items: Unlocked ball type.
-@export var collected__ball_type: Array[int] = []
+@export var collected__ball_type: Array[CollectedItemDetail] = []
 ## Collected Items: Unlocked relic.
-@export var collected__relic: Array[int] = []
-## Collected Items: Unlocked episode.
-## Contains the date obtained, and the number of the episode.[br][br]
-##
-## Data struct: [code]({timestamp: int, episode_num: int})[][/code].
-@export var collected__episode: Array[Dictionary] = []
+@export var collected__relic: Array[CollectedItemDetail] = []
+## Collected Items: Unlocked exploration log.
+@export var collected__exploration_log: Array[CollectedItemDetail] = []
 
 @export_group("Statistics", "stat__")
 ## Statistics: Deepest level

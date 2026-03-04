@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cj0f0ndpfv67j"]
+
+[ext_resource type="Script" uid="uid://dnay6yo2e2njs" path="res://scripts/game_system/audio/AudioManager.gd" id="1_t4huv"]
+
+[node name="AudioManager" type="Node" unique_id=1853305529]
+script = ExtResource("1_t4huv")
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="." unique_id=619468683]
+bus = &"BGM"
+
+[node name="SFXContainer" type="Node" parent="." unique_id=1131058880]

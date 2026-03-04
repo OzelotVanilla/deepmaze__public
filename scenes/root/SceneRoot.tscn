@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dpn2b0q8jhupx" path="res://scenes/root/SceneRoot.gd" id="1_o3rl4"]
 [ext_resource type="Script" uid="uid://ctkplhbb8806x" path="res://scenes/root/InputManager.gd" id="2_wvhe5"]
 [ext_resource type="Shader" uid="uid://d0preoe28o5jc" path="res://assets/materials/maze_crt_screen_mask/crt_screen_material.gdshader" id="3_e5gpt"]
+[ext_resource type="PackedScene" uid="uid://cj0f0ndpfv67j" path="res://scripts/game_system/audio/AudioManager.tscn" id="3_h1fcc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_trlxp"]
 shader = ExtResource("3_e5gpt")
@@ -41,6 +42,8 @@ grow_vertical = 2
 
 [node name="InputManager" type="Node" parent="." unique_id=161071059]
 script = ExtResource("2_wvhe5")
+
+[node name="AudioManager" parent="." unique_id=1853305529 instance=ExtResource("3_h1fcc")]
 
 [node name="CRTLayer" type="CanvasLayer" parent="." unique_id=2123293185]
 

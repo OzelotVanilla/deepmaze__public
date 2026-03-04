@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bemopo3qr7323" path="res://scenes/setting/ui_component/setting_option_row/widget/SettingStepperWidget.gd" id="1_syeud"]
 [ext_resource type="Texture2D" uid="uid://dwxhbubwcuk6" path="res://assets/vector_graphics/ui_elements/left_filled_triangle.svg" id="2_m8gjd"]
-[ext_resource type="FontVariation" uid="uid://bwnse1lj43o75" path="res://assets/fonts/PressStart2P-Regular_no_descent.tres" id="3_oaeoe"]
+[ext_resource type="FontVariation" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="3_oaeoe"]
 [ext_resource type="Texture2D" uid="uid://rbediwinasut" path="res://assets/vector_graphics/ui_elements/right_filled_triangle.svg" id="3_osvgl"]
 
 [node name="SettingStepperWidget" type="HBoxContainer" unique_id=1358634458]

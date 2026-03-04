@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b4dx4rwcrg6w5" path="res://scenes/maze_game/ui_element/hud/pause_mask/PauseMask.gd" id="1_7cf17"]
 [ext_resource type="Shader" uid="uid://cg0o6bcucj21o" path="res://scenes/maze_game/ui_element/hud/pause_mask/pause_mask_bg_shader.gdshader" id="1_mkof4"]
-[ext_resource type="FontVariation" uid="uid://bwnse1lj43o75" path="res://assets/fonts/PressStart2P-Regular_no_descent.tres" id="3_8mpqx"]
+[ext_resource type="FontVariation" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="3_8mpqx"]
 [ext_resource type="PackedScene" uid="uid://cms7mkt0qqc3t" path="res://ui_component/button/focus_button/FocusButton.tscn" id="4_e27wn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e27wn"]

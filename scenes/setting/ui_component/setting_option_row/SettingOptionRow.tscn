@@ -2,7 +2,7 @@
 
 [ext_resource type="StyleBox" uid="uid://btruy1do88kiq" path="res://ui_component/button/dotted_bg_button/DottedBgButton_normal_stylebox.tres" id="1_j3mm6"]
 [ext_resource type="Script" uid="uid://dj1ly1w145v7n" path="res://scenes/setting/ui_component/setting_option_row/SettingOptionRow.gd" id="1_ls4ky"]
-[ext_resource type="FontVariation" uid="uid://bwnse1lj43o75" path="res://assets/fonts/PressStart2P-Regular_no_descent.tres" id="2_j3mm6"]
+[ext_resource type="FontVariation" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_j3mm6"]
 
 [node name="SetttingOptionRow" type="PanelContainer" unique_id=991941183]
 focus_mode = 2

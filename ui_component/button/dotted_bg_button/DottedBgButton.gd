@@ -16,6 +16,8 @@ const focus_stylebox = preload(
     "res://ui_component/button/dotted_bg_button/DottedBgButton_focus_stylebox.tres"
 )
 
+const font = preload("res://assets/fonts/ark-pixel-12px-monospaced-latin.otf")
+
 
 var should_show_focus_style: bool = false:
     set(value):
@@ -70,7 +72,7 @@ func _ready() -> void:
     # Font.
     self.add_theme_font_override(
         "font",
-        preload("res://assets/fonts/PressStart2P-Regular_no_descent.tres")
+        DottedBgButton.font
     )
     self.add_theme_font_size_override(
         "font_size",

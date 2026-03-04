@@ -7,6 +7,8 @@ const normal_stylebox = preload("res://ui_component/button/focus_button/FocusBut
 
 const focus_stylebox = preload("res://ui_component/button/focus_button/FocusButton_focus_stylebox.tres")
 
+const font = preload("res://assets/fonts/ark-pixel-12px-monospaced-latin.otf")
+
 ## Should be the same as focused.
 const pressed_stylebox = focus_stylebox
 
@@ -30,7 +32,7 @@ func _ready() -> void:
     # Font.
     self.add_theme_font_override(
         "font",
-        preload("res://assets/fonts/PressStart2P-Regular.ttf")
+        FocusButton.font
     )
     self.add_theme_font_size_override(
         "font_size",

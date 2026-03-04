@@ -26,6 +26,7 @@ func _ready() -> void: self.__onReady__()
 
 func __onReady__():
     var obj = self.get_parent()
-    while obj is not SettingOptionRow:
+    while obj is not SettingOptionRow and obj != null:
         obj = obj.get_parent()
-    self.option_row__ref = obj
+    if obj != null: # In case scene is opened in editor, without game.
+        self.option_row__ref = obj

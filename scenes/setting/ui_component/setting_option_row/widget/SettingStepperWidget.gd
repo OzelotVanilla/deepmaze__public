@@ -11,7 +11,9 @@ var stepper_list: Array[String]:
         if self.option_row__ref != null:
             return (self.option_row__ref.param as SettingStepperWidgetParam).stepper_list
         else:
-            printerr("option_row__ref is not found.")
+            # Do not print error when SettingStepperWidget is just created in editor.
+            if not Engine.is_editor_hint():
+                printerr("option_row__ref is not found.")
             return []
 
 
@@ -52,4 +54,5 @@ func onReceivingRightAction():
 
 func __onReady__():
     self.choosed_index = 0
-    self.label__ref.text = self.stepper_list[0]
+    if self.stepper_list.size() > 0:
+        self.label__ref.text = self.stepper_list[0]

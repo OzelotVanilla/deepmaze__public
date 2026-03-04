@@ -15,9 +15,19 @@ extends LinkedTextEntryResource
 func getPOIDArray() -> PackedStringArray:
     var result := PackedStringArray()
     for i in range(1, self.count + 1):
-        result.append(str(
-            "exploration_log_po_id_", i,
-            "__do_not_edit_this_string_but_use_translation_framework"
-        ))
-        
+        result.append(ExplorationLogTextEntry.getPOIDForTitle(i))
+        result.append(ExplorationLogTextEntry.getPOIDForText(i))
+
     return result
+
+static func getPOIDForTitle(exp_log_id: int) -> String:
+    return str(
+        "exploration_log_po_id_", exp_log_id, "_title",
+        "__do_not_edit_this_string_but_use_translation_framework"
+    )
+
+static func getPOIDForText(exp_log_id: int) -> String:
+    return str(
+        "exploration_log_po_id_", exp_log_id, "_text",
+        "__do_not_edit_this_string_but_use_translation_framework"
+    )

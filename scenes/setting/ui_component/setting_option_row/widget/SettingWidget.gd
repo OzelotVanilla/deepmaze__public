@@ -6,6 +6,11 @@ extends Control
 ## Could be [SettingStepperWidget], [SettingToggleWidget] or [SettingSliderWidget].
 
 
+## Emitted when user uses UI to change value in setting widget.
+@warning_ignore("unused_signal") # Will be emitted by child class.
+signal changed(new_value: Variant)
+
+
 var param: SettingWidgetParam
 
 var option_row__ref: SettingOptionRow

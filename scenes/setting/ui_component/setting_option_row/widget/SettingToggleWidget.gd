@@ -12,6 +12,7 @@ var toggle_status: bool = false:
         else:
             self.on_indicator_x__ref.modulate  = Color.TRANSPARENT
             self.off_indicator_x__ref.modulate = Color.BLACK
+        self.changed.emit(new_value)
 
 @onready var on_indicator_x__ref: TextureRect = $OnIndicator/Margin/X
 

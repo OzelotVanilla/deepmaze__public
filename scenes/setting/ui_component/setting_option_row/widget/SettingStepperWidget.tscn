@@ -6,15 +6,20 @@
 [ext_resource type="Texture2D" uid="uid://rbediwinasut" path="res://assets/vector_graphics/ui_elements/right_filled_triangle.svg" id="3_osvgl"]
 
 [node name="SettingStepperWidget" type="HBoxContainer" unique_id=1358634458]
-custom_minimum_size = Vector2(444, 0)
+custom_minimum_size = Vector2(444, 50)
 offset_right = 49.0
 offset_bottom = 32.0
 theme_override_constants/separation = 0
 script = ExtResource("1_syeud")
 
-[node name="LeftArrow" type="TextureRect" parent="." unique_id=723530214]
+[node name="LeftArrow" type="TextureButton" parent="." unique_id=1875939059]
 layout_mode = 2
-texture = ExtResource("2_m8gjd")
+size_flags_vertical = 4
+texture_normal = ExtResource("2_m8gjd")
+texture_pressed = ExtResource("2_m8gjd")
+texture_hover = ExtResource("2_m8gjd")
+texture_disabled = ExtResource("2_m8gjd")
+texture_focused = ExtResource("2_m8gjd")
 
 [node name="Spacer_1" type="Control" parent="." unique_id=255000464]
 layout_mode = 2
@@ -34,6 +39,11 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RightArrow" type="TextureRect" parent="." unique_id=1020189161]
+[node name="RightArrow" type="TextureButton" parent="." unique_id=1101830808]
 layout_mode = 2
-texture = ExtResource("3_osvgl")
+size_flags_vertical = 4
+texture_normal = ExtResource("3_osvgl")
+texture_pressed = ExtResource("3_osvgl")
+texture_hover = ExtResource("3_osvgl")
+texture_disabled = ExtResource("3_osvgl")
+texture_focused = ExtResource("3_osvgl")

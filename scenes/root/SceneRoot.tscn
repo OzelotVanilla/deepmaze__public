@@ -9,19 +9,19 @@
 shader = ExtResource("3_e5gpt")
 shader_parameter/curve_strength = 0.170000008075
 shader_parameter/zoom = 1.010000047975
-shader_parameter/vignette_intensity = 1.73200008227
-shader_parameter/aberration_amount = 0.270000012825
-shader_parameter/brightness = 6.0
-shader_parameter/scanline_count = 210.000009975
-shader_parameter/scanline_opacity = 0.770000036575
-shader_parameter/horizontal_shake = 0.00069999998229
-shader_parameter/color_bleeding = 0.270000012825
-shader_parameter/static_noise_intensity = 0.0400000019
-shader_parameter/interference_lines = 0.0990000047025
+shader_parameter/vignette_intensity = 1.70800008113
+shader_parameter/aberration_amount = 0.110000005225
+shader_parameter/brightness = 4.53600021546
+shader_parameter/scanline_count = 206.000009785
+shader_parameter/scanline_opacity = 0.56400002679
+shader_parameter/horizontal_shake = 0.00029999999240999
+shader_parameter/color_bleeding = 0.02400000114
+shader_parameter/static_noise_intensity = 0.018000000855
+shader_parameter/interference_lines = 0.070000003325
 shader_parameter/grill_opacity = 0.0
 shader_parameter/resolution_scale = Vector2(640, 480)
-shader_parameter/blur_strength = 0.30000001425
-shader_parameter/blur_radius_px = 3.0000001425
+shader_parameter/blur_strength = 0.15200000722
+shader_parameter/blur_radius_px = 2.10000009975
 
 [node name="SceneRoot" type="Control" unique_id=346799866]
 layout_mode = 3
@@ -32,7 +32,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_o3rl4")
 
-[node name="CurrentScene" type="Control" parent="." unique_id=1133049622]
+[node name="SceneStack" type="Control" parent="." unique_id=1133049622]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

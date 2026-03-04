@@ -5,19 +5,21 @@
 [ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_j3mm6"]
 
 [node name="SetttingOptionRow" type="PanelContainer" unique_id=991941183]
+offset_right = 484.0
+offset_bottom = 65.0
 focus_mode = 2
 theme_override_styles/panel = ExtResource("1_j3mm6")
 script = ExtResource("1_ls4ky")
 
 [node name="Margin" type="MarginContainer" parent="." unique_id=1646047990]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_constants/margin_left = 22
-theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 22
-theme_override_constants/margin_bottom = 10
 
 [node name="HBox" type="HBoxContainer" parent="Margin" unique_id=1702981639]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_constants/separation = 0
 
 [node name="OptionLabel" type="Label" parent="Margin/HBox" unique_id=347632164]
@@ -34,4 +36,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="WidgetSlot" type="CenterContainer" parent="Margin/HBox" unique_id=1786889069]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+size_flags_vertical = 4

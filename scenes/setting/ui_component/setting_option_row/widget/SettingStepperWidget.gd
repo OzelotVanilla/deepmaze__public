@@ -4,7 +4,16 @@ extends SettingWidget
 ## The actual widget in the right side of [SettingOptionRow] enabling choosing in list.
 
 
-var choosed_index: int = 0
+@onready var left_arrow__ref: TextureButton = $LeftArrow
+
+@onready var right_arrow__ref: TextureButton = $RightArrow
+
+
+## Do not change this directly. Use [method setWidgetValue] instead.
+var choosed_index: int = 0:
+    set(new_index):
+        choosed_index = new_index
+        self.changed.emit(self.getWidgetValue())
 
 var stepper_list: Array[String]:
     get:
@@ -21,11 +30,11 @@ var stepper_list: Array[String]:
 
 
 func _ready() -> void:
-    super.__onReady__()
+    super.__onReady__() # `super()` does not work here.
     self.__onReady__()
 
 
-## Set the string value of settings
+## Set the string value of settings, update the label's text.
 func setWidgetValue(value: Variant):
     if value is not String:
         printerr("Invalid data: ", value)
@@ -34,8 +43,11 @@ func setWidgetValue(value: Variant):
     var index = self.stepper_list.find(value)
     if index < 0:
         printerr("Value `", value, "` not found in list.")
+        return
     else:
         self.choosed_index = index
+
+    self.label__ref.text = self.stepper_list[self.choosed_index]
 
 func getWidgetValue():
     return self.stepper_list[self.choosed_index]
@@ -56,3 +68,8 @@ func __onReady__():
     self.choosed_index = 0
     if self.stepper_list.size() > 0:
         self.label__ref.text = self.stepper_list[0]
+
+    if not self.left_arrow__ref.pressed.is_connected(self.onReceivingLeftAction):
+        self.left_arrow__ref.pressed.connect(self.onReceivingLeftAction)
+    if not self.right_arrow__ref.pressed.is_connected(self.onReceivingRightAction):
+        self.right_arrow__ref.pressed.connect(self.onReceivingRightAction)

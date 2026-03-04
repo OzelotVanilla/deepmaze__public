@@ -5,6 +5,10 @@ extends Node
 ##
 ## Notice: This script should have similar structure with [SaveManager].
 
+
+signal config_changed(on_what: GameConfig.ChangingCategory)
+
+
 const path_to_local_config_file = "user://config.tres"
 
 
@@ -21,6 +25,10 @@ const path_to_local_config_file = "user://config.tres"
             else:
                 self.saveToLocalFile()
 
+        # Forward the signal.
+        if not new_config.config_changed.is_connected(self.on_config_changed):
+            new_config.config_changed.connect(self.on_config_changed)
+
 @export_tool_button("Save to local", "Save")
 var saveToLocal_action = saveToLocalFile
 
@@ -30,6 +38,9 @@ var loadFromLocal_action = loadFromLocalFile.bind(false)
 @export_tool_button("Set to default", "Reload")
 var setBackToDefault_action = setBackToDefault
 
+
+func on_config_changed(on_what: GameConfig.ChangingCategory):
+    self.config_changed.emit(on_what)
 
 func setBackToDefault():
     self.createConfig()

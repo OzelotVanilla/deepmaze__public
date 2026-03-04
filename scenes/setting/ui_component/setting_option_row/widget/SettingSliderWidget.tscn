@@ -24,16 +24,18 @@ expand_margin_bottom = 9.0
 
 [node name="SettingSliderWidget" type="HBoxContainer" unique_id=65179952]
 modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 50)
 theme_override_constants/separation = 0
 script = ExtResource("1_ydq4x")
 
-[node name="Control" type="Control" parent="." unique_id=457606074]
+[node name="Spacer" type="Control" parent="." unique_id=457606074]
 custom_minimum_size = Vector2(9, 0)
 layout_mode = 2
 
 [node name="HSlider" type="HSlider" parent="." unique_id=597008037]
 custom_minimum_size = Vector2(300, 30)
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_styles/slider = SubResource("StyleBoxFlat_ydq4x")
 theme_override_styles/grabber_area = SubResource("StyleBoxEmpty_ydq4x")
 theme_override_styles/grabber_area_highlight = SubResource("StyleBoxEmpty_wtfyn")

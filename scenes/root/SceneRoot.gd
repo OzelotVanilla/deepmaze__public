@@ -5,6 +5,9 @@ extends Control
 ## Method start with "switch" will switch to an existed scene.
 
 
+@onready var audio_manager: AudioManager = $AudioManager
+
+
 func _ready() -> void: self.__onReady__()
 
 
@@ -67,6 +70,39 @@ func changeScene(scene_name: StringName, ...postInit__args):
     self.scene_stack.push_back(scene)
     self.current_scene = scene
 
+## Will be called when config changed.
+func applyConfig(on_what: GameConfig.ChangingCategory):
+    match on_what:
+        GameConfig.ChangingCategory.display:
+            ## # Resolution
+            #var resolution__pair := config_manager.config.resolution.split(" X ")
+            #if resolution__pair.size() != 2:
+                #printerr("Wrong resolution being set-ed: ", config_manager.config.resolution)
+            #var scale_size := Vector2i(resolution__pair[0].to_int(), resolution__pair[1].to_int())
+            #self.get_tree().root.content_scale_size = scale_size
+
+            # # Fullscreen
+            DisplayServer.window_set_mode(
+                DisplayServer.WindowMode.WINDOW_MODE_EXCLUSIVE_FULLSCREEN \
+                    if config_manager.config.fullscreen else \
+                DisplayServer.WindowMode.WINDOW_MODE_WINDOWED
+            )
+
+        GameConfig.ChangingCategory.volume:
+            self.audio_manager.master_volume = config_manager.config.master_volume
+            self.audio_manager.bgm_volume = config_manager.config.music_volume
+            self.audio_manager.sfx_volume = config_manager.config.sfx_volume
+
+        GameConfig.ChangingCategory.language:
+            var locale: String
+            match config_manager.config.languages:
+                "ENGLISH":
+                    locale = "en"
+                "S. CHINESE":
+                    locale = "zh_CN"
+
+            TranslationServer.set_locale(locale)
+
 static func isFirstTimeRun():
     return not config_manager.isLocalConfigFileExist() \
        and not save_manager.isLocalSaveFileExist()
@@ -79,6 +115,12 @@ func __onReady__():
         config_manager.loadFromLocalFile() # Will auto create default config, if not exist.
         if save_manager.isLocalSaveFileExist():
             save_manager.loadFromLocalFile()
+
+    config_manager.config_changed.connect(self.applyConfig)
+    # Trigger config application on init.
+    config_manager.config_changed.emit(GameConfig.ChangingCategory.display)
+    config_manager.config_changed.emit(GameConfig.ChangingCategory.volume)
+    config_manager.config_changed.emit(GameConfig.ChangingCategory.language)
 
     self.pushScene("press_any_key_title")
 

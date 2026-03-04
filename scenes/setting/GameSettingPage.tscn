@@ -83,6 +83,7 @@ custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
 [node name="ResolutionOption" parent="VBox" unique_id=991941183 instance=ExtResource("3_dyuab")]
+visible = false
 layout_mode = 2
 focus_neighbor_top = NodePath("../BackButton")
 focus_neighbor_bottom = NodePath("../FullscreenOption")
@@ -92,6 +93,7 @@ param = SubResource("Resource_hfk24")
 generated_label_text = "config.resolution"
 
 [node name="FixedSpacer_3" type="Control" parent="VBox" unique_id=440513974]
+visible = false
 custom_minimum_size = Vector2(0, 18)
 layout_mode = 2
 

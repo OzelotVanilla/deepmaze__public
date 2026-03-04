@@ -12,6 +12,7 @@ var slider_value: int = 0:
             slider_value = int(self.slider__ref.value)
         else:
             slider_value = new_value
+        self.changed.emit(slider_value)
 
 
 func _ready() -> void:

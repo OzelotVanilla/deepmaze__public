@@ -64,3 +64,15 @@ func saveToLocalFile():
 ## Delete the local config file.
 func deleteLocalFile():
     DirAccess.remove_absolute(ConfigManager.path_to_local_config_file)
+
+## Ensure the local config exists and loaded.
+func ensureLoaded():
+    if not self.isLocalConfigFileExist():
+        printerr("Local config file does not exist, cannot be ensure loaded.")
+        return
+
+    # Only load from local if not loaded yet.
+    if self.config == null:
+        self.loadFromLocalFile(
+            false # should_create_when_no_exist
+        )

@@ -63,3 +63,15 @@ func saveToLocalFile():
 ## Delete the local save file.
 func deleteLocalFile():
     DirAccess.remove_absolute(SaveManager.path_to_local_save_file)
+
+## Ensure the local save exists and loaded.
+func ensureLoaded():
+    if not self.isLocalSaveFileExist():
+        printerr("Local save file does not exist, cannot be ensure loaded.")
+        return
+
+    # Only load from local if not loaded yet.
+    if self.save == null:
+        self.loadFromLocalFile(
+            false # should_create_when_no_exist
+        )

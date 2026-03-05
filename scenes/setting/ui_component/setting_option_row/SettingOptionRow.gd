@@ -57,6 +57,25 @@ var widget: SettingWidget
             new_param.changed.connect(self.updateFromParam)
         self.updateFromParam()
 
+## Read-only property for PO ID generation.[br][br]
+##
+## Should be named like [code]*_text[/code],
+##  see https://github.com/godotengine/godot/pull/89286 for details.
+@export_custom(
+    PropertyHint.PROPERTY_HINT_NONE, "",
+    PropertyUsageFlags.PROPERTY_USAGE_EDITOR
+    | PropertyUsageFlags.PROPERTY_USAGE_STORAGE
+    | PropertyUsageFlags.PROPERTY_USAGE_READ_ONLY
+)
+var generated_label_text: String:
+    set(ignore_value):
+        pass
+    get():
+        if self.param != null and Engine.is_editor_hint() and self.is_node_ready():
+            return self.param.label_text
+        else:
+            return ""
+
 
 func _ready() -> void: self.__onReady__()
 func _input(event: InputEvent) -> void: self.__handleInput__(event)

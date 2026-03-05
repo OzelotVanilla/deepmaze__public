@@ -10,38 +10,38 @@
 [sub_resource type="Resource" id="Resource_hfk24"]
 script = ExtResource("5_mcagc")
 stepper_list = Array[String](["1280 X 720", "1920 X 1080", "3840 X 2160"])
-label_text = "RESOLUTION"
+label_text = "config.resolution"
 config_name = "resolution"
 metadata/_custom_type_script = "uid://d4m1l6bxl15ue"
 
 [sub_resource type="Resource" id="Resource_04d4p"]
 script = ExtResource("6_hfk24")
-label_text = "FULLSCREEN"
+label_text = "config.fullscreen"
 config_name = "fullscreen"
 metadata/_custom_type_script = "uid://bjsdg76avrgw"
 
 [sub_resource type="Resource" id="Resource_lwotb"]
 script = ExtResource("7_04d4p")
-label_text = "MASTER VOLUME"
+label_text = "config.master_volume"
 config_name = "master_volume"
 metadata/_custom_type_script = "uid://dsvbch0868r6u"
 
 [sub_resource type="Resource" id="Resource_rpkk4"]
 script = ExtResource("7_04d4p")
-label_text = "MUSIC VOLUME"
+label_text = "config.music_volume"
 config_name = "music_volume"
 metadata/_custom_type_script = "uid://dsvbch0868r6u"
 
 [sub_resource type="Resource" id="Resource_14wlb"]
 script = ExtResource("7_04d4p")
-label_text = "SFX VOLUME"
+label_text = "config.sfx_volume"
 config_name = "sfx_volume"
 metadata/_custom_type_script = "uid://dsvbch0868r6u"
 
 [sub_resource type="Resource" id="Resource_lxh7l"]
 script = ExtResource("5_mcagc")
 stepper_list = Array[String](["ENGLISH", "S. CHINESE"])
-label_text = "LANGUAGES"
+label_text = "config.languages"
 config_name = "languages"
 metadata/_custom_type_script = "uid://d4m1l6bxl15ue"
 
@@ -74,7 +74,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 focus_neighbor_bottom = NodePath("../ResolutionOption")
 focus_next = NodePath("../ResolutionOption")
-text = "BACK"
+text = "ui.back"
 script = ExtResource("2_nx3u7")
 metadata/_custom_type_script = "uid://dgd8ce37i8cwq"
 
@@ -89,6 +89,7 @@ focus_neighbor_bottom = NodePath("../FullscreenOption")
 focus_next = NodePath("../FullscreenOption")
 focus_previous = NodePath("../BackButton")
 param = SubResource("Resource_hfk24")
+generated_label_text = "config.resolution"
 
 [node name="FixedSpacer_3" type="Control" parent="VBox" unique_id=440513974]
 custom_minimum_size = Vector2(0, 18)
@@ -101,6 +102,7 @@ focus_neighbor_bottom = NodePath("../MasterVolumeOption")
 focus_next = NodePath("../MasterVolumeOption")
 focus_previous = NodePath("../ResolutionOption")
 param = SubResource("Resource_04d4p")
+generated_label_text = "config.fullscreen"
 
 [node name="FixedSpacer_4" type="Control" parent="VBox" unique_id=37834941]
 custom_minimum_size = Vector2(0, 18)
@@ -113,6 +115,7 @@ focus_neighbor_bottom = NodePath("../MusicVolumeOption")
 focus_next = NodePath("../MusicVolumeOption")
 focus_previous = NodePath("../FullscreenOption")
 param = SubResource("Resource_lwotb")
+generated_label_text = "config.master_volume"
 
 [node name="FixedSpacer_5" type="Control" parent="VBox" unique_id=1114004877]
 custom_minimum_size = Vector2(0, 18)
@@ -125,6 +128,7 @@ focus_neighbor_bottom = NodePath("../SFXVolumeOption")
 focus_next = NodePath("../SFXVolumeOption")
 focus_previous = NodePath("../MasterVolumeOption")
 param = SubResource("Resource_rpkk4")
+generated_label_text = "config.music_volume"
 
 [node name="FixedSpacer_6" type="Control" parent="VBox" unique_id=1265087713]
 custom_minimum_size = Vector2(0, 18)
@@ -137,6 +141,7 @@ focus_neighbor_bottom = NodePath("../LanguagesOption")
 focus_next = NodePath("../LanguagesOption")
 focus_previous = NodePath("../MusicVolumeOption")
 param = SubResource("Resource_14wlb")
+generated_label_text = "config.sfx_volume"
 
 [node name="FixedSpacer_7" type="Control" parent="VBox" unique_id=1988945918]
 custom_minimum_size = Vector2(0, 18)
@@ -149,5 +154,6 @@ focus_neighbor_bottom = NodePath("../ResolutionOption")
 focus_next = NodePath("../ResolutionOption")
 focus_previous = NodePath("../SFXVolumeOption")
 param = SubResource("Resource_lxh7l")
+generated_label_text = "config.languages"
 
 [connection signal="pressed" from="VBox/BackButton" to="." method="goBack"]

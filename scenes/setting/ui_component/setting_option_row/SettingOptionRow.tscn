@@ -2,7 +2,7 @@
 
 [ext_resource type="StyleBox" uid="uid://btruy1do88kiq" path="res://ui_component/button/dotted_bg_button/DottedBgButton_normal_stylebox.tres" id="1_j3mm6"]
 [ext_resource type="Script" uid="uid://dj1ly1w145v7n" path="res://scenes/setting/ui_component/setting_option_row/SettingOptionRow.gd" id="1_ls4ky"]
-[ext_resource type="FontVariation" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_j3mm6"]
+[ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_j3mm6"]
 
 [node name="SetttingOptionRow" type="PanelContainer" unique_id=991941183]
 focus_mode = 2
@@ -21,11 +21,13 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="OptionLabel" type="Label" parent="Margin/HBox" unique_id=347632164]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_j3mm6")
 theme_override_font_sizes/font_size = 32
 text = "OPTION"
+clip_text = true
 
 [node name="Spacer" type="Control" parent="Margin/HBox" unique_id=44267976]
 layout_mode = 2

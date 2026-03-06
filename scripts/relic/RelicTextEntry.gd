@@ -22,12 +22,10 @@ func getPOIDArray() -> PackedStringArray:
 
 static func getPOIDForTitle(relic_id: int) -> String:
     return str(
-        "relic_po_id_", relic_id, "_title",
-        "__do_not_edit_this_string_but_use_translation_framework"
+        "assets.relic_", relic_id, "__title"
     )
 
 static func getPOIDForText(relic_id: int) -> String:
     return str(
-        "relic_po_id_", relic_id, "_text",
-            "__do_not_edit_this_string_but_use_translation_framework"
+        "assets.relic_", relic_id, "__text"
     )

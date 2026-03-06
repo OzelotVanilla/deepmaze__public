@@ -22,12 +22,10 @@ func getPOIDArray() -> PackedStringArray:
 
 static func getPOIDForTitle(exp_log_id: int) -> String:
     return str(
-        "exploration_log_po_id_", exp_log_id, "_title",
-        "__do_not_edit_this_string_but_use_translation_framework"
+        "assets.exploration_log_", exp_log_id, "__title"
     )
 
 static func getPOIDForText(exp_log_id: int) -> String:
     return str(
-        "exploration_log_po_id_", exp_log_id, "_text",
-        "__do_not_edit_this_string_but_use_translation_framework"
+        "assets.exploration_log_", exp_log_id, "__text"
     )

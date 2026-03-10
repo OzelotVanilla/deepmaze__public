@@ -31,6 +31,9 @@ var saveToLocal_action = saveToLocalFile
 @export_tool_button("Load from local", "Load")
 var loadFromLocal_action = loadFromLocalFile.bind(false)
 
+@export_tool_button("Delete local file", "Remove")
+var deleteLocalFile_action = deleteLocalFile
+
 func isLocalSaveFileExist():
     return FileAccess.file_exists(SaveManager.path_to_local_save_file)
 

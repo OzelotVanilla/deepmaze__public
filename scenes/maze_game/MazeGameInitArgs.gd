@@ -1,6 +1,9 @@
 class_name MazeGameInitArgs
 extends RefCounted
 ## Args for [method MazeGame.postInit]
+##
+## This data class should not save buffered data of [GameSaveOfGameState],
+##  since that data should be modified in game runtime.
 
 
 ## Record if the game is started by "continue" or "new dive".
@@ -34,12 +37,12 @@ var ball_type: MazeGame.BallType = MazeGame.BallType.wall_clip
 ## Generate the init arg from a game save data.
 static func fromSaveData(save: GameSave) -> MazeGameInitArgs:
     var result = MazeGameInitArgs.new()
-    result.player_coord = save.game__player_coord
-    result.exit_coord = save.game__exit_coord
-    result.time_left = save.game__time_left
-    result.map_data = save.game__map_data
-    result.maze_level = save.game__maze_level
-    result.special_level_type = save.game__special_level_type
+    result.player_coord = save.game_state.player_coord
+    result.exit_coord = save.game_state.exit_coord
+    result.time_left = save.game_state.time_left
+    result.map_data = save.game_state.map_data
+    result.maze_level = save.game_state.maze_level
+    result.special_level_type = save.game_state.special_level_type
 
     return result
 

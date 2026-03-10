@@ -27,11 +27,11 @@ func on_CollectedItemVBox_row_focus_entered(row: CollectedItemVBoxRow):
 
     # If there is a "new" sign, turn it off.
     if row.item_whether_new == true and save_manager.save != null:
-        var index = save_manager.save.collected__relic.find_custom(
+        var index = save_manager.save.collected_item.relic.find_custom(
             func (e: CollectedItemDetail): return e.item_id == row.item_key
         )
         if index > -1:
-            save_manager.save.collected__relic[index].whether_new = false
+            save_manager.save.collected_item.relic[index].whether_new = false
         else:
             printerr(
                 "GameRelicPage: ",
@@ -64,7 +64,7 @@ func setPictureToShow(pic_path: StringName):
 func loadCollectedRelic():
     if save_manager.isLocalSaveFileExist():
         save_manager.ensureLoaded()
-        for d in save_manager.save.collected__relic:
+        for d in save_manager.save.collected_item.relic:
             self.item_vbox__ref.addItem(
                 d.item_id, # key
                 tr(RelicTextEntry.getPOIDForTitle(d.item_id)),

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://faba1wxdyl15"]
 
-[ext_resource type="Script" uid="uid://dtsjrjh6xvhfm" path="res://scenes/maze_game/ui_element/hud/right_panel/HUDRightPanel.gd" id="1_vqbsr"]
+[ext_resource type="Script" path="res://scenes/maze_game/ui_element/hud/right_panel/HUDRightPanel.gd" id="1_vqbsr"]
 [ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_h7d1v"]
 [ext_resource type="FontVariation" uid="uid://btyym5lg37du2" path="res://assets/fonts/deepmare_no_descent__timer.tres" id="3_h7d1v"]
 [ext_resource type="PackedScene" uid="uid://bcq6p1gbnsf4c" path="res://scenes/maze_game/ui_element/equip_button/EquipButton.tscn" id="3_opfel"]

@@ -3,6 +3,9 @@ extends Resource
 ## Game save of unfinished game
 
 
+## Game state: Defines whether this save is valid. [code]true[/code] means valid.
+@export var is_game_unfinished: bool = false
+
 ## Data that is useful to load an unfinished game back.
 @export_group("Game Runtime Data")
 ## Game state: The timestamp (int) when the player last saves.

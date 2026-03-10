@@ -126,7 +126,7 @@ func __onReady__():
     else:
         config_manager.loadFromLocalFile() # Will auto create default config, if not exist.
         if save_manager.isLocalSaveFileExist():
-            save_manager.loadFromLocalFile()
+            save_manager.loadFromLocalFile() # Will not create a new save.
 
     config_manager.config_changed.connect(self.applyConfig)
     # Trigger config application on init.

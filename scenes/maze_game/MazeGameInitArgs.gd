@@ -37,6 +37,7 @@ var ball_type: MazeGame.BallType = MazeGame.BallType.wall_clip
 ## Generate the init arg from a game save data.
 static func fromSaveData(save: GameSave) -> MazeGameInitArgs:
     var result = MazeGameInitArgs.new()
+    result.is_new_game = false
     result.player_coord = save.game_state.player_coord
     result.exit_coord = save.game_state.exit_coord
     result.time_left = save.game_state.time_left

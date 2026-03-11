@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://ev0534drh2ha"]
+
+[ext_resource type="Script" uid="uid://pmjuh84ioe4u" path="res://ui_component/container/arrow_indicator_text_box/ArrowIndicatorTextBox.gd" id="1_1vsmi"]
+[ext_resource type="Texture2D" uid="uid://cdsnb7s2jxw7u" path="res://assets/vector_graphics/ui_elements/up_filled_triangle.svg" id="2_wfvdy"]
+[ext_resource type="Texture2D" uid="uid://cbgs7g15gd4fe" path="res://assets/vector_graphics/ui_elements/down_filled_triangle.svg" id="3_d2u6l"]
+
+[node name="ArrowIndicatorTextBox" type="VBoxContainer" unique_id=1086832580]
+custom_minimum_size = Vector2(600, 0)
+offset_right = 600.0
+offset_bottom = 388.0
+theme_override_constants/separation = 0
+script = ExtResource("1_1vsmi")
+
+[node name="UpArrow" type="TextureRect" parent="." unique_id=146338747]
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_wfvdy")
+stretch_mode = 2
+
+[node name="Spacer1" type="Control" parent="." unique_id=1449176412]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=2085467950]
+custom_minimum_size = Vector2(0, 340)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer" unique_id=1231810360]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Spacer2" type="Control" parent="." unique_id=1628112851]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="DownArrow" type="TextureRect" parent="." unique_id=1450163991]
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_d2u6l")
+stretch_mode = 2

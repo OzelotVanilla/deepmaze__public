@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ufen8n5dfwg5"]
 
 [ext_resource type="Script" uid="uid://3o03u18hu22j" path="res://scenes/relic/GameRelicPage.gd" id="1_tqjao"]
-[ext_resource type="Script" uid="uid://dgd8ce37i8cwq" path="res://ui_component/button/dotted_bg_button/DottedBgButton.gd" id="2_xdo14"]
+[ext_resource type="PackedScene" uid="uid://bqfvskp436755" path="res://ui_component/button/dotted_bg_button/DottedBgButton.tscn" id="2_p77ut"]
 [ext_resource type="PackedScene" uid="uid://b0y7gj865irrc" path="res://ui_component/quater_widget/QuaterWidget.tscn" id="3_yga70"]
 [ext_resource type="PackedScene" uid="uid://d33c055ktnsv1" path="res://ui_component/container/collected_item_vbox/CollectedItemVBox.tscn" id="4_yga70"]
 [ext_resource type="PackedScene" uid="uid://bilfabr7empmr" path="res://ui_component/container/scrollable_text_box/ScrollableTextBox.tscn" id="5_h87pa"]
@@ -34,12 +34,11 @@ theme_override_constants/separation = 0
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="BackButton" type="Button" parent="Margin/OutVBox/TopHBox" unique_id=392152126]
+[node name="BackButton" parent="Margin/OutVBox/TopHBox" unique_id=392152126 instance=ExtResource("2_p77ut")]
 custom_minimum_size = Vector2(206, 56)
 layout_mode = 2
 text = "ui.back"
-script = ExtResource("2_xdo14")
-metadata/_custom_type_script = "uid://dgd8ce37i8cwq"
+alignment = 0
 
 [node name="Spacer_1" type="Control" parent="Margin/OutVBox/TopHBox" unique_id=1158934534]
 layout_mode = 2

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b15wpj1x1gj4j"]
 
 [ext_resource type="Script" uid="uid://bs5ukrryr0fby" path="res://ui_component/container/collected_item_vbox/CollectedItemVBoxRow.gd" id="1_derbo"]
-[ext_resource type="Script" uid="uid://dgd8ce37i8cwq" path="res://ui_component/button/dotted_bg_button/DottedBgButton.gd" id="2_f11js"]
+[ext_resource type="PackedScene" uid="uid://bqfvskp436755" path="res://ui_component/button/dotted_bg_button/DottedBgButton.tscn" id="2_p77ut"]
 [ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="3_n1lks"]
 
 [node name="CollectedItemVBoxRow" type="HBoxContainer" unique_id=924376645]
@@ -9,12 +9,11 @@ focus_mode = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_derbo")
 
-[node name="DottedBgButton" type="Button" parent="." unique_id=1077244279]
+[node name="DottedBgButton" parent="." unique_id=1077244279 instance=ExtResource("2_p77ut")]
 custom_minimum_size = Vector2(432, 62)
 layout_mode = 2
+alignment = 0
 clip_text = true
-script = ExtResource("2_f11js")
-metadata/_custom_type_script = "uid://dgd8ce37i8cwq"
 
 [node name="Spacer" type="Control" parent="." unique_id=304065455]
 custom_minimum_size = Vector2(27, 0)

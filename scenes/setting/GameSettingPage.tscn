@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dl5kikibnnp5d"]
 
 [ext_resource type="Script" uid="uid://cs2leqxrdf7wa" path="res://scenes/setting/GameSettingPage.gd" id="1_nx3u7"]
-[ext_resource type="Script" uid="uid://dgd8ce37i8cwq" path="res://ui_component/button/dotted_bg_button/DottedBgButton.gd" id="2_nx3u7"]
+[ext_resource type="PackedScene" uid="uid://bqfvskp436755" path="res://ui_component/button/dotted_bg_button/DottedBgButton.tscn" id="2_p77ut"]
 [ext_resource type="PackedScene" uid="uid://davg3b3njxf8g" path="res://scenes/setting/ui_component/setting_option_row/SettingOptionRow.tscn" id="3_dyuab"]
 [ext_resource type="Script" uid="uid://d4m1l6bxl15ue" path="res://scenes/setting/ui_component/setting_option_row/widget/SettingStepperWidgetParam.gd" id="5_mcagc"]
 [ext_resource type="Script" uid="uid://bjsdg76avrgw" path="res://scenes/setting/ui_component/setting_option_row/widget/SettingToggleWidgetParam.gd" id="6_hfk24"]
@@ -69,15 +69,14 @@ theme_override_constants/separation = 0
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 
-[node name="BackButton" type="Button" parent="VBox" unique_id=2010754883]
+[node name="BackButton" parent="VBox" unique_id=2010754883 instance=ExtResource("2_p77ut")]
 custom_minimum_size = Vector2(212, 62)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_neighbor_bottom = NodePath("../ResolutionOption")
 focus_next = NodePath("../ResolutionOption")
 text = "ui.back"
-script = ExtResource("2_nx3u7")
-metadata/_custom_type_script = "uid://dgd8ce37i8cwq"
+alignment = 0
 
 [node name="FixedSpacer_2" type="Control" parent="VBox" unique_id=1983799020]
 custom_minimum_size = Vector2(0, 64)

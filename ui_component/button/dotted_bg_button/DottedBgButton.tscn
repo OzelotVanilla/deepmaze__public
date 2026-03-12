@@ -6,4 +6,5 @@
 [node name="DottedBgButton" type="Button" unique_id=242066000]
 theme = ExtResource("1_sdfg6")
 theme_type_variation = &"DottedBgButton_Normal"
+clip_text = true
 script = ExtResource("1_ou416")

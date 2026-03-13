@@ -137,8 +137,8 @@ static func generateExit(
 ## Generate the maze from init args.
 static func generateFromInitArgs(init_args: MazeGameInitArgs) -> Maze:
     var maze = Maze.new()
-    maze.tile_map_data = init_args.map_data
-    maze.exit_gate__coord = init_args.exit_coord
+    maze.tile_map_data = init_args.saved_state_data.map_data
+    maze.exit_gate__coord = init_args.saved_state_data.exit_coord
     maze.updateInternals()
 
     return maze

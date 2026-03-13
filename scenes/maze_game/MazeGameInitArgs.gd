@@ -9,28 +9,16 @@ extends RefCounted
 ## Record if the game is started by "continue" or "new dive".
 var is_new_game: bool = false
 
-## The player's coord to set.
-## [code]Vector2i(-1, -1)[/code] means not specified.
-var player_coord: Vector2i = Vector2i(-1, -1)
-
-## The maze exit's coord to set.
-## [code]Vector2i(-1, -1)[/code] means not specified.
-var exit_coord: Vector2i = Vector2i(-1, -1)
+## The reference to [member GameSave.game_state].
+## Meaningful only when [code]self.is_new_game == false[/code].
+var saved_state_data: GameSaveOfGameState
 
 ## Time lefted (for [Timer]).
+## Meaningful only when [code]self.is_new_game == false[/code].
 var time_left: float = 120
 
-## The [member TileMapLayer.tile_map_data] of the maze to show now.
-## Empty or [code]null[/code] value means do not specify.
-var map_data: PackedByteArray
-
-## The level player has passed.
-var maze_level: int = 1
-
-## Special level type of the maze to show now.
-var special_level_type: MazeGame.SpecialLevel = MazeGame.SpecialLevel.none
-
 ## Type of the ball that player choosed for current game.
+## Meaningful only when [code]self.is_new_game == false[/code].
 var ball_type: MazeGame.BallType = MazeGame.BallType.wall_clip
 
 
@@ -38,12 +26,7 @@ var ball_type: MazeGame.BallType = MazeGame.BallType.wall_clip
 static func fromSaveData(save: GameSave) -> MazeGameInitArgs:
     var result = MazeGameInitArgs.new()
     result.is_new_game = false
-    result.player_coord = save.game_state.player_coord
-    result.exit_coord = save.game_state.exit_coord
-    result.time_left = save.game_state.time_left
-    result.map_data = save.game_state.map_data
-    result.maze_level = save.game_state.maze_level
-    result.special_level_type = save.game_state.special_level_type
+    result.saved_state_data = save.game_state
 
     return result
 

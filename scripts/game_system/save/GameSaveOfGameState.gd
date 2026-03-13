@@ -14,6 +14,16 @@ extends Resource
 @export var player_coord: Vector2i = Vector2i(1, 1)
 ## Game state: The maze exit's coord when saving.
 @export var exit_coord: Vector2i = Vector2i(1, 1)
+## Game state: The maze relic's coord when saving.
+## [code](-1, -1)[/code] means does not exists.
+@export var relic_coord: Vector2i = Vector2i(-1, -1)
+## Game state: whether the quarter is already generated before level 50.
+@export var is_quarter_already_generated_before_level_50: bool = false
+## Game state: whether the relic is already generated before level 50.
+@export var is_relic_already_generated_before_level_50: bool = false
+## Game state: The maze quarter's coord when saving.
+## [code](-1, -1)[/code] means does not exists.
+@export var quarter_coord: Vector2i = Vector2i(-1, -1)
 ## Game state: Time lefted (for [Timer]) when player exited.
 @export var time_left: float = 0.0
 ## Game state: The [member TileMapLayer.tile_map_data] of the maze when player saved.
@@ -34,6 +44,11 @@ extends Resource
 ## Game state: Buffered statistics's diff.
 @export var buffered_diff__stat: GameSaveOfStat
 
+
+func _init() -> void:
+    self.buffered_diff__currency = GameSaveOfCurrency.new()
+    self.buffered_diff__collected_item = GameSaveOfCollectedItem.new()
+    self.buffered_diff__stat = GameSaveOfStat.new()
 
 ## Set the buffered diff value to default empty value.
 func deleteBufferedDiff():

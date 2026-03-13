@@ -2,18 +2,23 @@ class_name MazeGenerator
 extends Node
 ## Generate a maze represented in 2D array
 ##
-## For the data, [code]0[/code] is path,
-##  [code]1[/code] is wall,
-##  [code]3[/code] is exit.
+## For the data:
+## * [code]0[/code] is path,
+## * [code]1[/code] is wall,
+## * [code]3[/code] is exit.
+## * [code]4[/code] is quarter.
+## * [code]5[/code] is relic.
 
 
-## Generate the whole maze.[br]
+## Generate the whole maze, with a border (width=1) of wall.[br]
 ##
 ## [param exit_gate__coord] is the coord of last level.
 static func generate(
     width:  int = MazeGame.initial_width,
     height: int = MazeGame.initial_height,
-    exit_gate__coord: Vector2i = Vector2i.ZERO
+    exit_gate__coord: Vector2i = Vector2i.ZERO,
+    should_generate_quarter: bool = false,
+    should_generate_relic: bool = false
 ) -> Maze:
     var maze := Maze.new()
     maze.width  = width
@@ -28,6 +33,10 @@ static func generate(
 
     MazeGenerator.carve(map, 1, 1)
     MazeGenerator.generateExit(map)
+    if should_generate_quarter:
+        MazeGenerator.generateExclusiveEntities(map, 4)
+    if should_generate_relic:
+        MazeGenerator.generateExclusiveEntities(map, 5)
 
     for y in range(map.size()):
         for x in range(map[y].size()):
@@ -40,6 +49,12 @@ static func generate(
                 3: # Exit gate
                     atlas_coords = Maze.white_tile__atlas_coord
                     maze.exit_gate__coord = Vector2i(x, y)
+                4: # Quarter
+                    atlas_coords = Maze.white_tile__atlas_coord
+                    maze.quarter__coord = Vector2i(x, y)
+                5: # Relic
+                    atlas_coords = Maze.white_tile__atlas_coord
+                    maze.relic__coord = Vector2i(x, y)
 
             maze.set_cell(
                 Vector2i(x, y),
@@ -133,6 +148,36 @@ static func generateExit(
             or is_too_close_to_last_exit
 
     map[exit_gate__y][exit_gate__x] = 3
+
+## Generate an exclusive entity (e.g., quarter, only exists at most one for a maze)
+##  on a maze map, with given [param id].
+## Will be generated on a path, modify the map in-place.[br][br]
+##
+## [param id] should NOT be:
+## * [code]0[/code]: occupied by path.
+## * [code]0[/code]: occupied by wall.
+## * [code]0[/code]: occupied by exit gate.
+static func generateExclusiveEntities(
+    map: Array[PackedInt32Array],
+    id: int
+):
+    var maze_height := map.size()
+    var maze_width  := map[0].size()
+
+    var entity__x := 0
+    var entity__y := 0
+    var should_continue_generation := true
+
+    # Randomly pick a place in the maze until got qualified exit gate position.
+    while should_continue_generation:
+        entity__x = floori(randf() * (maze_width  - 2)) + 1
+        entity__y = floori(randf() * (maze_height - 2)) + 1
+
+        var is_not_a_path := map[entity__y][entity__x] != 0
+
+        should_continue_generation = is_not_a_path
+
+    map[entity__y][entity__x] = id
 
 ## Generate the maze from init args.
 static func generateFromInitArgs(init_args: MazeGameInitArgs) -> Maze:

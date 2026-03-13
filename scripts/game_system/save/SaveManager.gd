@@ -90,3 +90,52 @@ func moveBufferedDiffToOuterSave():
 
     # Delete game buffered diff.
     self.save.game_state.deleteBufferedDiff()
+
+## Get array of the relic that is not obtained yet.
+func getArrayOfNotObtainedRelicID() -> Array[int]:
+    ## Includes relic in the persist save and buffered diff.
+    ## Only contains id for quicker query.
+    var relic_obtained: Array[int] = []
+    relic_obtained.append_array(
+        self.save.collected_item.relic \
+            .map(func(e: CollectedItemDetail): return e.item_id)
+    )
+    relic_obtained.append_array(
+        self.save.game_state.buffered_diff__collected_item.relic \
+            .map(func(e: CollectedItemDetail): return e.item_id)
+    )
+
+    var all_available_relic: Array[int] = \
+        (load("res://assets/in_game_collection/relic/relic_text_entry.tres") as RelicTextEntry) \
+        .relic_id__set.keys()
+
+    var result: Array[int] = []
+    for id in all_available_relic:
+        if id not in relic_obtained:
+            result.append(id)
+
+    return result
+
+const exploration_log_text_entry__path: StringName = \
+    "res://assets/in_game_collection/exploration_log/exploration_log_text_entry.tres"
+
+## Get array of the exploration log that is not obtained yet.
+func getArrayOfNotObtainedExplorationLogID() -> Array[int]:
+    ## Includes relic in the persist save and buffered diff.
+    ## Only contains id for quicker query.
+    var exploration_log_obtained: Array[int] = []
+    exploration_log_obtained.append_array(
+        self.save.collected_item.exploration_log \
+            .map(func(e: CollectedItemDetail): return e.item_id)
+    )
+
+    var all_available_exploration_log: Array[int] = \
+        (load(exploration_log_text_entry__path) as ExplorationLogTextEntry) \
+        .exploration_log_id__set.keys()
+
+    var result: Array[int] = []
+    for id in all_available_exploration_log:
+        if id not in exploration_log_obtained:
+            result.append(id)
+
+    return result

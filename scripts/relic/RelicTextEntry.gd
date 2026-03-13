@@ -4,17 +4,17 @@ extends LinkedTextEntryResource
 ## Resource file of game relic text's entry
 
 
-## Total count of the relic to be generated.
-@export var count: int:
-    set(value):
-        count = value
-        self.emit_changed()
-        self.notify_property_list_changed()
+## Set containing relic ID to be generated.
+## After changing this, press the generate button below.
+@export var relic_id__set: Dictionary[int, Variant]
+
+@export_tool_button("Generate PO ID") var generate_po_id__action = getPOIDArray
+
 
 ## PO ID of the relic.
 func getPOIDArray() -> PackedStringArray:
     var result := PackedStringArray()
-    for i in range(1, self.count + 1):
+    for i in self.relic_id__set.keys():
         result.append(RelicTextEntry.getPOIDForTitle(i))
         result.append(RelicTextEntry.getPOIDForText(i))
 

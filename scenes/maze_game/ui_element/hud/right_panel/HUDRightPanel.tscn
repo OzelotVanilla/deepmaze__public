@@ -17,7 +17,7 @@ color = Color(0, 0, 0, 1)
 script = ExtResource("1_vqbsr")
 
 [node name="VBox" type="VBoxContainer" parent="." unique_id=1240020649]
-custom_minimum_size = Vector2(298, 0)
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -30,17 +30,24 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="Spacer_1" type="Control" parent="VBox" unique_id=1977960846]
-custom_minimum_size = Vector2(0, 38)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
-[node name="LevelText" type="Label" parent="VBox" unique_id=698802814]
+[node name="HBox" type="HBoxContainer" parent="VBox" unique_id=198158968]
+layout_mode = 2
+
+[node name="Spacer_2" type="Control" parent="VBox/HBox" unique_id=1840552153]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="LevelText" type="Label" parent="VBox/HBox" unique_id=698802814]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_h7d1v")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 60
 text = "LEVEL 01"
 
 [node name="Spacer_2" type="Control" parent="VBox" unique_id=1707366724]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
 [node name="TimeLabelHBox" type="HBoxContainer" parent="VBox" unique_id=1644851606]
@@ -48,11 +55,15 @@ layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
+[node name="Spacer_5" type="Control" parent="VBox/TimeLabelHBox" unique_id=1597501391]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="MinuteLabel" type="Label" parent="VBox/TimeLabelHBox" unique_id=203941126]
-custom_minimum_size = Vector2(84, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_h7d1v")
-theme_override_font_sizes/font_size = 160
+theme_override_font_sizes/font_size = 120
 text = "00"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -64,7 +75,7 @@ size_flags_horizontal = 3
 [node name="Colon" type="Label" parent="VBox/TimeLabelHBox" unique_id=2028872477]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_h7d1v")
-theme_override_font_sizes/font_size = 160
+theme_override_font_sizes/font_size = 120
 text = ":"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -74,10 +85,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="SecondLabel" type="Label" parent="VBox/TimeLabelHBox" unique_id=1498386182]
-custom_minimum_size = Vector2(84, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_h7d1v")
-theme_override_font_sizes/font_size = 160
+theme_override_font_sizes/font_size = 120
 text = "00"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -89,7 +99,7 @@ size_flags_horizontal = 3
 [node name="Point" type="Label" parent="VBox/TimeLabelHBox" unique_id=790666910]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_h7d1v")
-theme_override_font_sizes/font_size = 160
+theme_override_font_sizes/font_size = 120
 text = "."
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -99,13 +109,17 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="MilliSecondLabel" type="Label" parent="VBox/TimeLabelHBox" unique_id=18882346]
-custom_minimum_size = Vector2(84, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_h7d1v")
-theme_override_font_sizes/font_size = 160
+theme_override_font_sizes/font_size = 120
 text = "00"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Spacer_6" type="Control" parent="VBox/TimeLabelHBox" unique_id=297341201]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Spacer_3" type="Control" parent="VBox" unique_id=1024609914]
 layout_mode = 2
@@ -125,7 +139,7 @@ alignment = 1
 layout_mode = 2
 
 [node name="Spacer" type="Control" parent="VBox/EquipSlotMargin/EquipSlotHBox" unique_id=237175073]
-custom_minimum_size = Vector2(58, 0)
+custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 
 [node name="EquipButton_2" parent="VBox/EquipSlotMargin/EquipSlotHBox" unique_id=653654083 instance=ExtResource("3_opfel")]

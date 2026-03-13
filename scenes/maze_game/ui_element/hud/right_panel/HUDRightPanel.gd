@@ -5,7 +5,7 @@ extends ColorRect
 
 var game_ref: MazeGame
 
-@onready var level_text__label: Label = $VBox/LevelText
+@onready var level_text__label: Label = $VBox/HBox/LevelText
 
 @onready var minute__label: Label = $VBox/TimeLabelHBox/MinuteLabel
 

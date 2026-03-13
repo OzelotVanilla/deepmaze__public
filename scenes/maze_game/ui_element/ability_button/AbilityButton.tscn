@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://hbl8lqxb0lys"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tdhqq"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 10
+
+[node name="AbilityButton" type="Button" unique_id=950287626]
+custom_minimum_size = Vector2(298, 60)
+offset_right = 298.0
+offset_bottom = 60.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_tdhqq")
+
+[node name="Icon" type="TextureRect" parent="." unique_id=696368290]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.07
+anchor_right = 0.77
+anchor_bottom = 1.0

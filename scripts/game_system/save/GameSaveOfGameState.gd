@@ -26,10 +26,18 @@ extends Resource
 @export var ball_type: MazeGame.BallType = MazeGame.BallType.wall_clip
 
 ## These data will replace the [GameSave]'s data only after game has finished.
-@export_group("Buffered Data", "buffered__")
-## Game state: Buffered currency.
-@export var buffered__currency: GameSaveOfCurrency
-## Game state: Buffered collected items.
-@export var buffered__collected_item: GameSaveOfCollectedItem
-## Game state: Buffered statistics.
-@export var buffered__stat: GameSaveOfStat
+@export_group("Buffered Diff Data", "buffered__")
+## Game state: Buffered currency's diff.
+@export var buffered_diff__currency: GameSaveOfCurrency
+## Game state: Buffered collected items's diff.
+@export var buffered_diff__collected_item: GameSaveOfCollectedItem
+## Game state: Buffered statistics's diff.
+@export var buffered_diff__stat: GameSaveOfStat
+
+
+## Set the buffered diff value to default empty value.
+func deleteBufferedDiff():
+    # Old data free-ed because of [RefCounted].
+    self.buffered_diff__currency = GameSaveOfCurrency.new()
+    self.buffered_diff__collected_item = GameSaveOfCollectedItem.new()
+    self.buffered_diff__stat = GameSaveOfStat.new()

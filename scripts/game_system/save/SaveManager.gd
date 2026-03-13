@@ -78,3 +78,15 @@ func ensureLoaded():
         self.loadFromLocalFile(
             false # should_create_when_no_exist
         )
+
+## This will move the buffered diff data in [member GameSave.game_state] to
+##  [member GameSave.currency], [member GameSave.collected_item],
+##  or [member GameSave.stat], and clear buffered diff data by setting them to default empty value.
+func moveBufferedDiffToOuterSave():
+    # Apply diff.
+    self.save.currency.applyGameStateDiff()
+    self.save.collected_item.applyGameStateDiff()
+    self.save.stat.applyGameStateDiff()
+
+    # Delete game buffered diff.
+    self.save.game_state.deleteBufferedDiff()

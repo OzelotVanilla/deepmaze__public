@@ -9,3 +9,16 @@ extends Resource
 @export var relic: Array[CollectedItemDetail] = []
 ## Collected Items: Unlocked exploration log.
 @export var exploration_log: Array[CollectedItemDetail] = []
+
+
+## Retrieve buffered diff data from game state.
+func applyGameStateDiff():
+    self.ball_type.append_array(
+        save_manager.save.game_state.buffered_diff__collected_item.ball_type
+    )
+    self.relic.append_array(
+        save_manager.save.game_state.buffered_diff__collected_item.relic
+    )
+    self.exploration_log.append_array(
+        save_manager.save.game_state.buffered_diff__collected_item.exploration_log
+    )

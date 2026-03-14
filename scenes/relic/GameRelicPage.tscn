@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://3o03u18hu22j" path="res://scenes/relic/GameRelicPage.gd" id="1_tqjao"]
 [ext_resource type="PackedScene" uid="uid://bqfvskp436755" path="res://ui_component/button/dotted_bg_button/DottedBgButton.tscn" id="2_p77ut"]
-[ext_resource type="PackedScene" uid="uid://b0y7gj865irrc" path="res://ui_component/quater_widget/QuaterWidget.tscn" id="3_yga70"]
+[ext_resource type="PackedScene" uid="uid://b0y7gj865irrc" path="res://ui_component/quarter_widget/QuarterWidget.tscn" id="3_yga70"]
 [ext_resource type="PackedScene" uid="uid://d33c055ktnsv1" path="res://ui_component/container/collected_item_vbox/CollectedItemVBox.tscn" id="4_yga70"]
 [ext_resource type="PackedScene" uid="uid://bilfabr7empmr" path="res://ui_component/container/scrollable_text_box/ScrollableTextBox.tscn" id="5_h87pa"]
 [ext_resource type="PackedScene" uid="uid://c8cjt47haaw4i" path="res://ui_component/container/collected_item_showcase/CollectedItemShowcase.tscn" id="6_cfbee"]
@@ -44,7 +44,7 @@ alignment = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="QuaterWidget" parent="Margin/OutVBox/TopHBox" unique_id=152661240 instance=ExtResource("3_yga70")]
+[node name="QuarterWidget" parent="Margin/OutVBox/TopHBox" unique_id=152661240 instance=ExtResource("3_yga70")]
 custom_minimum_size = Vector2(228, 50)
 layout_mode = 2
 

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://pxvobpfjc66n"]
 
-[ext_resource type="PackedScene" uid="uid://b0y7gj865irrc" path="res://ui_component/quater_widget/QuaterWidget.tscn" id="1_yf38c"]
+[ext_resource type="PackedScene" uid="uid://b0y7gj865irrc" path="res://ui_component/quarter_widget/QuarterWidget.tscn" id="1_yf38c"]
 [ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_invit"]
 [ext_resource type="FontFile" uid="uid://cgdub3h2x0wa5" path="res://assets/fonts/deepmare.otf" id="3_sbn7q"]
 [ext_resource type="PackedScene" uid="uid://bqfvskp436755" path="res://ui_component/button/dotted_bg_button/DottedBgButton.tscn" id="4_fipye"]
@@ -52,7 +52,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="QuaterWidget" parent="ContinuePanel/VBox/HBox" unique_id=152661240 instance=ExtResource("1_yf38c")]
+[node name="QuarterWidget" parent="ContinuePanel/VBox/HBox" unique_id=152661240 instance=ExtResource("1_yf38c")]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -81,12 +81,12 @@ theme_override_font_sizes/font_size = 140
 text = "ui.game_over_mask.p_30_s"
 horizontal_alignment = 1
 
-[node name="UseQuaterButton" parent="ContinuePanel/VBox" unique_id=242066000 instance=ExtResource("4_fipye")]
+[node name="UseQuarterButton" parent="ContinuePanel/VBox" unique_id=242066000 instance=ExtResource("4_fipye")]
 custom_minimum_size = Vector2(300, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="HBox" type="HBoxContainer" parent="ContinuePanel/VBox/UseQuaterButton" unique_id=33539997]
+[node name="HBox" type="HBoxContainer" parent="ContinuePanel/VBox/UseQuarterButton" unique_id=33539997]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -96,18 +96,18 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Label1" type="Label" parent="ContinuePanel/VBox/UseQuaterButton/HBox" unique_id=1645493387]
+[node name="Label1" type="Label" parent="ContinuePanel/VBox/UseQuarterButton/HBox" unique_id=1645493387]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_invit")
 theme_override_font_sizes/font_size = 30
 text = "ui.game_over_mask.use"
 
-[node name="Spacer_8" type="Control" parent="ContinuePanel/VBox/UseQuaterButton/HBox" unique_id=374555981]
+[node name="Spacer_8" type="Control" parent="ContinuePanel/VBox/UseQuarterButton/HBox" unique_id=374555981]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="ContinuePanel/VBox/UseQuaterButton/HBox" unique_id=250320249]
+[node name="Label2" type="Label" parent="ContinuePanel/VBox/UseQuarterButton/HBox" unique_id=250320249]
 auto_translate_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -115,11 +115,11 @@ theme_override_fonts/font = ExtResource("5_invit")
 theme_override_font_sizes/font_size = 30
 text = "$"
 
-[node name="Spacer_9" type="Control" parent="ContinuePanel/VBox/UseQuaterButton/HBox" unique_id=1908221392]
+[node name="Spacer_9" type="Control" parent="ContinuePanel/VBox/UseQuarterButton/HBox" unique_id=1908221392]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="ContinuePanel/VBox/UseQuaterButton/HBox" unique_id=972499433]
+[node name="Label3" type="Label" parent="ContinuePanel/VBox/UseQuarterButton/HBox" unique_id=972499433]
 auto_translate_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -202,13 +202,13 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 
-[node name="UseQuaterButton" parent="QuarterPanel/VBox" unique_id=1351360958 instance=ExtResource("4_fipye")]
+[node name="UseQuarterButton" parent="QuarterPanel/VBox" unique_id=1351360958 instance=ExtResource("4_fipye")]
 auto_translate_mode = 2
 custom_minimum_size = Vector2(250, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="HBox" type="HBoxContainer" parent="QuarterPanel/VBox/UseQuaterButton" unique_id=1160323691]
+[node name="HBox" type="HBoxContainer" parent="QuarterPanel/VBox/UseQuarterButton" unique_id=1160323691]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -218,18 +218,18 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Label2" type="Label" parent="QuarterPanel/VBox/UseQuaterButton/HBox" unique_id=304572671]
+[node name="Label2" type="Label" parent="QuarterPanel/VBox/UseQuarterButton/HBox" unique_id=304572671]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("5_invit")
 theme_override_font_sizes/font_size = 60
 text = "$"
 
-[node name="Spacer_9" type="Control" parent="QuarterPanel/VBox/UseQuaterButton/HBox" unique_id=1279173911]
+[node name="Spacer_9" type="Control" parent="QuarterPanel/VBox/UseQuarterButton/HBox" unique_id=1279173911]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="QuarterPanel/VBox/UseQuaterButton/HBox" unique_id=1975244110]
+[node name="Label3" type="Label" parent="QuarterPanel/VBox/UseQuarterButton/HBox" unique_id=1975244110]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_invit")

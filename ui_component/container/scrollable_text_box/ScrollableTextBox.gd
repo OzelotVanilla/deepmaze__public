@@ -1,6 +1,8 @@
 class_name ScrollableTextBox
 extends PanelContainer
 ## A scrollable text container allows controller's right stick for scrolling
+##
+## Controller right stick logic copied to [ArrowIndicatorTextBox].
 
 
 @onready var scroll_container__ref: ScrollContainer = $Scroll

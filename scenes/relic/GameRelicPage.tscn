@@ -45,7 +45,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="QuarterWidget" parent="Margin/OutVBox/TopHBox" unique_id=152661240 instance=ExtResource("3_yga70")]
-custom_minimum_size = Vector2(228, 50)
+custom_minimum_size = Vector2(228, 56)
 layout_mode = 2
 
 [node name="Spacer_1" type="Control" parent="Margin/OutVBox" unique_id=169419104]

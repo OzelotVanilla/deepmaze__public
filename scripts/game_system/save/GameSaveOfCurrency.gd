@@ -5,7 +5,10 @@ extends Resource
 
 ## Currency (coin): Earned quarter's count.
 ## Must be greater than 0, no maximum set.
-@export_range(0, 999999, 1, "or_greater") var quarter_count: int = 0
+@export_range(0, 999999, 1, "or_greater") var quarter_count: int = 0:
+    set(new_count):
+        quarter_count = new_count
+        self.emit_changed()
 
 
 ## Retrieve buffered diff data from game state.

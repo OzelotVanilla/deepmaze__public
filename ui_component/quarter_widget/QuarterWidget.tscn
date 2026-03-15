@@ -43,7 +43,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="HBoxContainer" unique_id=2122612300]
+[node name="CountLabel" type="Label" parent="HBoxContainer" unique_id=2122612300]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_il5mr")

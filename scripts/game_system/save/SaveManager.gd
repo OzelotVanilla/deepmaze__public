@@ -79,6 +79,13 @@ func ensureLoaded():
             false # should_create_when_no_exist
         )
 
+func hasUnfinishedGame():
+    if not self.isLocalSaveFileExist():
+        return false
+    self.ensureLoaded()
+
+    return self.save.game_state != null and self.save.game_state.is_game_unfinished
+
 ## This will move the buffered diff data in [member GameSave.game_state] to
 ##  [member GameSave.currency], [member GameSave.collected_item],
 ##  or [member GameSave.stat], and clear buffered diff data by setting them to default empty value.

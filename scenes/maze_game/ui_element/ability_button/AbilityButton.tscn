@@ -1,5 +1,17 @@
 [gd_scene format=3 uid="uid://hbl8lqxb0lys"]
 
+[ext_resource type="PackedScene" uid="uid://dutjec5semaaa" path="res://ui_component/container/animated_texture_rect/AnimatedTextureRect.tscn" id="1_ev1t1"]
+[ext_resource type="Script" uid="uid://cwg3jcmw51dkx" path="res://scenes/maze_game/ui_element/ability_button/AbilityButton.gd" id="1_loitm"]
+[ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="5_3xr3v"]
+[ext_resource type="PackedScene" uid="uid://dbeyl6corus0h" path="res://scenes/maze_game/ui_element/ability_button/AbilityButtonChantMask.tscn" id="6_54ulk"]
+[ext_resource type="PackedScene" uid="uid://bql045rgiedgt" path="res://ui_component/key_indicator/KeyIndicator.tscn" id="6_g3280"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3xr3v"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_54ulk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g3280"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tdhqq"]
 bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 30
@@ -8,17 +20,137 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 corner_detail = 10
 
+[sub_resource type="Animation" id="Animation_54ulk"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_3xr3v"]
+resource_name = "horizontal_quick_shake"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VisualRoot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.36, 0.42, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-10, 0), Vector2(9, 0), Vector2(-8, 0), Vector2(7, 0), Vector2(-5, 0), Vector2(4, 0), Vector2(-3, 0), Vector2(2, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_54ulk"]
+_data = {
+&"RESET": SubResource("Animation_54ulk"),
+&"horizontal_quick_shake": SubResource("Animation_3xr3v")
+}
+
 [node name="AbilityButton" type="Button" unique_id=950287626]
+process_mode = 1
 custom_minimum_size = Vector2(298, 60)
 offset_right = 298.0
 offset_bottom = 60.0
-theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_tdhqq")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3xr3v")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_54ulk")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_g3280")
+script = ExtResource("1_loitm")
+delay_until_trigger = 0.5
+chant_mask__colour = Color(0, 0, 0, 0.18039216)
 
-[node name="Icon" type="TextureRect" parent="." unique_id=696368290]
+[node name="VisualRoot" type="Panel" parent="." unique_id=2002517683]
+clip_children = 2
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.07
-anchor_right = 0.77
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tdhqq")
+
+[node name="Anime" parent="VisualRoot" unique_id=2106045473 instance=ExtResource("1_ev1t1")]
+custom_minimum_size = Vector2(235, 50)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_right = 235.0
+offset_bottom = 25.0
+grow_vertical = 2
+mouse_filter = 2
+stop_delay = 0.5
+show_texture__when_not_playing = true
+
+[node name="KeyIndicatorHBox" type="HBoxContainer" parent="VisualRoot" unique_id=1614940677]
+layout_mode = 0
+offset_right = 298.0
+offset_bottom = 60.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Spacer_1" type="Control" parent="VisualRoot/KeyIndicatorHBox" unique_id=1008580484]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="KeyIndicator" parent="VisualRoot/KeyIndicatorHBox" unique_id=1109596630 instance=ExtResource("6_g3280")]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+action_name = &"trigger_ability"
+
+[node name="Spacer_2" type="Control" parent="VisualRoot/KeyIndicatorHBox" unique_id=1016809071]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ChantMask" parent="VisualRoot" unique_id=1034300931 instance=ExtResource("6_54ulk")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 298.0
+offset_bottom = 60.0
+grow_horizontal = 1
+grow_vertical = 1
+mouse_filter = 2
+
+[node name="CooldownMask" type="ColorRect" parent="VisualRoot" unique_id=1275539492]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0.73333335)
+
+[node name="TimeLabel" type="Label" parent="VisualRoot/CooldownMask" unique_id=1413052818]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_3xr3v")
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChantDelayTimer" type="Timer" parent="." unique_id=2022872933]
+wait_time = 0.5
+one_shot = true
+
+[node name="CooldownTimer" type="Timer" parent="." unique_id=265956580]
+one_shot = true
+
+[node name="UIAnimationPlayer" type="AnimationPlayer" parent="." unique_id=690872939]
+libraries/ = SubResource("AnimationLibrary_54ulk")
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]
+[connection signal="animation_finished" from="VisualRoot/Anime" to="." method="_on_Anime_animation_finished"]
+[connection signal="timeout" from="ChantDelayTimer" to="." method="_on_ChantDelayTimer_timeout"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_CooldownTimer_timeout"]

@@ -3,7 +3,16 @@ extends ColorRect
 ## UI of [MazeGame].
 
 
-var game_ref: MazeGame
+var game_ref: MazeGame:
+    set(new_ref):
+        if game_ref == new_ref:
+            return
+
+        game_ref = new_ref
+
+        if self.is_node_ready():
+            self.ability_button__ref.game__ref = new_ref
+
 
 @onready var level_text__label: Label = $VBox/HBox/LevelText
 
@@ -12,6 +21,11 @@ var game_ref: MazeGame
 @onready var second__label: Label = $VBox/TimeLabelHBox/SecondLabel
 
 @onready var millisecond__label: Label = $VBox/TimeLabelHBox/MilliSecondLabel
+
+@onready var ability_button__ref: AbilityButton = $VBox/AbilityButton
+
+
+func _unhandled_input(event: InputEvent) -> void: self.__handleUnprocessedInput__(event)
 
 
 func setLevel(new_level: int):
@@ -30,8 +44,8 @@ func setGameRemainingTime(time: float):
 
 func handleGamePause():
     # # Remained time is set-ed by outer script. No need to pause here.
-
     # # Set recursive behaviour.
+    
     self.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED
     self.focus_behavior_recursive = Control.FOCUS_BEHAVIOR_DISABLED
 
@@ -51,3 +65,16 @@ func handleGameRevive():
     # # Set recursive behaviour.
     self.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_INHERITED
     self.focus_behavior_recursive = Control.FOCUS_BEHAVIOR_INHERITED
+
+func __handleUnprocessedInput__(event: InputEvent) -> void:
+    # # Do not handle input if paused (e.g., pausing game, or just game over).
+    if get_tree().paused:
+        return
+
+    # # Handling equipment related actions.
+    if event.is_action_pressed("trigger_ability"):
+        self.ability_button__ref.beginTriggerHold()
+        get_viewport().set_input_as_handled()
+    if event.is_action_released("trigger_ability"):
+        self.ability_button__ref.endTriggerHold()
+        get_viewport().set_input_as_handled()

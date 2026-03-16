@@ -4,6 +4,7 @@
 [ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="2_h7d1v"]
 [ext_resource type="FontVariation" uid="uid://btyym5lg37du2" path="res://assets/fonts/deepmare_no_descent__timer.tres" id="3_h7d1v"]
 [ext_resource type="PackedScene" uid="uid://bcq6p1gbnsf4c" path="res://scenes/maze_game/ui_element/equip_button/EquipButton.tscn" id="3_opfel"]
+[ext_resource type="PackedScene" uid="uid://hbl8lqxb0lys" path="res://scenes/maze_game/ui_element/ability_button/AbilityButton.tscn" id="4_sp1rg"]
 
 [node name="HUD" type="ColorRect" unique_id=1450105194]
 process_mode = 3
@@ -47,7 +48,7 @@ theme_override_font_sizes/font_size = 60
 text = "LEVEL 01"
 
 [node name="Spacer_2" type="Control" parent="VBox" unique_id=1707366724]
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="TimeLabelHBox" type="HBoxContainer" parent="VBox" unique_id=1644851606]
@@ -122,6 +123,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Spacer_3" type="Control" parent="VBox" unique_id=1024609914]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="AbilityButton" parent="VBox" unique_id=950287626 instance=ExtResource("4_sp1rg")]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Spacer_4" type="Control" parent="VBox" unique_id=1253561981]
 layout_mode = 2
 size_flags_vertical = 3
 

@@ -4,6 +4,10 @@ class_name DottedBgButton
 extends Button
 
 
+## Decide whether this button will lose focus once the mouse exited.
+@export var should_release_focus_when_mouse_exit: bool = true
+
+
 const theme_variation__normal_name := StringName("DottedBgButton_Normal")
 
 const theme_variation__focus_name := StringName("DottedBgButton_Focus")
@@ -26,6 +30,7 @@ const font = preload("res://assets/fonts/ark-pixel-12px-monospaced-latin.otf")
 #endregion
 
 
+## Whether this button should still show focus style even without focus.
 var should_show_focus_style: bool = false:
     set(value):
         if should_show_focus_style != value:
@@ -45,7 +50,7 @@ func on_mouse_entered():
         self.grab_focus()
 
 func on_mouse_exited():
-    if self.has_focus():
+    if self.has_focus() and self.should_release_focus_when_mouse_exit:
         self.release_focus()
 
 func on_focus_entered():

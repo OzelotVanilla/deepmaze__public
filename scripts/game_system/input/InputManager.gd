@@ -3,6 +3,10 @@ class_name InputManager
 extends Node
 
 
+## The input source changed to another one.
+signal input_source_changed(to: InputSource)
+
+
 enum InputSource
 {
     ## Cannot detect input source.
@@ -23,6 +27,8 @@ func _input(event: InputEvent) -> void: self.__onUnhandledInput__(event)
 
 
 func __onUnhandledInput__(event: InputEvent):
+    var old_input_source = InputManager.input_source
+
     match true:
         _ when event is InputEventKey or event is InputEventMouse:
             InputManager.input_source = InputSource.keyboard
@@ -30,3 +36,6 @@ func __onUnhandledInput__(event: InputEvent):
             InputManager.input_source = InputSource.controller
         _ when event is InputEventScreenTouch:
             InputManager.input_source = InputSource.touch_screen
+
+    if old_input_source != InputManager.input_source:
+        self.input_source_changed.emit(InputManager.input_source)

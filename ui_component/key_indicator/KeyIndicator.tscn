@@ -1,12 +1,16 @@
 [gd_scene format=3 uid="uid://bql045rgiedgt"]
 
 [ext_resource type="Theme" uid="uid://ci4vmbt2rbhax" path="res://ui_component/key_indicator/key_indicator__theme.tres" id="1_nhkcn"]
+[ext_resource type="Script" uid="uid://c438atvvwc8ov" path="res://ui_component/key_indicator/KeyIndicator.gd" id="2_4cu4p"]
 
 [node name="KeyIndicator" type="PanelContainer" unique_id=1109596630]
 custom_minimum_size = Vector2(44, 44)
 theme = ExtResource("1_nhkcn")
 theme_type_variation = &"KeyIndicator_Square"
+script = ExtResource("2_4cu4p")
 
 [node name="Label" type="Label" parent="." unique_id=155439600]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26

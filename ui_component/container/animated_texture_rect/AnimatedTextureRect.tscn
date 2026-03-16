@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dutjec5semaaa"]
+
+[ext_resource type="Script" uid="uid://dmhsgqh7stuwj" path="res://ui_component/container/animated_texture_rect/AnimatedTextureRect.gd" id="1_gqrnw"]
+
+[node name="AnimatedTextureRect" type="TextureRect" unique_id=2106045473]
+stretch_mode = 4
+script = ExtResource("1_gqrnw")

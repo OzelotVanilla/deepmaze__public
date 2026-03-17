@@ -9,3 +9,6 @@ extends Equipment
 
 ## Disable the ability, restore the status.
 @abstract func disable() -> Error;
+
+## Path for ability's animation.
+var animation_path: StringName

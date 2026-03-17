@@ -3,6 +3,7 @@
 [ext_resource type="FontFile" uid="uid://dbiw5inqoyie" path="res://assets/fonts/ark-pixel-12px-monospaced-latin.otf" id="1_d3863"]
 [ext_resource type="StyleBox" uid="uid://dmen8ah2dnmen" path="res://ui_component/button/dotted_bg_button/DottedBgButton_focus_stylebox.tres" id="1_m0v85"]
 [ext_resource type="StyleBox" uid="uid://btruy1do88kiq" path="res://ui_component/button/dotted_bg_button/DottedBgButton_normal_stylebox.tres" id="2_d3863"]
+[ext_resource type="StyleBox" uid="uid://ba4nbkoh03trx" path="res://ui_component/button/dotted_bg_button/DottedBgButton_disabled_stylebox.tres" id="2_yuqhk"]
 
 [resource]
 DottedBgButton_Focus/base_type = &"Button"
@@ -13,6 +14,7 @@ DottedBgButton_Focus/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
 DottedBgButton_Focus/colors/font_pressed_color = Color(0, 0, 0, 1)
 DottedBgButton_Focus/font_sizes/font_size = 32
 DottedBgButton_Focus/fonts/font = ExtResource("1_d3863")
+DottedBgButton_Focus/styles/disabled = ExtResource("2_yuqhk")
 DottedBgButton_Focus/styles/focus = ExtResource("1_m0v85")
 DottedBgButton_Focus/styles/hover = ExtResource("1_m0v85")
 DottedBgButton_Focus/styles/normal = ExtResource("2_d3863")

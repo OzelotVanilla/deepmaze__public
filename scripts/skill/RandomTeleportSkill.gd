@@ -1,5 +1,5 @@
 class_name RandomTeleportSkill
-extends Skill
+extends ActiveSkill
 
 
 ## Return [constant Error.ERR_UNAVAILABLE] if the skill is not available.

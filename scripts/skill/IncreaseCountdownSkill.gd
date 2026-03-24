@@ -1,5 +1,5 @@
 class_name IncreaseCountdownSkill
-extends Skill
+extends ActiveSkill
 
 
 var amount_of_increase: float = 5.0

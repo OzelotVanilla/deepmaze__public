@@ -1,16 +1,13 @@
 @abstract
-class_name Skill
-extends Equipment
-## Abstract class for all skill, which has limited number to be used.
+class_name ActiveSkill
+extends Skill
+## Active skill, have maximum count for using
 
 
 ## The remaining time that you can use this skill.[br][br]
 ##
 ## Should be greater than 0 for the skill to activate.
 var remain_count: int = 3
-
-## Whether the skill is being active now.
-var is_active_now: bool = false
 
 ## Max count of this skill.
 var max_count: int = 3
@@ -21,13 +18,9 @@ var only_one_time_per_level: bool = false
 ## Whether the skill is used in current level (should be refreshed at next level).
 var had_used_in_this_level: bool = false
 
-## See if the skill could still be used in one level.[br][br]
-##
-## Check remain count and if the skill could only be used one time in the same level.
-var could_be_used_in_this_level: bool:
-    get:
-        return not (self.only_one_time_per_level and self.had_used_in_this_level) \
-           and self.remain_count > 0
+## Whether the skill is being active now.
+var is_active_now: bool = false
+
 
 ## Activate the skill.[br][br]
 ##

@@ -1,5 +1,5 @@
 class_name PauseCountdownSkill
-extends Skill
+extends ActiveSkill
 
 
 ## How long can this skill pause the

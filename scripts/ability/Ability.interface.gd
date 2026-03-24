@@ -1,7 +1,13 @@
 @abstract
 class_name Ability
 extends Equipment
-## Base class for all ability, which is effective as long as it is equipped.
+## Base class for all ability, which is owned by ball and equipped in long button
+##
+## Could be active or passive.
+
+
+## Path for ability's animation.
+var animation_path: StringName
 
 
 ## Constant for all available ability.
@@ -35,17 +41,6 @@ static var ability_animation_path__dict: Dictionary[MazeGame.BallType, StringNam
             result[k] = Ability._stored__res_path_info[k]["animation_path"]
 
         return result
-
-
-## Enable the ability, so the player will benefit from that.
-@abstract func enable() -> Error;
-
-## Disable the ability, restore the status.
-@abstract func disable() -> Error;
-
-## Path for ability's animation.
-var animation_path: StringName
-
 
 ## Update const of ability's resource path.
 static func updateResourcePathInfo():

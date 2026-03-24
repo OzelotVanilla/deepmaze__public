@@ -1,12 +1,12 @@
 class_name WallClipAbility
-extends Ability
+extends ActiveAbility
 
 
 ## Return [constant Error.ERR_QUERY_FAILED] if the ball is not attaching to the wall.
 ## Return [constant Error.Error.ERR_ALREADY_EXISTS]
 ##  if wall-clip target is the same as ball's position.
 ## Return [constant Error.ERR_DOES_NOT_EXIST] if wall-clip target is not a path.
-func enable() -> Error:
+func activate() -> Error:
     var ball_ref := self.game_ref.ball_ref
     var maze_ref := self.game_ref.maze_ref
 
@@ -46,13 +46,17 @@ func enable() -> Error:
         maze_ref.map_to_local(coord_of_wall_clip_target)
     )
     ball_ref.moveTo(ball_new_global_position)
+    self.finished.emit()
 
     return Error.OK
 
-func disable() -> Error:
+func deactivate() -> Error:
     # No need to disable.
     return Error.OK
 
 func _init() -> void:
     self.icon_path = "res://assets/vector_graphics/ball_ability/wall_clip.svg"
     self.animation_path = "res://assets/animation/ball_ability/wall_clip.tres"
+
+    # # Active Ability
+    self.cooldown_time = 30

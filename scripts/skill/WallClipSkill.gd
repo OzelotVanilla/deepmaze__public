@@ -1,5 +1,5 @@
 class_name WallClipSkill
-extends Skill
+extends ActiveSkill
 ## Let player clip the wall which is attached to
 
 

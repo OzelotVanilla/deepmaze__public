@@ -11,6 +11,8 @@ extends BaseGameScene
 
 @onready var picture_box__ref: CollectedItemShowcase = $Margin/OutVBox/MainHBox/VBox/PictureBox
 
+@onready var back_button__ref: DottedBgButton = $Margin/OutVBox/TopHBox/BackButton
+
 
 func _ready() -> void:
     super()
@@ -82,9 +84,11 @@ func __onReady__():
             self.on_CollectedItemVBox_row_focus_entered
         )
 
-    # Select first item if exists.
+    # Select first item if exists. If no item, focus the "back" button.
     if self.item_vbox__ref.first_row__ref != null:
         self.item_vbox__ref.first_row__ref.grab_focus()
+    else:
+        self.back_button__ref.grab_focus()
 
     self.request_ready()
 

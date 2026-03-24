@@ -52,8 +52,8 @@ Recommended files to read first
    and final in-game ball behaviour are handled in separate layers.
 * Ability/Skill system design:
   Start with [`Equipment`](./scripts/equipment/Equipment.gd),
-   [`Ability`](./scripts/ability/Ability.gd),
-   and [`Skill`](./scripts/skill/Skill.gd).  
+   [`Ability`](./scripts/ability/Ability.interface.gd),
+   and [`Skill`](./scripts/skill/Skill.interface.gd).
   These files show how reusable gameplay effects are organised
    around a shared abstraction, while keeping abilities and skills
    as separate gameplay concepts.

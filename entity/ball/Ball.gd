@@ -1,5 +1,7 @@
 class_name Ball
 extends CharacterBody2D
+
+signal hit_wall
 ## Ball that rolling in the maze
 
 
@@ -51,6 +53,7 @@ func __physicsProcess__():
 
     var had_collide := self.move_and_slide()
     if had_collide:
+        hit_wall.emit()
         var normal := self.get_last_slide_collision().get_normal()
         BallInputController.velocity = \
             BallInputController.velocity.bounce(normal) * self.bounce_factor

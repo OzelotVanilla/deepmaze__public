@@ -1,13 +1,20 @@
+@tool
 class_name SceneRoot
 extends Control
 ## The root node of the game
 ##
-## Method start with "switch" will switch to an existed scene.
+## Method start with "pop"/"push"/"change" will switch to an existed scene.[br][br]
+##
+## Video playback is available, while the scene tree could be set to paused.
 
 
 @onready var scene_stack__ref: Control = $SceneStack
 
-@onready var audio_manager: AudioManager = $AudioManager
+## Will be showed only if the video is played.
+@onready var video_stream_player__ref: SceneRootVideoStreamPlayer = \
+    $VideoLayer/SceneRootVideoStreamPlayer
+
+@onready var opening_player__ref: OpeningPlayer = $VideoLayer/OpeningPlayer
 
 
 func _ready() -> void: self.__onReady__()
@@ -24,17 +31,9 @@ const scene__dict: Dictionary[StringName, PackedScene] = {
     "relic": preload("res://scenes/relic/GameRelicPage.tscn")
 }
 
-
-### Scene to be shown on the screen.
-#var current_scene: Control:
-    #set(new_scene):
-        ### The `CurrentScene` node in tree that display the scene.
-        #var node = $CurrentScene
-        ## Do not queue free here, maybe the scene is just stored.
-        #for c in node.get_children(): node.remove_child(c)
-        #node.add_child(new_scene)
-#
-        #current_scene = new_scene
+## Preloads all video. Convert them to Ogg Theora format first.
+const video__dict: Dictionary[StringName, VideoStreamTheora] = {
+}
 
 
 ## Push a new scene into the stack.
@@ -82,6 +81,15 @@ func changeScene(scene_name: StringName, ...postInit__args):
 
     self.scene_stack__ref.add_child(scene)
 
+## Play a video by providing its name in [member video__dict].
+func playVideo(video_name: StringName):
+    if not self.video__dict.has(video_name):
+        printerr("Cannot find video with name `", video_name, "`.")
+        return
+
+    var video_stream := self.video__dict[video_name]
+    self.video_stream_player__ref.playVideoStream(video_stream)
+
 ## Will be called when config changed.
 func applyConfig(on_what: GameConfig.ChangingCategory):
     match on_what:
@@ -106,9 +114,9 @@ func applyConfig(on_what: GameConfig.ChangingCategory):
             Input.action_release("move_up");   Input.action_release("move_down");
 
         GameConfig.ChangingCategory.volume:
-            self.audio_manager.master_volume = config_manager.config.master_volume
-            self.audio_manager.bgm_volume = config_manager.config.music_volume
-            self.audio_manager.sfx_volume = config_manager.config.sfx_volume
+            audio_manager.master_volume = config_manager.config.master_volume
+            audio_manager.bgm_volume = config_manager.config.music_volume
+            audio_manager.sfx_volume = config_manager.config.sfx_volume
 
         GameConfig.ChangingCategory.language:
             var locale: String
@@ -125,19 +133,29 @@ static func isFirstTimeRun():
        and not save_manager.isLocalSaveFileExist()
 
 func __onReady__():
+    # Do not init if opened in editor.
+    if Engine.is_editor_hint():
+        return
+
+    var can_skip_opening_video: bool
     # Test if it is first time enter this game.
     if SceneRoot.isFirstTimeRun():
         config_manager.createConfig()
+        can_skip_opening_video = false
     else:
         config_manager.loadFromLocalFile() # Will auto create default config, if not exist.
         if save_manager.isLocalSaveFileExist():
             save_manager.loadFromLocalFile() # Will not create a new save.
+        can_skip_opening_video = true
 
     config_manager.config_changed.connect(self.applyConfig)
     # Trigger config application on init.
     config_manager.config_changed.emit(GameConfig.ChangingCategory.display)
     config_manager.config_changed.emit(GameConfig.ChangingCategory.volume)
     config_manager.config_changed.emit(GameConfig.ChangingCategory.language)
+
+    # Play opening video.
+    await self.opening_player__ref.playOpeningVideo(can_skip_opening_video)
 
     self.pushScene("press_any_key_title")
 

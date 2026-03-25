@@ -4,6 +4,9 @@
 [ext_resource type="Script" uid="uid://ctkplhbb8806x" path="res://scripts/game_system/input/InputManager.gd" id="2_wvhe5"]
 [ext_resource type="Shader" uid="uid://d0preoe28o5jc" path="res://assets/materials/maze_crt_screen_mask/crt_screen_material.gdshader" id="3_e5gpt"]
 [ext_resource type="PackedScene" uid="uid://cj0f0ndpfv67j" path="res://scripts/game_system/audio/AudioManager.tscn" id="3_h1fcc"]
+[ext_resource type="VideoStream" uid="uid://de4bfgsi0g505" path="res://assets/video/opening.ogv" id="4_xu0vn"]
+[ext_resource type="Script" uid="uid://dh7ue3oeeqwxw" path="res://scenes/root/SceneRootVideoStreamPlayer.gd" id="5_kl4sc"]
+[ext_resource type="Script" uid="uid://gqxxv60gxltb" path="res://scenes/root/OpeningPlayer.gd" id="6_1aof3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_trlxp"]
 shader = ExtResource("3_e5gpt")
@@ -44,6 +47,30 @@ grow_vertical = 2
 script = ExtResource("2_wvhe5")
 
 [node name="AudioManager" parent="." unique_id=1853305529 instance=ExtResource("3_h1fcc")]
+
+[node name="VideoLayer" type="CanvasLayer" parent="." unique_id=1944450027]
+
+[node name="SceneRootVideoStreamPlayer" type="VideoStreamPlayer" parent="VideoLayer" unique_id=433495985]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("4_xu0vn")
+script = ExtResource("5_kl4sc")
+
+[node name="OpeningPlayer" type="VideoStreamPlayer" parent="VideoLayer" unique_id=99780469]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("4_xu0vn")
+script = ExtResource("6_1aof3")
+skip__after = 3.0
+skip__hold_time = 3.0
 
 [node name="CRTLayer" type="CanvasLayer" parent="." unique_id=2123293185]
 

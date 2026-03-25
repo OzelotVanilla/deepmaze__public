@@ -18,6 +18,9 @@ var width: int
 
 var height: int
 
+## The A* grid for the maze.
+var astar_grid: AStarGrid2D
+
 ## Vector2i(x_coord, y_coord), unit is [code]tile[/code], starts with 0.
 var exit_gate__coord := Vector2i.ZERO
 
@@ -52,6 +55,18 @@ func updateInternals():
     var used_rect = self.get_used_rect()
     self.width = used_rect.size.x
     self.height = used_rect.size.y
+
+    self.astar_grid = AStarGrid2D.new()
+    self.astar_grid.region = Rect2i(0, 0, width, height)
+    self.astar_grid.diagonal_mode = AStarGrid2D.DiagonalMode.DIAGONAL_MODE_NEVER
+    self.astar_grid.update()
+
+    for x in range(self.width):
+        for y in range(self.height):
+            # Set if solid.
+            var coord := Vector2i(x, y)
+            if self.get_cell_atlas_coords(coord) == Maze.black_tile__atlas_coord:
+                self.astar_grid.set_point_solid(coord)
 
 func _init() -> void:
     self.tile_set = preload("res://assets/tilesets/maze/monocolour_tileset.tres")

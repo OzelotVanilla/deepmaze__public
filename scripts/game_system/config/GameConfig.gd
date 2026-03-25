@@ -46,16 +46,16 @@ signal config_changed(on_what: ChangingCategory)
         self.config_changed.emit(ChangingCategory.volume)
 
 ## Set-ed by slider.
-@export_range(0, 100) var music_volume: int = 100:
+@export_range(0, 100) var gameplay_volume: int = 100:
     set(new_value):
-        music_volume = new_value
+        gameplay_volume = new_value
         self.emit_changed()
         self.config_changed.emit(ChangingCategory.volume)
 
 ## Set-ed by slider.
-@export_range(0, 100) var sfx_volume: int = 100:
+@export_range(0, 100) var ui_volume: int = 100:
     set(new_value):
-        sfx_volume = new_value
+        ui_volume = new_value
         self.emit_changed()
         self.config_changed.emit(ChangingCategory.volume)
 

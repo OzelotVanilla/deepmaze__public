@@ -1,11 +1,38 @@
 [gd_scene format=3 uid="uid://cj0f0ndpfv67j"]
 
 [ext_resource type="Script" uid="uid://dnay6yo2e2njs" path="res://scripts/game_system/audio/AudioManager.gd" id="1_t4huv"]
+[ext_resource type="Script" uid="uid://cfu1qrrk2asj1" path="res://scripts/game_system/audio/gameplay/FunctionalGameSound.gd" id="2_xk022"]
+[ext_resource type="Script" uid="uid://dw2ji5u613d65" path="res://scripts/game_system/audio/gameplay/EntertainingGameSound.gd" id="3_8jqgt"]
+[ext_resource type="Script" uid="uid://big07nt7sq86c" path="res://scripts/game_system/audio/gameplay/DistanceToExitAudioPlayer.gd" id="3_do8e0"]
+[ext_resource type="Script" uid="uid://c5pe66sw50n6b" path="res://scripts/game_system/audio/gameplay/DistanceToCollectableAudioPlayer.gd" id="4_clgs6"]
 
 [node name="AudioManager" type="Node" unique_id=1853305529]
 script = ExtResource("1_t4huv")
 
-[node name="BGMPlayer" type="AudioStreamPlayer" parent="." unique_id=619468683]
-bus = &"BGM"
+[node name="GameplaySound" type="Node" parent="." unique_id=1987643091]
 
-[node name="SFXContainer" type="Node" parent="." unique_id=1131058880]
+[node name="FunctionalGameSound" type="Node" parent="GameplaySound" unique_id=278728771]
+script = ExtResource("2_xk022")
+
+[node name="DistanceToExitAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound" unique_id=1580149237]
+bus = &"DistanceToExitAudio"
+script = ExtResource("3_do8e0")
+
+[node name="DistanceToRelicAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound" unique_id=1644138930]
+bus = &"DistanceToRelicAudioPlayer"
+script = ExtResource("4_clgs6")
+
+[node name="DistanceToQuarterAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound" unique_id=1040704981]
+bus = &"DistanceToQuarterAudioPlayer"
+script = ExtResource("4_clgs6")
+
+[node name="EntertainingGameSound" type="Node" parent="GameplaySound" unique_id=1089287018]
+script = ExtResource("3_8jqgt")
+
+[node name="BallHitWallAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/EntertainingGameSound" unique_id=558054090]
+bus = &"EntertainingGameSound"
+
+[node name="BallRollingAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/EntertainingGameSound" unique_id=1330373841]
+bus = &"EntertainingGameSound"
+
+[node name="UISound" type="Node" parent="." unique_id=1131058880]

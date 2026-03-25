@@ -28,14 +28,14 @@ metadata/_custom_type_script = "uid://dsvbch0868r6u"
 
 [sub_resource type="Resource" id="Resource_rpkk4"]
 script = ExtResource("7_04d4p")
-label_text = "config.music_volume"
-config_name = "music_volume"
+label_text = "config.gameplay_volume"
+config_name = "gameplay_volume"
 metadata/_custom_type_script = "uid://dsvbch0868r6u"
 
 [sub_resource type="Resource" id="Resource_14wlb"]
 script = ExtResource("7_04d4p")
-label_text = "config.sfx_volume"
-config_name = "sfx_volume"
+label_text = "config.ui_volume"
+config_name = "ui_volume"
 metadata/_custom_type_script = "uid://dsvbch0868r6u"
 
 [sub_resource type="Resource" id="Resource_lxh7l"]
@@ -113,8 +113,8 @@ layout_mode = 2
 [node name="MasterVolumeOption" parent="VBox" unique_id=1134806320 instance=ExtResource("3_dyuab")]
 layout_mode = 2
 focus_neighbor_top = NodePath("../FullscreenOption")
-focus_neighbor_bottom = NodePath("../MusicVolumeOption")
-focus_next = NodePath("../MusicVolumeOption")
+focus_neighbor_bottom = NodePath("../GameplayVolumeOption")
+focus_next = NodePath("../GameplayVolumeOption")
 focus_previous = NodePath("../FullscreenOption")
 param = SubResource("Resource_lwotb")
 generated_label_text = "config.master_volume"
@@ -123,27 +123,27 @@ generated_label_text = "config.master_volume"
 custom_minimum_size = Vector2(0, 18)
 layout_mode = 2
 
-[node name="MusicVolumeOption" parent="VBox" unique_id=959823434 instance=ExtResource("3_dyuab")]
+[node name="GameplayVolumeOption" parent="VBox" unique_id=959823434 instance=ExtResource("3_dyuab")]
 layout_mode = 2
 focus_neighbor_top = NodePath("../MasterVolumeOption")
-focus_neighbor_bottom = NodePath("../SFXVolumeOption")
-focus_next = NodePath("../SFXVolumeOption")
+focus_neighbor_bottom = NodePath("../UIVolumeOption")
+focus_next = NodePath("../UIVolumeOption")
 focus_previous = NodePath("../MasterVolumeOption")
 param = SubResource("Resource_rpkk4")
-generated_label_text = "config.music_volume"
+generated_label_text = "config.gameplay_volume"
 
 [node name="FixedSpacer_6" type="Control" parent="VBox" unique_id=1265087713]
 custom_minimum_size = Vector2(0, 18)
 layout_mode = 2
 
-[node name="SFXVolumeOption" parent="VBox" unique_id=244650329 instance=ExtResource("3_dyuab")]
+[node name="UIVolumeOption" parent="VBox" unique_id=244650329 instance=ExtResource("3_dyuab")]
 layout_mode = 2
-focus_neighbor_top = NodePath("../MusicVolumeOption")
+focus_neighbor_top = NodePath("../GameplayVolumeOption")
 focus_neighbor_bottom = NodePath("../LanguagesOption")
 focus_next = NodePath("../LanguagesOption")
-focus_previous = NodePath("../MusicVolumeOption")
+focus_previous = NodePath("../GameplayVolumeOption")
 param = SubResource("Resource_14wlb")
-generated_label_text = "config.sfx_volume"
+generated_label_text = "config.ui_volume"
 
 [node name="FixedSpacer_7" type="Control" parent="VBox" unique_id=1988945918]
 custom_minimum_size = Vector2(0, 18)
@@ -151,10 +151,10 @@ layout_mode = 2
 
 [node name="LanguagesOption" parent="VBox" unique_id=1764511375 instance=ExtResource("3_dyuab")]
 layout_mode = 2
-focus_neighbor_top = NodePath("../SFXVolumeOption")
+focus_neighbor_top = NodePath("../UIVolumeOption")
 focus_neighbor_bottom = NodePath("../ResolutionOption")
 focus_next = NodePath("../ResolutionOption")
-focus_previous = NodePath("../SFXVolumeOption")
+focus_previous = NodePath("../UIVolumeOption")
 param = SubResource("Resource_lxh7l")
 generated_label_text = "config.languages"
 

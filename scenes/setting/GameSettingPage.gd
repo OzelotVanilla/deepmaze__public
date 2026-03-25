@@ -8,9 +8,9 @@ extends BaseGameScene
 
 @onready var master_volume_option__ref: SettingOptionRow = $VBox/MasterVolumeOption
 
-@onready var music_volume_option__ref: SettingOptionRow = $VBox/MusicVolumeOption
+@onready var gameplay_volume_option__ref: SettingOptionRow = $VBox/GameplayVolumeOption
 
-@onready var sfx_volume_option__ref: SettingOptionRow = $VBox/SFXVolumeOption
+@onready var ui_volume_option__ref: SettingOptionRow = $VBox/UIVolumeOption
 
 @onready var language_option__ref: SettingOptionRow = $VBox/LanguagesOption
 
@@ -31,8 +31,8 @@ func loadConfigToUI():
     self.resolution_option__ref.widget.setWidgetValue(config_manager.config.resolution)
     self.fullscreen_option__ref.widget.setWidgetValue(config_manager.config.fullscreen)
     self.master_volume_option__ref.widget.setWidgetValue(config_manager.config.master_volume)
-    self.music_volume_option__ref.widget.setWidgetValue(config_manager.config.music_volume)
-    self.sfx_volume_option__ref.widget.setWidgetValue(config_manager.config.sfx_volume)
+    self.gameplay_volume_option__ref.widget.setWidgetValue(config_manager.config.gameplay_volume)
+    self.ui_volume_option__ref.widget.setWidgetValue(config_manager.config.ui_volume)
     self.language_option__ref.widget.setWidgetValue(config_manager.config.languages)
 
 ## Make [signal SettingWidget.changed] changes [member ConfigManager.config].
@@ -49,13 +49,13 @@ func connectWidgetChangeToConfigChange():
     if not self.master_volume_option__ref.widget.changed.is_connected(self.setMasterVolume):
         self.master_volume_option__ref.widget.changed.connect(self.setMasterVolume)
 
-    # Music Volume
-    if not self.music_volume_option__ref.widget.changed.is_connected(self.setMusicVolume):
-        self.music_volume_option__ref.widget.changed.connect(self.setMusicVolume)
+    # Gameplay Volume
+    if not self.gameplay_volume_option__ref.widget.changed.is_connected(self.setGameplayVolume):
+        self.gameplay_volume_option__ref.widget.changed.connect(self.setGameplayVolume)
 
-    # SFX Volume
-    if not self.sfx_volume_option__ref.widget.changed.is_connected(self.setSFXVolume):
-        self.sfx_volume_option__ref.widget.changed.connect(self.setSFXVolume)
+    # UI Volume
+    if not self.ui_volume_option__ref.widget.changed.is_connected(self.setUIVolume):
+        self.ui_volume_option__ref.widget.changed.connect(self.setUIVolume)
 
     # Language
     if not self.language_option__ref.widget.changed.is_connected(self.setLanguage):
@@ -70,11 +70,11 @@ func setFullscreen(whether_fullscreen: bool):
 func setMasterVolume(new_volume: int):
     config_manager.config.master_volume = new_volume
 
-func setMusicVolume(new_volume: int):
-    config_manager.config.music_volume = new_volume
+func setGameplayVolume(new_volume: int):
+    config_manager.config.gameplay_volume = new_volume
 
-func setSFXVolume(new_volume: int):
-    config_manager.config.sfx_volume = new_volume
+func setUIVolume(new_volume: int):
+    config_manager.config.ui_volume = new_volume
 
 func setLanguage(new_language: String):
     config_manager.config.languages = new_language

@@ -7,8 +7,6 @@ extends Control
 
 @onready var scene_stack__ref: Control = $SceneStack
 
-@onready var audio_manager: AudioManager = $AudioManager
-
 
 func _ready() -> void: self.__onReady__()
 
@@ -106,9 +104,9 @@ func applyConfig(on_what: GameConfig.ChangingCategory):
             Input.action_release("move_up");   Input.action_release("move_down");
 
         GameConfig.ChangingCategory.volume:
-            self.audio_manager.master_volume = config_manager.config.master_volume
-            self.audio_manager.bgm_volume = config_manager.config.music_volume
-            self.audio_manager.sfx_volume = config_manager.config.sfx_volume
+            audio_manager.master_volume = config_manager.config.master_volume
+            audio_manager.gameplay_volume = config_manager.config.gameplay_volume
+            audio_manager.ui_volume = config_manager.config.ui_volume
 
         GameConfig.ChangingCategory.language:
             var locale: String

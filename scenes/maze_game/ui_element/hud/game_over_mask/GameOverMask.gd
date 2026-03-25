@@ -4,6 +4,14 @@ extends PanelContainer
 
 @onready var use_quarter_button__ref: DottedBgButton = $ContinuePanel/VBox/UseQuarterButton
 
+@onready var give_up_button__ref: DottedBgButton = $ContinuePanel/VBox/GiveUpButton
+
+@onready var log__confirm_button__ref: DottedBgButton = $LogPanel/VBox/ConfirmButton
+
+@onready var quarter__claim_button__ref: DottedBgButton = $QuarterPanel/VBox/ClaimButton
+
+@onready var relic__claim_button__ref: DottedBgButton = $RelicPanel/VBox/ClaimButton
+
 @onready var log_text_box__ref: ArrowIndicatorTextBox = $LogPanel/VBox/ArrowedLogBox
 
 @onready var quarter_cost_label__ref: Label = \
@@ -39,15 +47,20 @@ func useQuarterToRevive():
 
 func proceedToWhetherContinue():
     # If not enough quarter, do not show "revive" option.
+    # And give focus.
     if save_manager.save.currency.quarter_count < self.game__ref.revive_quarter_cost:
+        # Cannot revive.
         self.use_quarter_button__ref.hide()
+        self.give_up_button__ref.grab_focus.call_deferred()
     else:
+        # Can revive.
         self.quarter_cost_label__ref.text = str(
             "X ", self.game__ref.revive_quarter_cost
         )
         self.use_quarter_button__ref.show()
+        self.use_quarter_button__ref.grab_focus.call_deferred()
 
-    # Panel Visibility.
+    # # Panel Visibility.
     self.continue_panel__ref.show()
     self.log_panel__ref.hide()
     self.quarter_panel__ref.hide()
@@ -59,43 +72,50 @@ func proceedToLogShowing():
     var available_exploration_logs: Array[int] = \
         save_manager.getArrayOfNotObtainedExplorationLogID()
 
+    # # If no log, proceed to next panel, or give focus to claim button.
     if available_exploration_logs.size() <= 0 \
        or not self.game__ref.shouldGenerateExplorationLog():
         self.proceedToQuarterShowing.call_deferred()
         return
+    else:
+        self.log__confirm_button__ref.grab_focus.call_deferred()
 
     var new_log__id := self.game__ref.generateNewExplorationLog()
 
     self.log_text_box__ref.text = tr(ExplorationLogTextEntry.getPOIDForText(new_log__id))
 
-    # Panel visibility.
+    # # Panel visibility.
     self.continue_panel__ref.hide()
     self.log_panel__ref.show()
     self.quarter_panel__ref.hide()
     self.relic_panel__ref.hide()
 
 func proceedToQuarterShowing():
-    # Need to check if this panel should be showed.
+    # # If no quater, proceed to next panel, or give focus to claim button.
     if save_manager.save.game_state.buffered_diff__currency.quarter_count <= 0:
         self.proceedToRelicShowing.call_deferred()
         return
+    else:
+        self.quarter__claim_button__ref.grab_focus.call_deferred()
 
-    # Show the number.
+    # # Show the number.
     self.quarter_count_label__ref.text = str(
         save_manager.save.game_state.buffered_diff__currency.quarter_count
     )
 
-    # Panel visibility.
+    # # Panel visibility.
     self.continue_panel__ref.hide()
     self.log_panel__ref.hide()
     self.quarter_panel__ref.show()
     self.relic_panel__ref.hide()
 
 func proceedToRelicShowing():
-    # Need to check if this panel should be showed.
+    # # If no relic, go to the menu page, or give focus to claim button.
     if save_manager.save.game_state.buffered_diff__collected_item.relic.size() <= 0:
         self.goToMenuPage.call_deferred()
         return
+    else:
+        self.relic__claim_button__ref.grab_focus.call_deferred()
 
     # Show the number.
     self.relic_count_label__ref.text = str(
@@ -108,6 +128,7 @@ func proceedToRelicShowing():
     self.quarter_panel__ref.hide()
     self.relic_panel__ref.show()
 
+## Go to the menu page after player decide to not revive.
 func goToMenuPage():
     # Save what player had got.
     self.game__ref.saveFinishedGame()

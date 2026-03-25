@@ -45,7 +45,7 @@ func setGameRemainingTime(time: float):
 func handleGamePause():
     # # Remained time is set-ed by outer script. No need to pause here.
     # # Set recursive behaviour.
-    
+
     self.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED
     self.focus_behavior_recursive = Control.FOCUS_BEHAVIOR_DISABLED
 

@@ -14,6 +14,11 @@ var velocity_factor: float = 1.0
 ## Whether the input should be reversed.
 var should_reverse_input := false
 
+## Intension of moving, based on the coordinate in game.[br]
+## Calculated and normalised from [member BallInputController.input_move_intension]
+##  and [member should_reverse_input].
+var ball_move_intension: Vector2
+
 ## Type of the ball.
 var type: MazeGame.BallType = MazeGame.BallType.wall_clip:
     set(new_type):
@@ -51,8 +56,13 @@ func __onProcess__():
 
 func __physicsProcess__():
     self.velocity = BallInputController.velocity * self.velocity_factor
+    self.ball_move_intension = BallInputController.input_move_intension
+
+    # # Special handling if the input should be altered and then apply.
     if self.should_reverse_input:
         self.velocity *= -1
+        self.ball_move_intension *= -1
+
     var had_collide := self.move_and_slide()
     if had_collide:
         var normal := self.get_last_slide_collision().get_normal()
@@ -90,10 +100,10 @@ func stopSendingCoord():
 
 ## Get the coord offset of ball's intension of moving, in context of a maze.[br][br]
 ##
-## Example: moving to left-bottom corner will be [code Vector2i(1, 1)],
+## Example: moving to left-bottom corner will be [code]Vector2i(1, 1)[/code],
 ##  since array representing a maze grows to the bottom and to the right.
 func getMazeCoordOffset() -> Vector2i:
-    var direction := BallInputController.move_intension
+    var direction := self.ball_move_intension
     const threshold_1 := sqrt(0.2)
     const threshold_2 := sqrt(0.5)
 

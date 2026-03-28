@@ -15,11 +15,16 @@ enum BallInputSource
 ## Will be updated if the [BallInputController] is enabled by [method enable].
 static var move_vector: Vector2 = Vector2.ZERO
 
-## Normalised adjusted (e.g., special level) ball moving intention.[br][br]
+## Normalised adjusted (e.g., special level) ball moving intention
+##  retrieved from input device, based on physical input.[br][br]
 ##
 ## Equals to [member move_vector] if using gylo or controller,
-##  calculated along with velocity if using keyboard.
-static var move_intension: Vector2 = Vector2.ZERO
+##  calculated along with velocity if using keyboard.[br]
+## Do not confuse with [member Ball.ball_move_intension],
+##  which stands for the intension of ball moving in the game.
+## Factor such as special level type, could results in different
+##  [code]input_move_intension[/code] and [code]ball_move_intension[/code].
+static var input_move_intension: Vector2 = Vector2.ZERO
 
 ## Calculated velocity for the ball.
 static var velocity: Vector2 = Vector2.ZERO
@@ -74,12 +79,12 @@ func __onProcess__(delta: float):
             BallInputController.move_vector = new_move_vector
 
             if InputManager.input_source == InputManager.InputSource.keyboard:
-                BallInputController.move_intension = BallInputController.move_intension.lerp(
+                BallInputController.input_move_intension = BallInputController.input_move_intension.lerp(
                     new_move_vector,
                     1
                 ).normalized()
             else:
-                BallInputController.move_intension = new_move_vector.normalized()
+                BallInputController.input_move_intension = new_move_vector.normalized()
 
             BallInputController.velocity = \
                 BallInputController.velocity.lerp(

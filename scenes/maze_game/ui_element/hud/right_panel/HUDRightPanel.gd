@@ -27,3 +27,27 @@ func setGameRemainingTime(time: float):
     self.second__label.text = str(mini(99, int(fmod(time, 60)))).pad_zeros(2)
     var number_after_decimal_point := time - int(time)
     self.millisecond__label.text = str(number_after_decimal_point).pad_decimals(2).substr(2)
+
+func handleGamePause():
+    # # Remained time is set-ed by outer script. No need to pause here.
+
+    # # Set recursive behaviour.
+    self.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED
+    self.focus_behavior_recursive = Control.FOCUS_BEHAVIOR_DISABLED
+
+func handleGameResume():
+    # # Remained time is set-ed by outer script. No need to resume here.
+
+    # # Set recursive behaviour.
+    self.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_INHERITED
+    self.focus_behavior_recursive = Control.FOCUS_BEHAVIOR_INHERITED
+
+func handleGameDie():
+    # # Set recursive behaviour.
+    self.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED
+    self.focus_behavior_recursive = Control.FOCUS_BEHAVIOR_DISABLED
+
+func handleGameRevive():
+    # # Set recursive behaviour.
+    self.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_INHERITED
+    self.focus_behavior_recursive = Control.FOCUS_BEHAVIOR_INHERITED

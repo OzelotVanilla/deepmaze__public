@@ -33,26 +33,12 @@ var ref__maze_game: MazeGame
 var ref__dark_mask_shader_material: ShaderMaterial
 
 
-func _process(delta: float) -> void: self.__onProcess__()
 func _physics_process(delta: float) -> void: self.__physicsProcess__()
 
 
 func _init() -> void:
     self.visible = false
     self.visibility_changed.connect(self.__onVisibilityChange__.bind(self.visible))
-
-func __onProcess__():
-    match self.ref__maze_game.special_level_type:
-        MazeGame.SpecialLevel.dark__le_petit_poucet:
-            self.ref__maze_game.player_trail_canvas.drawTrailAt(
-                self.global_position
-            )
-
-        MazeGame.SpecialLevel.dark__the_haunter_of_the_dark:
-            self.ref__dark_mask_shader_material.set_shader_parameter(
-                "light_position",
-                self.position
-            )
 
 func __physicsProcess__():
     self.velocity = BallInputController.velocity * self.velocity_factor

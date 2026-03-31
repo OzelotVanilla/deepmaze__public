@@ -100,6 +100,11 @@ func applyConfig(on_what: GameConfig.ChangingCategory):
                 DisplayServer.WindowMode.WINDOW_MODE_WINDOWED
             )
 
+            # Need to release action,
+            #  because changing between fullscreen might let key release not handled.
+            Input.action_release("move_left"); Input.action_release("move_right");
+            Input.action_release("move_up");   Input.action_release("move_down");
+
         GameConfig.ChangingCategory.volume:
             self.audio_manager.master_volume = config_manager.config.master_volume
             self.audio_manager.bgm_volume = config_manager.config.music_volume

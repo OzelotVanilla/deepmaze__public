@@ -3,6 +3,19 @@ class_name DistanceToExitAudioPlayer
 extends AudioStreamPlayer
 
 
+## Handle-able max distance.
+## Param would not change if ball's distance to exit exceeds this value.
+var max_distance := 100
+
+@export_group("Reverb Parameters", "reverb_param__")
+
+## When the distance is 0.
+@export_range(0, 1) var reverb_param__min__room_size: float = 0
+
+## When the distance is max.
+@export_range(0, 1) var reverb_param__max__room_size: float = 0.9
+
+
 ## Constant, index of bus.
 var bus_index: int = -1
 
@@ -18,7 +31,10 @@ func _ready() -> void: self.__onReady__()
     #pass
 
 func updateDistance(distance: float):
-    pass
+    self.reverb__ref.room_size = lerp(
+        self.reverb_param__min__room_size, self.reverb_param__max__room_size,
+        distance / self.max_distance
+    )
 
 func getRefOfEffects():
     if self.bus_index < 0:

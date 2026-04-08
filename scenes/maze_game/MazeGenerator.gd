@@ -32,7 +32,7 @@ static func generate(
         map[i].fill(1)
 
     MazeGenerator.carve(map, 1, 1)
-    MazeGenerator.generateExit(map)
+    MazeGenerator.generateExit(map, exit_gate__coord)
     if should_generate_quarter:
         MazeGenerator.generateExclusiveEntities(map, 4)
     if should_generate_relic:

@@ -23,6 +23,8 @@ var listening_mode__tween_duration: float = 0.5
 @onready var ball_rolling_audio_player__ref: AudioStreamPlayer = \
     $GameplaySound/EntertainingGameSound/BallRollingAudioPlayer
 
+@onready var nav_hint_player: NavHintPlayer = $GameplaySound/FunctionalGameSound/NavHintPlayer
+
 @onready var ui_sound__ref: Node = $UISound
 
 

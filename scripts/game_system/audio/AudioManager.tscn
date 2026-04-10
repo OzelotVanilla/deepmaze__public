@@ -7,7 +7,16 @@
 [ext_resource type="Script" uid="uid://big07nt7sq86c" path="res://scripts/game_system/audio/gameplay/DistanceToExitAudioPlayer.gd" id="3_do8e0"]
 [ext_resource type="Script" uid="uid://c5pe66sw50n6b" path="res://scripts/game_system/audio/gameplay/DistanceToCollectableAudioPlayer.gd" id="4_clgs6"]
 [ext_resource type="AudioStream" uid="uid://7j3r0l6k56ri" path="res://assets/audio/gameplay/ball_rolling.ogg" id="6_01ew0"]
+[ext_resource type="AudioStream" uid="uid://don2el18ru3qb" path="res://assets/audio/gameplay/up_hint.ogg" id="6_2hyks"]
 [ext_resource type="AudioStream" uid="uid://b42dg3mrqo0r2" path="res://assets/audio/gameplay/ball_hit_wall.ogg" id="6_3cta0"]
+[ext_resource type="Script" uid="uid://e58vk2mj4vs1" path="res://scripts/game_system/audio/gameplay/NavHintPlayer.gd" id="6_nkb51"]
+[ext_resource type="AudioStream" uid="uid://bnmbxwfkpsyuw" path="res://assets/audio/gameplay/pre_up_hint.ogg" id="7_s1nge"]
+[ext_resource type="AudioStream" uid="uid://e5sbtatefj0l" path="res://assets/audio/gameplay/down_hint.ogg" id="8_7opdy"]
+[ext_resource type="AudioStream" uid="uid://gubhe3egk0qd" path="res://assets/audio/gameplay/pre_down_hint.ogg" id="9_m60c8"]
+[ext_resource type="AudioStream" uid="uid://bkkvx1c7i1rsd" path="res://assets/audio/gameplay/pre_left_hint.ogg" id="10_xq6op"]
+[ext_resource type="AudioStream" uid="uid://hi3bqyxooxkd" path="res://assets/audio/gameplay/left_hint.ogg" id="11_nkb51"]
+[ext_resource type="AudioStream" uid="uid://r4axhbctcro0" path="res://assets/audio/gameplay/pre_right_hint.ogg" id="12_e3mm3"]
+[ext_resource type="AudioStream" uid="uid://g3ri64erqx55" path="res://assets/audio/gameplay/right_hint.ogg" id="13_3qljd"]
 
 [node name="AudioManager" type="Node" unique_id=1853305529]
 script = ExtResource("1_t4huv")
@@ -30,6 +39,53 @@ script = ExtResource("4_clgs6")
 [node name="DistanceToQuarterAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound" unique_id=1040704981]
 bus = &"DistanceToQuarterAudioPlayer"
 script = ExtResource("4_clgs6")
+
+[node name="NavHintPlayer" type="Node" parent="GameplaySound/FunctionalGameSound" unique_id=533655336]
+script = ExtResource("6_nkb51")
+debug__print_when_play = true
+
+[node name="PreUpAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound/NavHintPlayer" unique_id=1126929848]
+stream = ExtResource("7_s1nge")
+max_polyphony = 4
+bus = &"NavPreHint"
+
+[node name="UpAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound/NavHintPlayer" unique_id=1870991638]
+stream = ExtResource("6_2hyks")
+max_polyphony = 4
+bus = &"NavHint"
+
+[node name="PreDownAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound/NavHintPlayer" unique_id=1207994601]
+stream = ExtResource("9_m60c8")
+max_polyphony = 4
+bus = &"NavPreHint"
+
+[node name="DownAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound/NavHintPlayer" unique_id=1756071883]
+stream = ExtResource("8_7opdy")
+max_polyphony = 4
+bus = &"NavHint"
+
+[node name="PreLeftAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound/NavHintPlayer" unique_id=967699026]
+stream = ExtResource("10_xq6op")
+max_polyphony = 4
+bus = &"NavPreHint"
+
+[node name="LeftAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound/NavHintPlayer" unique_id=916247665]
+stream = ExtResource("11_nkb51")
+max_polyphony = 4
+bus = &"NavHint"
+
+[node name="PreRightAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound/NavHintPlayer" unique_id=100197022]
+stream = ExtResource("12_e3mm3")
+max_polyphony = 4
+bus = &"NavPreHint"
+
+[node name="RightAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound/NavHintPlayer" unique_id=227019330]
+stream = ExtResource("13_3qljd")
+max_polyphony = 4
+bus = &"NavHint"
+
+[node name="WrongDirectionAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound/NavHintPlayer" unique_id=694306029]
+bus = &"NavWrongDirection"
 
 [node name="EntertainingGameSound" type="Node" parent="GameplaySound" unique_id=1089287018]
 script = ExtResource("3_8jqgt")

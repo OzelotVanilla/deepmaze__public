@@ -1,5 +1,13 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://fq3c64pvu2gq"]
 
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_b54l2"]
+resource_name = "LowPassFilter"
+cutoff_hz = 20500.0
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_b54l2"]
+resource_name = "Reverb"
+room_size = 0.0
+
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_n6vy4"]
 resource_name = "Reverb"
 
@@ -8,14 +16,6 @@ resource_name = "Reverb"
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_80pp7"]
 resource_name = "Reverb"
-
-[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_b54l2"]
-resource_name = "LowPassFilter"
-cutoff_hz = 20500.0
-
-[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_b54l2"]
-resource_name = "Reverb"
-room_size = 0.0
 
 [resource]
 bus/1/name = &"Gameplay"
@@ -46,7 +46,7 @@ bus/5/name = &"DistanceToExitAudio"
 bus/5/solo = false
 bus/5/mute = false
 bus/5/bypass_fx = false
-bus/5/volume_db = 0.0
+bus/5/volume_db = -80.0
 bus/5/send = &"FunctionalGameSound"
 bus/5/effect/0/effect = SubResource("AudioEffectReverb_n6vy4")
 bus/5/effect/0/enabled = true
@@ -66,19 +66,37 @@ bus/7/volume_db = 0.0
 bus/7/send = &"FunctionalGameSound"
 bus/7/effect/0/effect = SubResource("AudioEffectReverb_80pp7")
 bus/7/effect/0/enabled = true
-bus/8/name = &"EntertainingGameSound"
+bus/8/name = &"NavPreHint"
 bus/8/solo = false
 bus/8/mute = false
 bus/8/bypass_fx = false
-bus/8/volume_db = 0.0
-bus/8/send = &"Gameplay"
-bus/8/effect/0/effect = SubResource("AudioEffectLowPassFilter_b54l2")
-bus/8/effect/0/enabled = true
-bus/8/effect/1/effect = SubResource("AudioEffectReverb_b54l2")
-bus/8/effect/1/enabled = true
-bus/9/name = &"UIGain"
+bus/8/volume_db = -13.9794
+bus/8/send = &"FunctionalGameSound"
+bus/9/name = &"NavHint"
 bus/9/solo = false
 bus/9/mute = false
 bus/9/bypass_fx = false
-bus/9/volume_db = 0.0
-bus/9/send = &"UI"
+bus/9/volume_db = -6.0206
+bus/9/send = &"FunctionalGameSound"
+bus/10/name = &"NavWrongDirection"
+bus/10/solo = false
+bus/10/mute = false
+bus/10/bypass_fx = false
+bus/10/volume_db = -6.93575
+bus/10/send = &"FunctionalGameSound"
+bus/11/name = &"EntertainingGameSound"
+bus/11/solo = false
+bus/11/mute = false
+bus/11/bypass_fx = false
+bus/11/volume_db = 0.0
+bus/11/send = &"Gameplay"
+bus/11/effect/0/effect = SubResource("AudioEffectLowPassFilter_b54l2")
+bus/11/effect/0/enabled = true
+bus/11/effect/1/effect = SubResource("AudioEffectReverb_b54l2")
+bus/11/effect/1/enabled = true
+bus/12/name = &"UIGain"
+bus/12/solo = false
+bus/12/mute = false
+bus/12/bypass_fx = false
+bus/12/volume_db = 0.0
+bus/12/send = &"UI"

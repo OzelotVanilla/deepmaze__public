@@ -126,3 +126,19 @@ At runtime:
    then monitoring and signal connections are enabled on the following physics tick.
 * If the ball keeps moving while a rebuild is pending,
    only the latest coord is kept for the next rebuild.
+
+### Decision of SFX Playing
+
+When a ball enters navigation area in accepted side,
+ the turn direction is played.
+
+When a ball exits navigation area in accepted side,
+ do nothing.
+
+When a ball enters a navigation area from a rejected side,
+ the nav direction and error sfx is played
+ (currently, an error log should also be generated to know why this is happening).
+
+When a ball exited the check area at a rejected side,
+ regenerate the navigation path (as discussed before),
+ and the nav direction and error sfx is played.

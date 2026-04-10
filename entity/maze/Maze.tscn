@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b064mbmp1qe2i"]
+
+[ext_resource type="Script" uid="uid://bojsihthm0x8k" path="res://entity/maze/Maze.gd" id="1_bclhd"]
+
+[node name="Maze" type="TileMapLayer" unique_id=790366310]
+script = ExtResource("1_bclhd")
+
+[node name="NavHintAreaContainer" type="Node2D" parent="." unique_id=211478514]

@@ -24,6 +24,15 @@ extends Resource
 ## Game state: The maze quarter's coord when saving.
 ## [code](-1, -1)[/code] means does not exists.
 @export var quarter_coord: Vector2i = Vector2i(-1, -1)
+## Game state: The maze gate key's coord when saving.
+## [code](-1, -1)[/code] means does not exists.
+@export var gate_key_coord: Vector2i = Vector2i(-1, -1)
+## Game state: The maze fake exit's coord when saving.
+## [code](-1, -1)[/code] means does not exists.
+@export var fake_exit_coord: Vector2i = Vector2i(-1, -1)
+## Game state: Current target for navigation hint areas.
+## [code](-1, -1)[/code] means the target should be decided from the level state.
+@export var current_nav_target_coord: Vector2i = Vector2i(-1, -1)
 ## Game state: Time lefted (for [Timer]) when player exited.
 @export var time_left: float = 0.0
 ## Game state: The [member TileMapLayer.tile_map_data] of the maze when player saved.

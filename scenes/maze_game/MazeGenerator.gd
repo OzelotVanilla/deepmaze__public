@@ -23,6 +23,9 @@ enum MapData
 }
 
 
+const maze_scene = preload("res://entity/maze/Maze.tscn")
+
+
 ## Generate the whole maze, with a border (width=1) of wall.[br]
 ## [param exit_gate__coord] is the coord of last level.[br][br]
 ##
@@ -37,9 +40,10 @@ static func generate(
     should_generate_quarter: bool = false,
     should_generate_relic: bool = false
 ) -> Maze:
-    var maze := Maze.new()
+    var maze: Maze = MazeGenerator.maze_scene.instantiate()
     maze.width  = width
     maze.height = height
+    maze.last_level__exit_gate__coord = last_level_exit_gate__coord
     var map: Array[PackedInt32Array] = Array([], Variant.Type.TYPE_PACKED_INT32_ARRAY, "", null)
     # Make map filled with wall.
     map.resize(height)
@@ -329,9 +333,15 @@ static func generateExclusiveEntities(
 
 ## Generate the maze from init args.
 static func generateFromInitArgs(init_args: MazeGameInitArgs) -> Maze:
-    var maze = Maze.new()
-    maze.tile_map_data = init_args.saved_state_data.map_data
-    maze.exit_gate__coord = init_args.saved_state_data.exit_coord
+    var maze: Maze = MazeGenerator.maze_scene.instantiate()
+    var save := init_args.saved_state_data
+    maze.tile_map_data = save.map_data
+    maze.start__coord = save.player_coord
+    maze.exit_gate__coord = save.exit_coord
+    maze.relic__coord = save.relic_coord
+    maze.quarter__coord = save.quarter_coord
+    maze.gate_key__coord = save.gate_key_coord
+    maze.fake_exit__coord = save.fake_exit_coord
     maze.updateInternals()
 
     return maze

@@ -6,6 +6,13 @@ extends TileMapLayer
 ##  will have a border (width=1) of wall around.
 
 
+## All [NavHintArea] monitoring is enabled and ready to connect/use.
+signal nav_hint_areas__ready()
+
+
+const nav_hint_area__scene := preload("res://entity/maze/NavHintArea.tscn")
+
+
 const black_and_white_atlas__source_id := 0
 
 const white_tile__atlas_coord := Vector2i(0, 0)
@@ -26,6 +33,9 @@ var start__coord := Vector2i.ZERO
 
 ## Vector2i(x_coord, y_coord) of exit coord, unit is [code]tile[/code], starts with 0.
 var exit_gate__coord := Vector2i.ZERO
+
+## Vector2i(x_coord, y_coord), unit is [code]tile[/code], starts with 0.
+var last_level__exit_gate__coord := Vector2i.ZERO
 
 ## Vector2i(x_coord, y_coord), unit is [code]tile[/code], starts with 0.
 ##  [code]Vector2i(-1, -1)[/code] means does not exist.
@@ -58,19 +68,274 @@ var gate_key__coord: Vector2i = Vector2i(-1, -1)
 var fake_exit__coord: Vector2i = Vector2i(-1, -1)
 
 
+@onready var nav_hint_area__container: Node2D = $NavHintAreaContainer
+
+
+## Synchronously create nav hint area cache, then rebuild the container.
+## This does not enable monitoring; caller should do that in a later physics tick.
+func createNavHintAreas(nav_start_coord: Vector2i, nav_end_coord: Vector2i):
+    if self.astar_grid == null:
+        printerr("astar_grid is null in `Maze.createNavHintAreas`, cannot create nav hint areas.")
+        return
+
+    self.createNavHintAreasCache(nav_start_coord, nav_end_coord)
+    self.regenerateNavHintAreaToContainer()
+
+## Used to generate [NavHintArea] to be added as child of [member nav_hint_area__container].
+## Stores [code]{coord: {
+##   "nav_direction": nav_direction, "turn_direction": turn_direction,
+##   "sfx_direction": sfx_direction, "type": hint_type,
+##   "is_checking": is_checking
+## }}[/code] for [method generateNavHintAreaAtCoord].[br][br]
+##
+## Modified by [member createNavHintAreasCache], do not edit it manually.
+var nav_hint_area__coord_cache: Dictionary[Vector2i, Dictionary]
+
+## Create a path of [NavHintArea] from the ball starting point to exit and stored to cache.
+## Should be called after A* grid is updated.[br][br]
+##
+## [NavHintArea] will be generated, placed,
+##  and added to [member nav_hint_area__coord_cache].[br][br]
+##
+## Caution: Will clear existing areas first.[br]
+## Caution: Should be mounted first (ready) before call this,
+##  otherwise this method will be called until ready.
+func createNavHintAreasCache(nav_start_coord: Vector2i, nav_end_coord: Vector2i):
+    # Is `coord`-keyed to avoid repeated areas on the same tile.
+    self.nav_hint_area__coord_cache = {}
+    # Reset id count.
+    self.generateNavHintAreaAtCoord__id_count = 1
+
+    # # Gather the coords that needs a `NavHintArea`.
+    var to_target__path_points := self.astar_grid.get_point_path(
+        nav_start_coord, nav_end_coord
+    )
+    if to_target__path_points.size() < 2:
+        printerr(
+            "Length of `to_target__path_points` is less than 2 in `Maze.createNavHintAreasCache`,",
+            " this is bugful because the result must contains start and target coord. ",
+            "Check if input data is wrong,",
+            " either `nav_start_coord` nor `nav_start_coord` is solid/disabled."
+        )
+        self.printPathEndpointDebug(nav_start_coord, nav_end_coord)
+        self.printMazeTile()
+        self.printAStarGrid()
+        return
+
+    var to_target__path_coords: Array[Vector2i] = []
+    to_target__path_coords.resize(to_target__path_points.size())
+    for path_coord_index in range(to_target__path_points.size()):
+        to_target__path_coords[path_coord_index] = Vector2i(
+            to_target__path_points[path_coord_index]
+        )
+
+    # The start point should be added to notif player where to move.
+    var start_direction := to_target__path_coords[1] - to_target__path_coords[0]
+    self.setNavHintAreaCache(
+        to_target__path_coords[0],
+        start_direction,
+        Vector2i.ZERO,
+        start_direction,
+        NavHintArea.HintType.normal_hint,
+        true # Must be checking.
+    )
+
+    # # Calculate which coords need a `NavHintArea`.
+    # Refer to `scenes/maze_game/readme.md`'s `Algorithm of Navigation`.
+    # For each corner tile X, place P/N/C around X.
+    var i := 1
+    while i < to_target__path_coords.size() - 1:
+        var prev_coord: Vector2i = to_target__path_coords[i - 1]
+        var corner_coord: Vector2i = to_target__path_coords[i]
+        var next_coord: Vector2i = to_target__path_coords[i + 1]
+
+        var direction_to_corner    := corner_coord - prev_coord
+        var direction_after_corner := next_coord - corner_coord
+
+        # If direction changes at `corner_coord`, that means a corner.
+        if direction_to_corner != direction_after_corner:
+            # `turn_direction` is the key to hint,
+            #  `sfx_direction` is the direction sound to play,
+            #  while `nav_direction` is the path movement expected at each generated tile.
+            var before_corner__nav_direction := direction_to_corner
+            var at_corner__nav_direction     := direction_after_corner
+            var turn_direction := direction_after_corner
+
+            if i == 1: # X - 1 is the starting point.
+                self.setNavHintAreaCache(
+                    prev_coord,
+                    before_corner__nav_direction,
+                    Vector2i.ZERO,
+                    before_corner__nav_direction,
+                    NavHintArea.HintType.normal_hint,
+                    true
+                )
+                self.setNavHintAreaCache(
+                    corner_coord,
+                    at_corner__nav_direction,
+                    Vector2i.ZERO,
+                    Vector2i.ZERO,
+                    NavHintArea.HintType.none,
+                    true
+                )
+            elif i == 2: # X - 2 is the starting point.
+                var prev_prev_coord: Vector2i = to_target__path_coords[i - 2]
+                self.setNavHintAreaCache(
+                    prev_prev_coord,
+                    before_corner__nav_direction,
+                    Vector2i.ZERO,
+                    before_corner__nav_direction,
+                    NavHintArea.HintType.normal_hint,
+                    true
+                )
+                self.setNavHintAreaCache(
+                    prev_coord,
+                    before_corner__nav_direction,
+                    turn_direction,
+                    turn_direction,
+                    NavHintArea.HintType.pre_hint,
+                    false
+                )
+                self.setNavHintAreaCache(
+                    corner_coord,
+                    at_corner__nav_direction,
+                    Vector2i.ZERO,
+                    Vector2i.ZERO,
+                    NavHintArea.HintType.none,
+                    true
+                )
+            else: # Not near starting point.
+                var prev_prev_coord: Vector2i = to_target__path_coords[i - 2]
+                self.setNavHintAreaCache(
+                    prev_prev_coord,
+                    before_corner__nav_direction,
+                    turn_direction,
+                    turn_direction,
+                    NavHintArea.HintType.pre_hint,
+                    false
+                )
+                self.setNavHintAreaCache(
+                    prev_coord,
+                    before_corner__nav_direction,
+                    turn_direction,
+                    turn_direction,
+                    NavHintArea.HintType.normal_hint,
+                    false
+                )
+                self.setNavHintAreaCache(
+                    corner_coord,
+                    at_corner__nav_direction,
+                    Vector2i.ZERO,
+                    Vector2i.ZERO,
+                    NavHintArea.HintType.none,
+                    true
+                )
+
+        i += 1
+
+## Add or update one entry in [member nav_hint_area__coord_cache].
+func setNavHintAreaCache(
+    coord: Vector2i,
+    nav_direction: Vector2i,
+    turn_direction: Vector2i,
+    sfx_direction: Vector2i,
+    hint_type: NavHintArea.HintType,
+    is_checking: bool
+):
+    if self.nav_hint_area__coord_cache.has(coord):
+        is_checking = is_checking \
+            or self.nav_hint_area__coord_cache[coord]["is_checking"]
+
+    self.nav_hint_area__coord_cache.set(coord, {
+        "nav_direction": nav_direction,
+        "turn_direction": turn_direction,
+        "sfx_direction": sfx_direction,
+        "type": hint_type,
+        "is_checking": is_checking,
+    })
+
+## Delete all [NavHintArea] in [member nav_hint_area__container].
+func clearNavHintAreas():
+    # WARNING: Do NOT use `call_deferred` here,
+    #  the outside is expected to call this method sync-ly.
+    for c in self.nav_hint_area__container.get_children():
+        if c.get_parent() == self.nav_hint_area__container:
+            self.nav_hint_area__container.remove_child(c)
+        if not c.is_queued_for_deletion():
+            c.queue_free()
+
+## Used by [method generateNavHintAreaAtCoord],
+##  modified by [method createNavHintAreasCache].
+var generateNavHintAreaAtCoord__id_count := 1
+
+## Generate one [NavHintArea] at specified maze coord.
+func generateNavHintAreaAtCoord(
+    coord: Vector2i,
+    nav_direction: Vector2i,
+    turn_direction: Vector2i,
+    sfx_direction: Vector2i,
+    hint_type: NavHintArea.HintType,
+    is_checking: bool
+) -> NavHintArea:
+    # Caution: Notice that the position of [NavHintArea] is its center of collision shape.
+    var nav_hint_area: NavHintArea = self.nav_hint_area__scene.instantiate()
+    nav_hint_area.monitoring = false
+    nav_hint_area.length = self.length_of_tile
+    nav_hint_area.nav_direction = nav_direction
+    nav_hint_area.hint_type = hint_type
+    nav_hint_area.is_checking = is_checking
+    nav_hint_area.turn_direction = turn_direction
+    nav_hint_area.sfx_direction = sfx_direction
+    nav_hint_area.position = self.map_to_local(coord) # This also returns centered position.
+    nav_hint_area.name = str("NavHintArea ", generateNavHintAreaAtCoord__id_count)
+    generateNavHintAreaAtCoord__id_count += 1
+
+    return nav_hint_area
+
 ## Check whether the cell at given maze coord, is not a path.
 func isNotPathAt(x: int, y: int):
     return x > self.width - 1 or y > self.height - 1 \
         or self.get_cell_atlas_coords(Vector2i(x, y)) != Maze.white_tile__atlas_coord
 
+## Synchronously replace children of [member nav_hint_area__container] from
+##  [member nav_hint_area__coord_cache].
+## New [NavHintArea] nodes are added with monitoring disabled.
+## The caller is expected to call
+##  [method enableNavHintAreaMonitoring] in a later physics tick.
+func regenerateNavHintAreaToContainer():
+    # # Clear old first.
+    self.clearNavHintAreas()
+
+    # # Add new.
+    for coord in self.nav_hint_area__coord_cache:
+        var cache: Dictionary = self.nav_hint_area__coord_cache[coord]
+        self.nav_hint_area__container.add_child(self.generateNavHintAreaAtCoord(
+            coord,
+            cache["nav_direction"],
+            cache["turn_direction"],
+            cache["sfx_direction"],
+            cache["type"],
+            cache["is_checking"]
+        ))
+
+func enableNavHintAreaMonitoring():
+    for area in self.nav_hint_area__container.get_children():
+        if area is NavHintArea:
+            area.monitoring = true
+
+    self.nav_hint_areas__ready.emit()
+
 ## Update [TileMapLayer]'s internal,
 ##  then update [member width] and [member height].
 func updateInternals():
-    self.update_internals()
     var used_rect = self.get_used_rect()
     self.width = used_rect.size.x
     self.height = used_rect.size.y
+    self.refreshAstarGrid()
 
+    self.update_internals.call_deferred()
+
+func refreshAstarGrid():
     self.astar_grid = AStarGrid2D.new()
     self.astar_grid.region = Rect2i(0, 0, width, height)
     self.astar_grid.diagonal_mode = AStarGrid2D.DiagonalMode.DIAGONAL_MODE_NEVER
@@ -82,6 +347,122 @@ func updateInternals():
             var coord := Vector2i(x, y)
             if self.get_cell_atlas_coords(coord) == Maze.black_tile__atlas_coord:
                 self.astar_grid.set_point_solid(coord)
+
+#region Debug/Print related
+func printMazeTile():
+    print("=== Maze Tile ===")
+    print(
+        "size = ", self.width, " x ", self.height,
+        ", exit = ", self.exit_gate__coord,
+        ", last_exit = ", self.last_level__exit_gate__coord,
+        ", relic = ", self.relic__coord,
+        ", quarter = ", self.quarter__coord
+    )
+
+    # X axis header.
+    var header := "    "
+    for x in range(self.width):
+        header += str(x % 10)
+    print(header)
+
+    for y in range(self.height):
+        var line := str(y).lpad(3, " ") + " "
+
+        for x in range(self.width):
+            var coord := Vector2i(x, y)
+            var atlas_coord := self.get_cell_atlas_coords(coord)
+
+            var base_char := "?"
+            if atlas_coord == Maze.black_tile__atlas_coord:
+                base_char = "#"
+            elif atlas_coord == Maze.white_tile__atlas_coord:
+                base_char = "."
+
+            if coord == self.exit_gate__coord:
+                line += "E" if base_char == "." else "e"
+            elif coord == self.last_level__exit_gate__coord:
+                line += "L" if base_char == "." else "l"
+            elif coord == self.relic__coord:
+                line += "R" if base_char == "." else "r"
+            elif coord == self.quarter__coord:
+                line += "Q" if base_char == "." else "q"
+            else:
+                line += base_char
+
+        print(line)
+    print()
+
+func printAStarGrid():
+    print("=== AStar Grid ===")
+
+    if self.astar_grid == null:
+        print("astar_grid is null")
+        return
+
+    print(
+        "region = ", self.astar_grid.region,
+        ", size = ", self.width, " x ", self.height,
+        ", exit = ", self.exit_gate__coord,
+        ", last_exit = ", self.last_level__exit_gate__coord
+    )
+
+    var header := "    "
+    for x in range(self.width):
+        header += str(x % 10)
+    print(header)
+
+    for y in range(self.height):
+        var line := str(y).lpad(3, " ") + " "
+
+        for x in range(self.width):
+            var coord := Vector2i(x, y)
+            var char_of_block := "?"
+
+            if self.astar_grid.is_in_boundsv(coord):
+                char_of_block = "#" if self.astar_grid.is_point_solid(coord) else "."
+            else:
+                char_of_block = "X"
+
+            line += char_of_block
+
+        print(line)
+    print()
+
+func printPathEndpointDebug(start_coord: Vector2i, target_coord: Vector2i):
+    print("=== Path Endpoint Debug ===")
+    print("start_coord = ", start_coord)
+    print("target_coord = ", target_coord)
+
+    if self.astar_grid == null:
+        print("astar_grid is null")
+        return
+
+    var start_in_bounds := self.astar_grid.is_in_boundsv(start_coord)
+    var target_in_bounds := self.astar_grid.is_in_boundsv(target_coord)
+
+    print("start_in_bounds = ", start_in_bounds)
+    print("target_in_bounds = ", target_in_bounds)
+
+    if start_in_bounds:
+        print(
+            "start_atlas = ", self.get_cell_atlas_coords(start_coord),
+            ", start_is_solid = ", self.astar_grid.is_point_solid(start_coord)
+        )
+    else:
+        print("start_atlas = <out of bounds>, start_is_solid = <n/a>")
+
+    if target_in_bounds:
+        print(
+            "target_atlas = ", self.get_cell_atlas_coords(target_coord),
+            ", target_is_solid = ", self.astar_grid.is_point_solid(target_coord)
+        )
+    else:
+        print("target_atlas = <out of bounds>, target_is_solid = <n/a>")
+
+    var path_points := self.astar_grid.get_point_path(start_coord, target_coord)
+    print("path_points.size() = ", path_points.size())
+    print("path_points = ", path_points)
+#endregion
 
 func _init() -> void:
     self.tile_set = preload("res://assets/tilesets/maze/monocolour_tileset.tres")

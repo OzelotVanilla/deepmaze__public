@@ -50,6 +50,11 @@ func setWidgetValue(value: Variant):
     self.label__ref.text = self.stepper_list[self.choosed_index]
 
 func getWidgetValue():
+    # In case the scene is opened in editor.
+    if self.stepper_list.size() <= 0 and Engine.is_editor_hint():
+        # Avoid reading from empty `stepper_list` and got an error.
+        return
+
     return self.stepper_list[self.choosed_index]
 
 func onReceivingLeftAction():

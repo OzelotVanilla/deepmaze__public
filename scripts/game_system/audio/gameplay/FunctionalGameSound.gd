@@ -13,11 +13,11 @@ extends Node
 
 @export_subgroup("Normal Mode", "volume_percent__normal_mode__")
 
-@export_range(0, 100) var volume_percent__normal_mode__value: float = db_to_linear(0) * 100
+@export_range(0, 100) var volume_percent__normal_mode__value: float = db_to_linear(-12) * 100
 
 @export_subgroup("Listening Mode", "volume_percent__listening_mode__")
 
-@export_range(0, 100) var volume_percent__listening_mode__value: float = db_to_linear(-6) * 100
+@export_range(0, 100) var volume_percent__listening_mode__value: float = db_to_linear(0) * 100
 
 
 ## Connected to bus [code]DistanceToExitAudio[/code].

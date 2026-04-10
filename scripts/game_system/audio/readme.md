@@ -38,3 +38,22 @@ Sound Specification
 * Distance to Relic/Quarter: A beep sound that catches player's attention,
    since pickable items are not frequently appearing.
   When far, large reverb param. When close, dry.
+
+Sound Mode Specification
+----
+
+### Normal Mode
+
+Focus on the experience of game various sound effect.
+Assumes that **visual info** is the main info player retrieve from game.
+
+* Allow entertaining sound to be heard at **full level**.
+* Make functional sound **nearly hard to be listened**.
+
+### Listening Mode
+
+Focus on how to guide player to useful resources/exit.
+Assumes that **auditory info** is the main info player retrieve from game.
+
+* Make functional sound **clear to be heard**.
+* Let entertaining sound vague as if player is **listening it in the water**.

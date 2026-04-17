@@ -21,7 +21,10 @@ var height: int
 ## The A* grid for the maze.
 var astar_grid: AStarGrid2D
 
-## Vector2i(x_coord, y_coord), unit is [code]tile[/code], starts with 0.
+## Vector2i(x_coord, y_coord) of ball starting coord, unit is [code]tile[/code], starts with 0.
+var start__coord := Vector2i.ZERO
+
+## Vector2i(x_coord, y_coord) of exit coord, unit is [code]tile[/code], starts with 0.
 var exit_gate__coord := Vector2i.ZERO
 
 ## Vector2i(x_coord, y_coord), unit is [code]tile[/code], starts with 0.
@@ -41,6 +44,18 @@ var quarter__coord: Vector2i = Vector2i(-1, -1)
 var has_quarter: bool:
     get():
         return self.quarter__coord != Vector2i(-1, -1)
+
+## For special level [constant MazeGame.SpecialLevel.la_barbe_bleue].[br][br]
+##
+## Vector2i(x_coord, y_coord), unit is [code]tile[/code], starts with 0.
+##  [code]Vector2i(-1, -1)[/code] means does not exist.
+var gate_key__coord: Vector2i = Vector2i(-1, -1)
+
+## For special level [constant MazeGame.SpecialLevel.veronique].[br][br]
+##
+## Vector2i(x_coord, y_coord), unit is [code]tile[/code], starts with 0.
+##  [code]Vector2i(-1, -1)[/code] means does not exist.
+var fake_exit__coord: Vector2i = Vector2i(-1, -1)
 
 
 ## Check whether the cell at given maze coord, is not a path.

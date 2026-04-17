@@ -65,11 +65,6 @@ static func generate(
         MazeGame.SpecialLevel.veronique:
             MazeGenerator.generateFakeExit(map, start__coord, exit__coord)
 
-    if should_generate_quarter:
-        MazeGenerator.generateExclusiveEntities(map, MapData.quarter)
-    if should_generate_relic:
-        MazeGenerator.generateExclusiveEntities(map, MapData.relic)
-
     # # Tag the maze and astar grid with path/block info.
     # Init A*
     var maze_astar_grid := AStarGrid2D.new()
@@ -112,6 +107,12 @@ static func generate(
                 Maze.black_and_white_atlas__source_id,
                 atlas_coords
             )
+
+    # Generate exclusive items, avoiding them to be generated behind exit.
+    if should_generate_quarter:
+        MazeGenerator.generateExclusiveEntities(map, maze, special_level_type, MapData.quarter)
+    if should_generate_relic:
+        MazeGenerator.generateExclusiveEntities(map, maze, special_level_type, MapData.relic)
 
     return maze
 
@@ -244,8 +245,8 @@ static func generateGateKey(
     while map[y][x] != MapData.path \
         or Vector2(x, y).distance_to(start__coord) < 3 \
         or Vector2(x, y).distance_to(exit__coord) < 3:
-        x = randi_range(0, map[0].size()) # 0..width
-        y = randi_range(0, map.size()) # 0..height
+        x = randi_range(0, map[0].size() - 1) # 0..width
+        y = randi_range(0, map.size() - 1) # 0..height
 
     map[y][x] = MapData.gate_key
 
@@ -262,8 +263,8 @@ static func generateFakeExit(
     while map[y][x] != MapData.path \
         or Vector2(x, y).distance_to(start__coord) < 3 \
         or Vector2(x, y).distance_to(exit__coord) < 3:
-        x = randi_range(0, map[0].size()) # 0..width
-        y = randi_range(0, map.size()) # 0..height
+        x = randi_range(0, map[0].size() - 1) # 0..width
+        y = randi_range(0, map.size() - 1) # 0..height
 
     map[y][x] = MapData.fake_exit
 
@@ -281,23 +282,48 @@ static func generateFakeExit(
 ## * [code]MapData.relic[/code].[br]
 static func generateExclusiveEntities(
     map: Array[PackedInt32Array],
+    maze: Maze,
+    special_level_type: MazeGame.SpecialLevel,
     map_data__id: int
 ):
+    # If do not have A* grid, or its size is 0, raise error.
+    if maze.astar_grid == null or maze.astar_grid.region.size.length() <= 0:
+        printerr(
+            "Un-init-ed A* grid in `MazeGenerator.generateExclusiveEntities`. ",
+            "Call this method only after A* grid got init-ed."
+        )
+        return
+
     var maze_height := map.size()
     var maze_width  := map[0].size()
 
     var entity__x := 0
     var entity__y := 0
-    var should_continue_generation := true
 
     # Randomly pick a place in the maze until got qualified exit gate position.
-    while should_continue_generation:
+    while true:
         entity__x = floori(randf() * (maze_width  - 2)) + 1
         entity__y = floori(randf() * (maze_height - 2)) + 1
 
-        var is_not_a_path := map[entity__y][entity__x] != MapData.path
+        # # If not a path, should re-pick.
+        if map[entity__y][entity__x] != MapData.path:
+            continue
 
-        should_continue_generation = is_not_a_path
+        # # If before exit, should consider pick.
+        var point_path := maze.astar_grid.get_point_path(
+            maze.start__coord, Vector2i(entity__x, entity__y)
+        )
+
+        if point_path.has(maze.exit_gate__coord) and (
+            special_level_type != MazeGame.SpecialLevel.la_barbe_bleue
+            # If `la_barbe_bleue`,
+            #  then appear of both exit and gate key is considered invalid.
+            or point_path.has(maze.gate_key__coord)
+        ):
+            continue
+
+        # Passed all check. Done.
+        break
 
     map[entity__y][entity__x] = map_data__id
 

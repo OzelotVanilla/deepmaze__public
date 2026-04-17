@@ -3,6 +3,11 @@ extends CharacterBody2D
 ## Ball that rolling in the maze
 
 
+## Emitted when the ball hits the wall,
+##  with the information of collision.
+signal hit_wall(collision: KinematicCollision2D)
+
+
 ## Radius in pixel.
 const radius := 256
 
@@ -51,7 +56,9 @@ func __physicsProcess__():
 
     var had_collide := self.move_and_slide()
     if had_collide:
-        var normal := self.get_last_slide_collision().get_normal()
+        var last_collision := self.get_last_slide_collision()
+        var normal := last_collision.get_normal()
+        self.hit_wall.emit(last_collision)
         BallInputController.velocity = \
             BallInputController.velocity.bounce(normal) * self.bounce_factor
 

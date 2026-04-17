@@ -38,6 +38,15 @@ static func generate(
     if should_generate_relic:
         MazeGenerator.generateExclusiveEntities(map, 5)
 
+    # # Tag the maze and astar grid with path/block info.
+    # Init A*
+    var maze_astar_grid := AStarGrid2D.new()
+    maze_astar_grid.region = Rect2i(0, 0, width, height)
+    maze_astar_grid.diagonal_mode = AStarGrid2D.DiagonalMode.DIAGONAL_MODE_NEVER
+    maze_astar_grid.update()
+    maze.astar_grid = maze_astar_grid
+
+    # Fill to maze tile map and A*.
     for y in range(map.size()):
         for x in range(map[y].size()):
             var atlas_coords: Vector2i
@@ -46,6 +55,7 @@ static func generate(
                     atlas_coords = Maze.white_tile__atlas_coord
                 1: # Wall
                     atlas_coords = Maze.black_tile__atlas_coord
+                    maze_astar_grid.set_point_solid(Vector2i(x, y))
                 3: # Exit gate
                     atlas_coords = Maze.white_tile__atlas_coord
                     maze.exit_gate__coord = Vector2i(x, y)

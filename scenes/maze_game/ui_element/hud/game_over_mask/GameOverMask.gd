@@ -133,6 +133,9 @@ func goToMenuPage():
     # Save what player had got.
     self.game__ref.saveFinishedGame()
 
+    # Stop paused sound.
+    audio_manager.stopGameplaySound()
+
     # Do not forget this, otherwise your game will freeze:
     self.game__ref.get_tree().paused = false
     self.game__ref.root_scene__ref.popScene()

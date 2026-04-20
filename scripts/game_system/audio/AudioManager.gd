@@ -17,6 +17,12 @@ var listening_mode__tween_duration: float = 0.5
 
 @onready var entertaining_sound__ref: EntertainingGameSound = $GameplaySound/EntertainingGameSound
 
+@onready var ball_hit_wall_audio_player__ref: AudioStreamPlayer = \
+    $GameplaySound/EntertainingGameSound/BallHitWallAudioPlayer
+
+@onready var ball_rolling_audio_player__ref: AudioStreamPlayer = \
+    $GameplaySound/EntertainingGameSound/BallRollingAudioPlayer
+
 @onready var ui_sound__ref: Node = $UISound
 
 

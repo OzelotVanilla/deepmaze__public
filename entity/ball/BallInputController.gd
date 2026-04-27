@@ -53,8 +53,14 @@ static func enable():
 ## Stop listening to the input device and reset.
 static func disable():
     BallInputController.singleton.set_process(false)
-    BallInputController.move_vector = Vector2.ZERO
+    BallInputController.clear()
     BallInputController.input_source = BallInputSource.none
+
+## Clear the movement of ball and cache of ball input.
+static func clear():
+    BallInputController.move_vector = Vector2.ZERO
+    BallInputController.input_move_intension = Vector2.ZERO
+    BallInputController.velocity = Vector2.ZERO
 
 static func detectInputSource() -> BallInputSource:
     # If there is a gyro.

@@ -17,6 +17,8 @@ extends Resource
 ## Game state: The maze relic's coord when saving.
 ## [code](-1, -1)[/code] means does not exists.
 @export var relic_coord: Vector2i = Vector2i(-1, -1)
+## Game state: Whether the player had use the chance of revive.
+@export var had_already_revived: bool = false
 ## Game state: whether the quarter is already generated before level 50.
 @export var is_quarter_already_generated_before_level_50: bool = false
 ## Game state: whether the relic is already generated before level 50.

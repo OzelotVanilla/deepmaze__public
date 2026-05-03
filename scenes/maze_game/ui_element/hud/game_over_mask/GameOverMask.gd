@@ -41,14 +41,16 @@ var game__ref: MazeGame
 func useQuarterToRevive():
     # Quarter should be used, and game should be saved.
     save_manager.save.currency.quarter_count -= self.game__ref.revive_quarter_cost
+    save_manager.save.game_state.had_already_revived = true
     save_manager.saveToLocalFile()
 
     self.game__ref.reviveGame()
 
 func proceedToWhetherContinue():
-    # If not enough quarter, do not show "revive" option.
+    # If not enough quarter, or already revived before, do not show "revive" option.
     # And give focus.
-    if save_manager.save.currency.quarter_count < self.game__ref.revive_quarter_cost:
+    if save_manager.save.currency.quarter_count < self.game__ref.revive_quarter_cost \
+       or self.game__ref.had_already_revived:
         # Cannot revive.
         self.use_quarter_button__ref.hide()
         self.give_up_button__ref.grab_focus.call_deferred()

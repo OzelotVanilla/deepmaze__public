@@ -51,18 +51,18 @@ If no, need to nav player back to path.
 
 There is two types of nav hint type (`NavHintArea.HintType`):
 * Pre hint tiles (`P s=?`):
-   plays direction in low volume.
+   plays pre-direction (file `pre_*_hint`) in low volume.
 * Normal hint tiles (`N s=?`):
-   plays direction in normal volume.
+   plays direction (file `*_hint`) in normal volume.
 
 A tile could be marked as checking (`NavHintArea.is_checking`). Notated as `C`.
-This affects visual/debug meaning and hint metadata, but runtime path
-regeneration is not triggered directly by checking-area exit signals.
+This affects visual/debug meaning and hint metadata,
+ but runtime path regeneration is not triggered directly by checking-area exit signals.
 
 In annotated screenshots:
 * Orange small dot is `P`.
 * Green dot is `N`.
-* Blue square is a checking area.
+* Blue square is a checking area (`C`).
 
 ![Description of Generation](./.pic/nav_area_generation_desc.png)
 

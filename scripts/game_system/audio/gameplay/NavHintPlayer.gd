@@ -147,8 +147,11 @@ func play(
                 self.down_audio_player__ref.play()
             direction_played = "down"
 
-    if is_rejected_movement:
-        self.wrong_direction_audio_player__ref.play()
+        Vector2i.ZERO:
+            return
+
+    #if is_rejected_movement:
+        #self.wrong_direction_audio_player__ref.play()
 
     if self.debug__print_when_play:
         print(

@@ -42,7 +42,6 @@ script = ExtResource("4_clgs6")
 
 [node name="NavHintPlayer" type="Node" parent="GameplaySound/FunctionalGameSound" unique_id=533655336]
 script = ExtResource("6_nkb51")
-debug__print_when_play = true
 
 [node name="PreUpAudioPlayer" type="AudioStreamPlayer" parent="GameplaySound/FunctionalGameSound/NavHintPlayer" unique_id=1126929848]
 stream = ExtResource("7_s1nge")

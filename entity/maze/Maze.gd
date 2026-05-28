@@ -163,70 +163,70 @@ func createNavHintAreasCache(nav_start_coord: Vector2i, nav_end_coord: Vector2i)
 
             if i == 1: # X - 1 is the starting point.
                 self.setNavHintAreaCache(
-                    prev_coord,
+                    prev_coord, # `X - 1`
                     before_corner__nav_direction,
                     Vector2i.ZERO,
-                    before_corner__nav_direction,
+                    before_corner__nav_direction, # sfx_direction
                     NavHintArea.HintType.normal_hint,
                     true
                 )
                 self.setNavHintAreaCache(
-                    corner_coord,
+                    corner_coord, # `X`
                     at_corner__nav_direction,
                     Vector2i.ZERO,
-                    Vector2i.ZERO,
+                    at_corner__nav_direction, # sfx_direction
                     NavHintArea.HintType.none,
                     true
                 )
             elif i == 2: # X - 2 is the starting point.
                 var prev_prev_coord: Vector2i = to_target__path_coords[i - 2]
                 self.setNavHintAreaCache(
-                    prev_prev_coord,
+                    prev_prev_coord, # `X - 2`
                     before_corner__nav_direction,
                     Vector2i.ZERO,
-                    before_corner__nav_direction,
+                    before_corner__nav_direction, # `s=n`
                     NavHintArea.HintType.normal_hint,
                     true
                 )
                 self.setNavHintAreaCache(
-                    prev_coord,
+                    prev_coord, # `X - 1`
                     before_corner__nav_direction,
                     turn_direction,
-                    turn_direction,
+                    turn_direction, # `s=t`
                     NavHintArea.HintType.pre_hint,
                     false
                 )
                 self.setNavHintAreaCache(
-                    corner_coord,
+                    corner_coord, # `X`
                     at_corner__nav_direction,
                     Vector2i.ZERO,
-                    Vector2i.ZERO,
+                    Vector2i.ZERO, # no sfx_direction
                     NavHintArea.HintType.none,
                     true
                 )
             else: # Not near starting point.
                 var prev_prev_coord: Vector2i = to_target__path_coords[i - 2]
                 self.setNavHintAreaCache(
-                    prev_prev_coord,
+                    prev_prev_coord, # `X - 2`
                     before_corner__nav_direction,
                     turn_direction,
-                    turn_direction,
+                    turn_direction, # `s=t`
                     NavHintArea.HintType.pre_hint,
                     false
                 )
                 self.setNavHintAreaCache(
-                    prev_coord,
+                    prev_coord, # `X - 1`
                     before_corner__nav_direction,
                     turn_direction,
-                    turn_direction,
+                    turn_direction, # `s=t`
                     NavHintArea.HintType.normal_hint,
                     false
                 )
                 self.setNavHintAreaCache(
-                    corner_coord,
+                    corner_coord, # `X`
                     at_corner__nav_direction,
                     Vector2i.ZERO,
-                    Vector2i.ZERO,
+                    Vector2i.ZERO, # no sfx_direction
                     NavHintArea.HintType.none,
                     true
                 )

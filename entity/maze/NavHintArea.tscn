@@ -10,7 +10,6 @@
 [node name="NavHintArea" type="Area2D" unique_id=784060693 groups=["nav_hint_area"]]
 script = ExtResource("1_sucmh")
 debug__show_visuals = true
-debug__print_when_enter_or_exit = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1221618022]
 shape = SubResource("RectangleShape2D_0b3vi")

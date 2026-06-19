@@ -3,6 +3,14 @@ extends CharacterBody2D
 ## Ball that rolling in the maze
 
 
+## Radius in pixel for the SVG sprite.
+## Should manually update the value if the original SVG changes its size.[br][br]
+##
+## This is NOT the targeted final render pixel radius.
+## Do NOT directly use it as the real-time size.
+const svg_sprite_radius := 256
+
+
 ## Emitted when the ball hits the wall,
 ##  with the information of collision.
 signal hit_wall(collision: KinematicCollision2D)
@@ -12,9 +20,6 @@ signal hit_wall(collision: KinematicCollision2D)
 
 @onready var facing_indicator: Sprite2D = $FacingIndicator
 
-
-## Radius in pixel.
-const radius := 256
 
 var bounce_factor: float = 0.8
 

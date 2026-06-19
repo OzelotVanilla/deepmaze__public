@@ -10,7 +10,9 @@ extends TileMapLayer
 signal nav_hint_areas__ready()
 
 
-const nav_hint_area__scene := preload("res://entity/maze/NavHintArea.tscn")
+const nav_hint_area__scene := preload(
+    "res://scripts/sound_nav_system/nav/nav_hint_area_sln/NavHintArea.tscn"
+)
 
 
 const black_and_white_atlas__source_id := 0

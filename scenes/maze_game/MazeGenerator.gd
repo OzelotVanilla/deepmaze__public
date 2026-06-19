@@ -137,9 +137,9 @@ static func carve(map: Array[PackedInt32Array], starting_x: int, starting_y: int
         starting_x > 0 and starting_x < maze_width - 1
         and starting_y > 0 and starting_y < maze_height - 1
     ):
-        map[starting_y][starting_x] = 0
+        map[starting_y][starting_x] = MapData.path
 
-    var directions = [[0,2],[2,0],[0,-2],[-2,0]]
+    var directions = [[0,2], [2,0], [0,-2], [-2,0]]
     directions.shuffle()
 
     # Carve path in 4 directions.
@@ -154,10 +154,10 @@ static func carve(map: Array[PackedInt32Array], starting_x: int, starting_y: int
             new_x > 0 and new_x < maze_width - 1
             and new_y > 0 and new_y < maze_height - 1
             # And is a wall
-            and map[new_y][new_x] == 1
+            and map[new_y][new_x] == MapData.wall
         ):
             # Also break the wall between starting point and new point.
-            map[starting_y + offset_y/2][starting_x + offset_x/2] = 0
+            map[starting_y + offset_y/2][starting_x + offset_x/2] = MapData.path
 
             # Start new recursion.
             MazeGenerator.carve(map, new_x, new_y)

@@ -17,5 +17,5 @@ texture = ExtResource("1_1a30b")
 shape = SubResource("CircleShape2D_dq6q2")
 debug_color = Color(0.7382041, 0.39665356, 0.6529497, 0.41960785)
 
-[node name="BallInputController" type="Node" parent="." unique_id=869321131]
+[node name="InputController" type="Node" parent="." unique_id=869321131]
 script = ExtResource("2_dq6q2")

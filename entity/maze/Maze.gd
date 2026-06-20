@@ -67,6 +67,12 @@ var gate_key__coord: Vector2i = Vector2i(-1, -1)
 ##  [code]Vector2i(-1, -1)[/code] means does not exist.
 var fake_exit__coord: Vector2i = Vector2i(-1, -1)
 
+## The first direction for the ball to go, updated since last path regeneration.[br][br]
+##
+## Updated by [method createNavHintAreasCache],
+##  read-ed by [method MazeGame.setupEntity] when set init facing of ball.
+var first_direction_to_go: Vector2i = Vector2i.ZERO
+
 
 @onready var nav_hint_area__container: Node2D = $NavHintAreaContainer
 
@@ -139,6 +145,7 @@ func createNavHintAreasCache(nav_start_coord: Vector2i, nav_end_coord: Vector2i)
         NavHintArea.HintType.normal_hint,
         true # Must be checking.
     )
+    self.first_direction_to_go = start_direction
 
     # # Calculate which coords need a `NavHintArea`.
     # Refer to `scenes/maze_game/readme.md`'s `Algorithm of Navigation`.

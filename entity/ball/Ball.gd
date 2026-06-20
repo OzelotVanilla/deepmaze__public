@@ -10,6 +10,8 @@ signal hit_wall(collision: KinematicCollision2D)
 
 @onready var input_controller: BallInputController = $InputController
 
+@onready var facing_indicator: Sprite2D = $FacingIndicator
+
 
 ## Radius in pixel.
 const radius := 256
@@ -36,12 +38,16 @@ var ref__maze_game: MazeGame
 var ref__dark_mask_shader_material: ShaderMaterial
 
 
+func _ready() -> void: self.__onReady__()
 func _physics_process(delta: float) -> void: self.__physicsProcess__()
 
 
 func _init() -> void:
     self.visible = false
     self.visibility_changed.connect(self.__onVisibilityChange__.bind(self.visible))
+
+func __onReady__():
+    self.__setupFromInputParadigm__(self.input_controller.input_paradigm)
 
 func __physicsProcess__():
     self.velocity = self.input_controller.motor_velocity * self.velocity_factor
@@ -54,11 +60,24 @@ func __physicsProcess__():
         self.input_controller.motor_velocity = \
             self.input_controller.motor_velocity.bounce(normal) * self.bounce_factor
 
+    self.facing_indicator.rotation = Vector2.UP.angle_to(self.input_controller.facing)
+
 func __onVisibilityChange__(being_hidden: bool):
     if being_hidden:
         self.stopReceivingInput()
     else:
         self.startReceivingInput()
+
+func __setupFromInputParadigm__(new_value: BallInputController.BallInputParadigm):
+    if not self.is_node_ready():
+        await self.ready
+
+    match new_value:
+        BallInputController.BallInputParadigm.world_relative:
+            self.facing_indicator.hide()
+
+        BallInputController.BallInputParadigm.body_4way_relative:
+            self.facing_indicator.show()
 
 ## Update all parameter and looks of the ball according to its type.
 func updateBallFromType():

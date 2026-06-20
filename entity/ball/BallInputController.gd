@@ -18,6 +18,11 @@ extends Node
 ## Applied the acceleration/speed/inertia to [member world_move_intent],
 ##  and calculated a world-relative move vector [member motor_velocity].
 
+
+## Emitted when input paradigm changed to new value.
+signal input_paradigm_changed(new_value: BallInputParadigm)
+
+
 enum BallInputSource
 {
     none,
@@ -88,6 +93,7 @@ var input_paradigm: BallInputParadigm = BallInputParadigm.world_relative:
         if input_paradigm != new_value:
             input_paradigm = new_value
             self.__setupFromInputParadigm__(new_value)
+            self.input_paradigm_changed.emit(new_value)
 
 ## Whether the input should be inverted.[br][br]
 ##
@@ -110,6 +116,7 @@ var should_invert_input: bool = false
 
 func _process(delta: float) -> void: self.__onProcess__(delta)
 func _ready() -> void: self.__onReady__()
+func _unhandled_input(event: InputEvent) -> void: self.__onUnhandledInput__(event)
 
 
 ## Start listening to the input device and updating [member BallInputController.raw_move_vector].
@@ -188,5 +195,45 @@ func __updateInWorldRelativeMode__(delta: float):
             )
 
 func __updateInBody4WayRelativeMode__(delta: float):
-    pass
+    match self.input_source:
+        BallInputSource.gyro:
+            pass
+
+        BallInputSource.keyboard_or_controller:
+            # # 1. Read raw input from physical input devices.
+            var new_raw_move_vector := Input.get_vector(
+                "ball_strafe_left", "ball_strafe_right", "ball_move_forward", "ball_move_backward"
+            )
+            self.raw_move_vector = new_raw_move_vector
+
+            # # 2. Interpret the raw input to ball move intent.
+            # Input invertion.
+            if self.should_invert_input:
+                new_raw_move_vector *= -1
+            # Update intent.
+            var forward_amount  := -new_raw_move_vector.y
+            var strafe_amount   :=  new_raw_move_vector.x
+            var right_direction := self.facing.rotated(PI / 2)
+            self.world_move_intent = \
+                self.facing * forward_amount + right_direction * strafe_amount
+
+            # # 3. Apply physics.
+            self.motor_velocity = self.motor_velocity.lerp(
+                self.world_move_intent * self.speed,
+                self.acceleration * delta
+            )
+
+func __onUnhandledInput__(event: InputEvent):
+    if self.input_paradigm == BallInputParadigm.body_4way_relative:
+        # # Facing.
+        if event.is_action_pressed("ball_turn_left"):
+            self.facing = self.facing.rotated(
+                -PI / 2 if not self.should_invert_input else PI / 2
+            )
+        elif event.is_action_pressed("ball_turn_right"):
+            self.facing = self.facing.rotated(
+                PI / 2 if not self.should_invert_input else -PI / 2
+            )
+        elif event.is_action_pressed("ball_turn_back"):
+            self.facing = self.facing.rotated(PI)
 #endregion

@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cryuquuadj1rg" path="res://assets/vector_graphics/maze_entities/black_ball.svg" id="1_1a30b"]
 [ext_resource type="Script" uid="uid://ckqwo1jgeytm0" path="res://entity/ball/Ball.gd" id="1_qviuk"]
 [ext_resource type="Script" uid="uid://b0g7bq0g8qh52" path="res://entity/ball/BallInputController.gd" id="2_dq6q2"]
+[ext_resource type="Texture2D" uid="uid://qn53q8lnpfh" path="res://assets/vector_graphics/maze_entities/white_triangle.svg" id="4_iiiv7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dq6q2"]
 radius = 256.0
@@ -19,3 +20,10 @@ debug_color = Color(0.7382041, 0.39665356, 0.6529497, 0.41960785)
 
 [node name="InputController" type="Node" parent="." unique_id=869321131]
 script = ExtResource("2_dq6q2")
+
+[node name="FacingIndicator" type="Sprite2D" parent="." unique_id=1759560061]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("4_iiiv7")
+offset = Vector2(0, -80)
+
+[connection signal="input_paradigm_changed" from="InputController" to="." method="__setupFromInputParadigm__"]

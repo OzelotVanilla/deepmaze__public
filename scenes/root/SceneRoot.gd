@@ -130,7 +130,8 @@ func applyConfig(on_what: GameConfig.ChangingCategory):
 
             TranslationServer.set_locale(locale)
 
-static func isFirstTimeRun():
+## When there is no config and save file, assume first time run.
+static func isFirstTimeRun() -> bool:
     return not config_manager.isLocalConfigFileExist() \
        and not save_manager.isLocalSaveFileExist()
 
@@ -139,22 +140,26 @@ func __onReady__():
     if Engine.is_editor_hint():
         return
 
-    var can_skip_opening_video: bool
     # Test if it is first time enter this game.
-    if SceneRoot.isFirstTimeRun():
-        config_manager.createConfig()
-        can_skip_opening_video = false
-    else:
-        config_manager.loadFromLocalFile() # Will auto create default config, if not exist.
-        if save_manager.isLocalSaveFileExist():
-            save_manager.loadFromLocalFile() # Will not create a new save.
-        can_skip_opening_video = true
+    # This is only related to create config. Not game save.
+    var can_skip_opening_video := not SceneRoot.isFirstTimeRun()
 
+    # Check save.
+    if not save_manager.isLocalSaveFileExist():
+        save_manager.createSave()
+    save_manager.loadFromLocalFile()
+
+    # Check config.
+    if not config_manager.isLocalConfigFileExist():
+        config_manager.createConfig()
+    config_manager.loadFromLocalFile()
+
+    # Connect config change signal to game.
     config_manager.config_changed.connect(self.applyConfig)
-    # Trigger config application on init.
-    config_manager.config_changed.emit(GameConfig.ChangingCategory.display)
-    config_manager.config_changed.emit(GameConfig.ChangingCategory.volume)
-    config_manager.config_changed.emit(GameConfig.ChangingCategory.language)
+    # Apply config on init.
+    self.applyConfig(GameConfig.ChangingCategory.display)
+    self.applyConfig(GameConfig.ChangingCategory.volume)
+    self.applyConfig(GameConfig.ChangingCategory.language)
 
     # Play opening video.
     await self.opening_player__ref.playOpeningVideo(can_skip_opening_video)

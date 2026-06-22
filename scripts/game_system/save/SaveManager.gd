@@ -43,7 +43,7 @@ func createSave():
     self.saveToLocalFile()
 
 ## Load the save file from the local user file.
-func loadFromLocalFile(should_create_when_no_exist: bool = true):
+func loadFromLocalFile(should_create_when_no_exist: bool = false):
     if not self.isLocalSaveFileExist():
         if should_create_when_no_exist:
             self.createSave()

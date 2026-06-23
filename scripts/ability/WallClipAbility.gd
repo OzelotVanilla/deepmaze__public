@@ -18,7 +18,7 @@ func activate() -> Error:
 
     # Get coord-in-maze for the ball and the directions.
     var ball_coord_in_maze := self.game_ref.getBallCoordOfMaze()
-    var move_intension := ball_ref.ball_move_intension
+    var move_intention := ball_ref.input_controller.world_move_direction
     var offset := ball_ref.getMazeCoordOffset()
     # Check if move result is still the same side.
     # If no offset.
@@ -34,7 +34,7 @@ func activate() -> Error:
                 wall_direction += dir
         wall_direction = wall_direction.normalized()
 
-        if abs(move_intension.angle_to(wall_direction)) > PI / 4:
+        if abs(move_intention.angle_to(wall_direction)) > PI / 4:
             return Error.ERR_ALREADY_EXISTS # Path already exist, no need for wall-clip.
     var coord_of_wall_clip_target := ball_coord_in_maze + offset
     # Check if warp-target does not exist a path.

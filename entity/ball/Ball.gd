@@ -8,6 +8,11 @@ extends CharacterBody2D
 signal hit_wall(collision: KinematicCollision2D)
 
 
+@onready var input_controller: BallInputController = $InputController
+
+@onready var facing_indicator: Sprite2D = $FacingIndicator
+
+
 ## Radius in pixel.
 const radius := 256
 
@@ -18,11 +23,6 @@ var velocity_factor: float = 1.0
 
 ## Whether the input should be reversed.
 var should_reverse_input := false
-
-## Intension of moving, based on the coordinate in game.[br]
-## Calculated and normalised from [member BallInputController.input_move_intension]
-##  and [member should_reverse_input].
-var ball_move_intension: Vector2
 
 ## Type of the ball.
 var type: MazeGame.BallType = MazeGame.BallType.wall_clip:
@@ -38,6 +38,7 @@ var ref__maze_game: MazeGame
 var ref__dark_mask_shader_material: ShaderMaterial
 
 
+func _ready() -> void: self.__onReady__()
 func _physics_process(delta: float) -> void: self.__physicsProcess__()
 
 
@@ -45,28 +46,38 @@ func _init() -> void:
     self.visible = false
     self.visibility_changed.connect(self.__onVisibilityChange__.bind(self.visible))
 
-func __physicsProcess__():
-    self.velocity = BallInputController.velocity * self.velocity_factor
-    self.ball_move_intension = BallInputController.input_move_intension
+func __onReady__():
+    self.__setupFromInputParadigm__(self.input_controller.input_paradigm)
 
-    # # Special handling if the input should be altered and then apply.
-    if self.should_reverse_input:
-        self.velocity *= -1
-        self.ball_move_intension *= -1
+func __physicsProcess__():
+    self.velocity = self.input_controller.motor_velocity * self.velocity_factor
 
     var had_collide := self.move_and_slide()
     if had_collide:
         var last_collision := self.get_last_slide_collision()
         var normal := last_collision.get_normal()
         self.hit_wall.emit(last_collision)
-        BallInputController.velocity = \
-            BallInputController.velocity.bounce(normal) * self.bounce_factor
+        self.input_controller.motor_velocity = \
+            self.input_controller.motor_velocity.bounce(normal) * self.bounce_factor
+
+    self.facing_indicator.rotation = Vector2.UP.angle_to(self.input_controller.facing)
 
 func __onVisibilityChange__(being_hidden: bool):
     if being_hidden:
         self.stopReceivingInput()
     else:
         self.startReceivingInput()
+
+func __setupFromInputParadigm__(new_value: BallInputController.BallInputParadigm):
+    if not self.is_node_ready():
+        await self.ready
+
+    match new_value:
+        BallInputController.BallInputParadigm.world_relative:
+            self.facing_indicator.hide()
+
+        BallInputController.BallInputParadigm.body_4way_relative:
+            self.facing_indicator.show()
 
 ## Update all parameter and looks of the ball according to its type.
 func updateBallFromType():
@@ -77,11 +88,11 @@ func updateBallFromType():
 
 func startReceivingInput():
     self.process_mode = ProcessMode.PROCESS_MODE_INHERIT
-    BallInputController.enable()
+    self.input_controller.enable()
 
 func stopReceivingInput():
     self.process_mode = ProcessMode.PROCESS_MODE_DISABLED
-    BallInputController.disable()
+    self.input_controller.disable()
 
 ## Start sending coord to the dark mask of maze.
 func startSendingCoord():
@@ -96,7 +107,7 @@ func stopSendingCoord():
 ## Example: moving to left-bottom corner will be [code]Vector2i(1, 1)[/code],
 ##  since array representing a maze grows to the bottom and to the right.
 func getMazeCoordOffset() -> Vector2i:
-    var direction := self.ball_move_intension
+    var direction := self.input_controller.world_move_direction
     const threshold_1 := sqrt(0.2)
     const threshold_2 := sqrt(0.5)
 

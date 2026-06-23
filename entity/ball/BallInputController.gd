@@ -1,71 +1,146 @@
 class_name BallInputController
 extends Node
+## Read and handle the input from player, and provide to ball
+##
+## This class has 3 layers of input handling: [br][br]
+##
+## [b]1. Read raw input from physical input devices.[/b][br]
+## Update [member raw_move_vector].[br][br]
+##
+## [b]2. Interpret the raw input to ball move intent.[/b][br]
+## According to the parameters such as [member input_paradigm] or [member should_invert_input],
+##  calculate [member world_move_intent] for move in the world.
+## This intention is world-relative,
+##  so where it points stands for the move direction in the 2D world.[br]
+## See also [enum BallInputParadigm].[br][br]
+##
+## 3. [b]Apply the physics to interpreted world-move-intent to get final move vector[/b][br]
+## Applied the acceleration/speed/inertia to [member world_move_intent],
+##  and calculated a world-relative move vector [member motor_velocity].
+
+
+## Emitted when input paradigm changed to new value.
+signal input_paradigm_changed(new_value: BallInputParadigm)
 
 
 enum BallInputSource
 {
     none,
-    gylo,
+    gyro,
     keyboard_or_controller
 }
 
+## How should the input be interpreted in a 1st/3rd-perspective.
+enum BallInputParadigm
+{
+    ## Move the ball in a 3rd-person perspective.[br]
+    ## [kbd]W[/kbd]/[kbd]A[/kbd]/[kbd]S[/kbd]/[kbd]D[/kbd] is
+    ##  directively associated with going U/L/D/R.
+    world_relative,
+    ## Move the ball from a 1st-person perspective.[br]
+    ## [kbd]W[/kbd]/[kbd]S[/kbd] is forward and backward, according to current facing direction.[br]
+    ## [kbd]A[/kbd]/[kbd]D[/kbd] is strafe to L/R, according to current facing direction.[br]
+    ## [kbd]LeftArrow[/kbd]/[kbd]RightArrow[/kbd] changes current facing direction.
+    body_4way_relative
+}
 
-## Normalised raw input move vector for ball.[br][br]
+
+#region Movement-related vectors.
+## Normalised input move vector for ball, from [method Input.get_vector].[br][br]
 ##
 ## Will be updated if the [BallInputController] is enabled by [method enable].
-static var move_vector: Vector2 = Vector2.ZERO
+var raw_move_vector: Vector2 = Vector2.ZERO
 
-## Normalised adjusted (e.g., special level) ball moving intention
-##  retrieved from input device, based on physical input.[br][br]
+## Calculated (e.g., input paradigm or special level)
+##  ball moving intention relative to the world.[br][br]
 ##
-## Equals to [member move_vector] if using gylo or controller,
-##  calculated along with velocity if using keyboard.[br]
-## Do not confuse with [member Ball.ball_move_intension],
-##  which stands for the intension of ball moving in the game.
-## Factor such as special level type, could results in different
-##  [code]input_move_intension[/code] and [code]ball_move_intension[/code].
-static var input_move_intension: Vector2 = Vector2.ZERO
+## Example:[br]
+## Body-relative input paradigm, with facing to right, got [kbd]W[/kbd] key input ==>
+##  [code]world_move_intent[/code] is pointing to right (sclaed [code]Vector2.RIGHT[/code]).
+var world_move_intent: Vector2 = Vector2.ZERO
 
-## Calculated velocity for the ball.
-static var velocity: Vector2 = Vector2.ZERO
+## Normalised ball moving intention, calculated from [member world_move_intent].
+var world_move_direction: Vector2:
+    get():
+        return self.world_move_intent.normalized()
 
-static var speed: float = 400.0
+## Calculated velocity for the ball,
+##  with the factor of acceleration, speed, and inertia.
+var motor_velocity: Vector2 = Vector2.ZERO
 
-## The way player control the ball.
-static var input_source: BallInputSource = BallInputSource.none
+## Stands for the facing direction of the ball.
+## Init-ed when new level starts.
+## Should be set-ed otherwise the ball will not move ![br][br]
+##
+## Only meaningful if [constant BallInputParadigm.body_4way_relative].
+var facing: Vector2 = Vector2.ZERO
+#endregion
+
+#region Factors that changes interpretation of movement-related vectors.
+## The way player control the ball.[br][br]
+##
+## Notice: It affects whether [member acceleration] is applied.
+## Only [constant BallInputSource.keyboard_or_controller] enables acceleration calculations.
+var input_source: BallInputSource = BallInputSource.none
+
+## The input paradigm of ball,
+##  determined by inspector property [member MazeGame.ball_input_paradigm],
+##  in [method MazeGame.__onReady__].[br][br]
+##
+## Currently, this [member input_paradigm] will not be changed after being set-ed.
+var input_paradigm: BallInputParadigm = BallInputParadigm.world_relative:
+    set(new_value):
+        if input_paradigm != new_value:
+            input_paradigm = new_value
+            self.__setupFromInputParadigm__(new_value)
+            self.input_paradigm_changed.emit(new_value)
+
+## Whether the input should be inverted.[br][br]
+##
+## * When [constant BallInputParadigm.world_relative],
+##  U/D and L/R is inverted.[br]
+## * When [constant BallInputParadigm.body_4way_relative],
+##  U/D, L/R-Strafe, L/R-Turn is inverted.
+var should_invert_input: bool = false
+#endregion
+
+#region Customisable physics factor.
+## Unit: [code]px/s[/code]. Relative to the pixel size of maze.
+@export var speed: float = 400.0
 
 ## When input device is [constant BallInputSource.keyboard_or_controller],
 ##  make the movement of ball with inertia.
-static var acceleration: float = 4.0
-
-static var singleton := BallInputController.new()
+@export var acceleration: float = 4.0
+#endregion
 
 
 func _process(delta: float) -> void: self.__onProcess__(delta)
 func _ready() -> void: self.__onReady__()
+func _unhandled_input(event: InputEvent) -> void: self.__onUnhandledInput__(event)
 
 
-## Start listening to the input device and updating [member BallInputController.move_vector].
-static func enable():
-    BallInputController.singleton.set_process(true)
-    BallInputController.input_source = BallInputController.detectInputSource()
+## Start listening to the input device and updating [member BallInputController.raw_move_vector].
+func enable():
+    self.set_process(true)
+    self.input_source = self.detectInputSource()
 
 ## Stop listening to the input device and reset.
-static func disable():
-    BallInputController.singleton.set_process(false)
-    BallInputController.clear()
-    BallInputController.input_source = BallInputSource.none
+func disable():
+    self.set_process(false)
+    self.clear()
+    self.input_source = BallInputSource.none
 
 ## Clear the movement of ball and cache of ball input.
-static func clear():
-    BallInputController.move_vector = Vector2.ZERO
-    BallInputController.input_move_intension = Vector2.ZERO
-    BallInputController.velocity = Vector2.ZERO
+func clear():
+    self.raw_move_vector = Vector2.ZERO
+    self.world_move_intent = Vector2.ZERO
+    self.motor_velocity = Vector2.ZERO
+    self.facing = Vector2.ZERO
 
-static func detectInputSource() -> BallInputSource:
+func detectInputSource() -> BallInputSource:
     # If there is a gyro.
     if Input.get_accelerometer() != Vector3.ZERO:
-        return BallInputSource.gylo
+        return BallInputSource.gyro
 
     # Otherwise, assume getting input from keyboard.
     return BallInputSource.keyboard_or_controller
@@ -75,28 +150,90 @@ func _init() -> void:
 
 ## For input device of keyboard_or_controller, add inertia.
 func __onProcess__(delta: float):
-    match BallInputController.input_source:
-        BallInputSource.gylo:
+    self.updateMovementVectors.call(delta)
+
+func __onReady__():
+    self.disable()
+    self.__setupFromInputParadigm__(self.input_paradigm)
+
+#region Interpret method for raw input
+var updateMovementVectors: Callable
+
+## This method should only be called by setter of [member input_paradigm].[br][br]
+##
+## This method does:[br]
+## * Set callable member [member updateMovementVectors] to appropriate interpret method.
+func __setupFromInputParadigm__(new_value: BallInputParadigm):
+    if new_value == BallInputParadigm.world_relative:
+        self.updateMovementVectors = self.__updateInWorldRelativeMode__
+    elif new_value == BallInputParadigm.body_4way_relative:
+        self.updateMovementVectors = self.__updateInBody4WayRelativeMode__
+
+func __updateInWorldRelativeMode__(delta: float):
+    match self.input_source:
+        BallInputSource.gyro:
             pass
 
         BallInputSource.keyboard_or_controller:
-            var new_move_vector = \
-                Input.get_vector("move_left", "move_right", "move_up", "move_down")
-            BallInputController.move_vector = new_move_vector
+            # # 1. Read raw input from physical input devices.
+            var new_raw_move_vector := Input.get_vector(
+                "world_move_left", "world_move_right", "world_move_up", "world_move_down"
+            )
+            self.raw_move_vector = new_raw_move_vector
 
-            if InputManager.input_source == InputManager.InputSource.keyboard:
-                BallInputController.input_move_intension = BallInputController.input_move_intension.lerp(
-                    new_move_vector,
-                    1
-                ).normalized()
-            else:
-                BallInputController.input_move_intension = new_move_vector.normalized()
+            # # 2. Interpret the raw input to ball move intent.
+            # Input invertion.
+            if self.should_invert_input:
+                new_raw_move_vector *= -1
+            # Update intent.
+            self.world_move_intent = new_raw_move_vector
 
-            BallInputController.velocity = \
-                BallInputController.velocity.lerp(
-                    new_move_vector * BallInputController.speed,
-                    BallInputController.acceleration * delta
-                )
+            # # 3. Apply physics.
+            self.motor_velocity = self.motor_velocity.lerp(
+                new_raw_move_vector * self.speed,
+                self.acceleration * delta
+            )
 
-func __onReady__():
-    BallInputController.disable()
+func __updateInBody4WayRelativeMode__(delta: float):
+    match self.input_source:
+        BallInputSource.gyro:
+            pass
+
+        BallInputSource.keyboard_or_controller:
+            # # 1. Read raw input from physical input devices.
+            var new_raw_move_vector := Input.get_vector(
+                "ball_strafe_left", "ball_strafe_right", "ball_move_forward", "ball_move_backward"
+            )
+            self.raw_move_vector = new_raw_move_vector
+
+            # # 2. Interpret the raw input to ball move intent.
+            # Input invertion.
+            if self.should_invert_input:
+                new_raw_move_vector *= -1
+            # Update intent.
+            var forward_amount  := -new_raw_move_vector.y
+            var strafe_amount   :=  new_raw_move_vector.x
+            var right_direction := self.facing.rotated(PI / 2)
+            self.world_move_intent = \
+                self.facing * forward_amount + right_direction * strafe_amount
+
+            # # 3. Apply physics.
+            self.motor_velocity = self.motor_velocity.lerp(
+                self.world_move_intent * self.speed,
+                self.acceleration * delta
+            )
+
+func __onUnhandledInput__(event: InputEvent):
+    if self.input_paradigm == BallInputParadigm.body_4way_relative:
+        # # Facing.
+        if event.is_action_pressed("ball_turn_left"):
+            self.facing = self.facing.rotated(
+                -PI / 2 if not self.should_invert_input else PI / 2
+            )
+        elif event.is_action_pressed("ball_turn_right"):
+            self.facing = self.facing.rotated(
+                PI / 2 if not self.should_invert_input else -PI / 2
+            )
+        elif event.is_action_pressed("ball_turn_back"):
+            self.facing = self.facing.rotated(PI)
+#endregion

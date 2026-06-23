@@ -110,8 +110,10 @@ func applyConfig(on_what: GameConfig.ChangingCategory):
 
             # Need to release action,
             #  because changing between fullscreen might let key release not handled.
-            Input.action_release("move_left"); Input.action_release("move_right");
-            Input.action_release("move_up");   Input.action_release("move_down");
+            Input.action_release("world_move_up");
+            Input.action_release("world_move_left");
+            Input.action_release("world_move_right");
+            Input.action_release("world_move_down");
 
         GameConfig.ChangingCategory.volume:
             audio_manager.master_volume = config_manager.config.master_volume

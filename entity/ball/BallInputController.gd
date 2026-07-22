@@ -14,7 +14,7 @@ extends Node
 ##  so where it points stands for the move direction in the 2D world.[br]
 ## See also [enum BallInputParadigm].[br][br]
 ##
-## 3. [b]Apply the physics to interpreted world-move-intent to get final move vector[/b][br]
+## [b]3. Apply the physics to interpreted world-move-intent to get final move vector[/b][br]
 ## Applied the acceleration/speed/inertia to [member world_move_intent],
 ##  and calculated a world-relative move vector [member motor_velocity].
 
@@ -105,11 +105,14 @@ var should_invert_input: bool = false
 #endregion
 
 #region Customisable physics factor.
-## Unit: [code]px/s[/code]. Relative to the pixel size of maze.
-@export var speed: float = 400.0
+## Max speed possible for the ball, processed by the input controller.
+## Relative to the pixel size of maze.
+## Unit: [code]px/s[/code].
+@export_custom(PropertyHint.PROPERTY_HINT_NONE, "suffix:px/s")
+var speed: float = 400.0
 
 ## When input device is [constant BallInputSource.keyboard_or_controller],
-##  make the movement of ball with inertia.
+##  make the movement of ball with inertia by giving acceleration factor to movement.
 @export var acceleration: float = 4.0
 #endregion
 

@@ -1,6 +1,8 @@
 class_name Ball
 extends CharacterBody2D
 ## Ball that rolling in the maze
+##
+## Input handling is done in [BallInputController].
 
 
 ## Radius in pixel for the SVG sprite.
@@ -21,12 +23,19 @@ signal hit_wall(collision: KinematicCollision2D)
 @onready var facing_indicator: Sprite2D = $FacingIndicator
 
 
+## Used in the physics calculation ([method __physicsProcess__])
+##  when scaling the [method Vector2.bounce]-ed [member InputController.motor_velocity],
+##  which is used as its new value.
 var bounce_factor: float = 0.8
 
-## In big maze, ball should move slower.
+## In big maze, ball should move slower.[br][br]
+##
+## Modified in [method MazeGame.setupEntity].
 var velocity_factor: float = 1.0
 
-## Whether the input should be reversed.
+## Whether the input should be reversed.[br][br]
+##
+## Modified in [method MazeGame.setupEntity].
 var should_reverse_input := false
 
 ## Type of the ball.
@@ -55,8 +64,10 @@ func __onReady__():
     self.__setupFromInputParadigm__(self.input_controller.input_paradigm)
 
 func __physicsProcess__():
+    # # Calculate velocity for Character2D.
     self.velocity = self.input_controller.motor_velocity * self.velocity_factor
 
+    # # Collision and Bouncing.
     var had_collide := self.move_and_slide()
     if had_collide:
         var last_collision := self.get_last_slide_collision()
@@ -65,6 +76,7 @@ func __physicsProcess__():
         self.input_controller.motor_velocity = \
             self.input_controller.motor_velocity.bounce(normal) * self.bounce_factor
 
+    # # Facing indicator.
     self.facing_indicator.rotation = Vector2.UP.angle_to(self.input_controller.facing)
 
 func __onVisibilityChange__(being_hidden: bool):

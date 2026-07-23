@@ -13,7 +13,7 @@ func activate() -> Error:
         return Error.ERR_UNAVAILABLE
 
     var ball_ref := self.game_ref.ball_ref
-    var maze_ref := self.game_ref.maze_ref
+    var maze__ref := self.game_ref.maze__ref
 
     # See if there are wall that this ball is attaching to.
     var collision_count := ball_ref.get_slide_collision_count()
@@ -43,12 +43,12 @@ func activate() -> Error:
             return Error.ERR_ALREADY_EXISTS # Path already exist, no need for wall-clip.
     var coord_of_wall_clip_target := ball_coord_in_maze + offset
     # Check if warp-target does not exist a path.
-    if maze_ref.isNotPathAt(coord_of_wall_clip_target.x, coord_of_wall_clip_target.y):
+    if maze__ref.isNotPathAt(coord_of_wall_clip_target.x, coord_of_wall_clip_target.y):
         return Error.ERR_DOES_NOT_EXIST
 
     # Can perform wall-clip.
-    var ball_new_global_position := maze_ref.to_global(
-        maze_ref.map_to_local(coord_of_wall_clip_target)
+    var ball_new_global_position := maze__ref.to_global(
+        maze__ref.map_to_local(coord_of_wall_clip_target)
     )
     ball_ref.moveTo(ball_new_global_position)
 

@@ -111,14 +111,6 @@ func stopReceivingInput():
     self.process_mode = ProcessMode.PROCESS_MODE_DISABLED
     self.input_controller.disable()
 
-## Start sending coord to the dark mask of maze.
-func startSendingCoord():
-    self.set_process(true)
-
-## Stop sending coord to the dark mask of maze.
-func stopSendingCoord():
-    self.set_process(false)
-
 ## Get the coord offset of ball's intension of moving, in context of a maze.[br][br]
 ##
 ## Example: moving to left-bottom corner will be [code]Vector2i(1, 1)[/code],

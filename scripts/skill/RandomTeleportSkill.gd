@@ -20,7 +20,7 @@ func activate() -> Error:
         target_y = randi_range(0, maze_height)
         is_wall_at_target_coord = maze__ref.isNotPathAt(target_x, target_y)
 
-    self.game_ref.ball_ref.moveTo(self.game_ref.getGlobalPositionOfMazeCoord(
+    self.game_ref.ball__ref.moveTo(self.game_ref.getGlobalPositionOfMazeCoord(
         target_x, target_y
     ))
 

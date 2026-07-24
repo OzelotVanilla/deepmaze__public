@@ -200,9 +200,9 @@ func playSwingAnimation():
 
 func updateFromGameBallType():
     self.sprite_frames__anime = load(
-        Ability.ability_animation_path__dict[self.game__ref.ball_ref.type]
+        Ability.ability_animation_path__dict[self.game__ref.ball__ref.type]
     )
-    self.ability_ref = Ability.available_ability[self.game__ref.ball_ref.type].new()
+    self.ability_ref = Ability.available_ability[self.game__ref.ball__ref.type].new()
 
 ## Disable the button, pause the input/chanting handling of it.
 func disable():

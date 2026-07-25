@@ -58,7 +58,6 @@ func _physics_process(delta: float) -> void: self.__physicsProcess__()
 
 func _init() -> void:
     self.visible = false
-    self.visibility_changed.connect(self.__onVisibilityChange__.bind(self.visible))
 
 func __onReady__():
     self.__setupFromInputParadigm__(self.input_controller.input_paradigm)
@@ -78,12 +77,6 @@ func __physicsProcess__():
 
     # # Facing indicator.
     self.facing_indicator.rotation = Vector2.UP.angle_to(self.input_controller.facing)
-
-func __onVisibilityChange__(being_hidden: bool):
-    if being_hidden:
-        self.stopReceivingInput()
-    else:
-        self.startReceivingInput()
 
 func __setupFromInputParadigm__(new_value: BallInputController.BallInputParadigm):
     if not self.is_node_ready():

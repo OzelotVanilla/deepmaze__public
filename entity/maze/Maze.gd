@@ -9,9 +9,16 @@ extends TileMapLayer
 ## All [NavHintArea] monitoring is enabled and ready to connect/use.
 signal nav_hint_areas__ready()
 
+## [WhiteCaneDetectArea] in the maze is enabled and ready to connect/use.
+signal white_cane_detect_areas__ready()
+
 
 const nav_hint_area__scene := preload(
     "res://scripts/sound_nav_system/nav/nav_hint_area_sln/NavHintArea.tscn"
+)
+
+const white_cane_detect_area__scene := preload(
+    "res://scripts/sound_nav_system/nav/white_cane_sln/WhiteCaneDetectArea.tscn"
 )
 
 
@@ -71,48 +78,77 @@ var fake_exit__coord: Vector2i = Vector2i(-1, -1)
 
 ## The first direction for the ball to go, updated since last path regeneration.[br][br]
 ##
-## Updated by [method createNavHintAreasCache],
+## Updated by [method createNavPathpointCache],
 ##  read-ed by [method MazeGame.setupEntity] when set init facing of ball.
 var first_direction_to_go: Vector2i = Vector2i.ZERO
 
 
 @onready var nav_hint_area__container: Node2D = $NavHintAreaContainer
 
+@onready var white_cane_detect_area__container: Node2D = $WhiteCaneDetectAreaContainer
 
-## Synchronously create nav hint area cache, then rebuild the container.
+
+## Synchronously create nav pathpoint cache, then rebuild the [NavHintArea] container.
 ## This does not enable monitoring; caller should do that in a later physics tick.
 func createNavHintAreas(nav_start_coord: Vector2i, nav_end_coord: Vector2i):
     if self.astar_grid == null:
         printerr("astar_grid is null in `Maze.createNavHintAreas`, cannot create nav hint areas.")
         return
 
-    self.createNavHintAreasCache(nav_start_coord, nav_end_coord)
+    self.createNavPathpointCache(
+        nav_start_coord, nav_end_coord,
+        SoundNavSystem.Solution.nav_hint_area
+    )
     self.regenerateNavHintAreaToContainer()
 
-## Used to generate [NavHintArea] to be added as child of [member nav_hint_area__container].
-## Stores [code]{coord: {
+## Synchronously create nav pathpoint cache, then rebuild the [WhiteCaneDetectArea] container.
+## This does not enable monitoring; caller should do that in a later physics tick.
+func createWhiteCaneDetectAreas(nav_start_coord: Vector2i, nav_end_coord: Vector2i):
+    if self.astar_grid == null:
+        printerr(
+            "astar_grid is null in `Maze.createWhiteCaneDetectAreas`,",
+            " cannot create nav hint areas."
+        )
+        return
+
+    self.createNavPathpointCache(
+        nav_start_coord, nav_end_coord,
+        SoundNavSystem.Solution.white_cane
+    )
+    self.regenerateWhiteCaneDetectAreaToContainer()
+
+## Used to generate [NavHintArea] or [WhiteCaneDetectArea]
+##  to be added as child of [member nav_hint_area__container]
+##  or [member white_cane_detect_area__container].[br][br]
+##
+## Stores following information that is used by
+## [method generateNavHintAreaAtCoord] or [method createWhiteCaneDetectAreas]:[br]
+## [code]{coord: {
 ##   "nav_direction": nav_direction, "turn_direction": turn_direction,
 ##   "sfx_direction": sfx_direction, "type": hint_type,
 ##   "is_checking": is_checking
-## }}[/code] for [method generateNavHintAreaAtCoord].[br][br]
+## }}[/code][br][br]
 ##
-## Modified by [member createNavHintAreasCache], do not edit it manually.
-var nav_hint_area__coord_cache: Dictionary[Vector2i, Dictionary]
+## Modified by [method createNavPathpointCache], do not edit this member manually.
+var nav_pathpoint__cache: Dictionary[Vector2i, Dictionary]
 
 ## Create a path of [NavHintArea] from the ball starting point to exit and stored to cache.
 ## Should be called after A* grid is updated.[br][br]
 ##
 ## [NavHintArea] will be generated, placed,
-##  and added to [member nav_hint_area__coord_cache].[br][br]
+##  and added to [member nav_pathpoint__cache].[br][br]
 ##
 ## Caution: Will clear existing areas first.[br]
 ## Caution: Should be mounted first (ready) before call this,
 ##  otherwise this method will be called until ready.
-func createNavHintAreasCache(nav_start_coord: Vector2i, nav_end_coord: Vector2i):
+func createNavPathpointCache(
+    nav_start_coord: Vector2i, nav_end_coord: Vector2i,
+    sound_nav_solution: SoundNavSystem.Solution
+):
     # Is `coord`-keyed to avoid repeated areas on the same tile.
-    self.nav_hint_area__coord_cache = {}
+    self.nav_pathpoint__cache = {}
     # Reset id count.
-    self.generateNavHintAreaAtCoord__id_count = 1
+    self.generation__id_count = 1
 
     # # Gather the coords that needs a `NavHintArea`.
     var to_target__path_points := self.astar_grid.get_point_path(
@@ -120,7 +156,7 @@ func createNavHintAreasCache(nav_start_coord: Vector2i, nav_end_coord: Vector2i)
     )
     if to_target__path_points.size() < 2:
         printerr(
-            "Length of `to_target__path_points` is less than 2 in `Maze.createNavHintAreasCache`,",
+            "Length of `to_target__path_points` is less than 2 in `Maze.createNavPathpointCache`,",
             " this is bugful because the result must contains start and target coord. ",
             "Check if input data is wrong,",
             " either `nav_start_coord` nor `nav_start_coord` is solid/disabled."
@@ -139,7 +175,7 @@ func createNavHintAreasCache(nav_start_coord: Vector2i, nav_end_coord: Vector2i)
 
     # The start point should be added to notif player where to move.
     var start_direction := to_target__path_coords[1] - to_target__path_coords[0]
-    self.setNavHintAreaCache(
+    self.setNavPathpointCache(
         to_target__path_coords[0],
         start_direction,
         Vector2i.ZERO,
@@ -171,91 +207,132 @@ func createNavHintAreasCache(nav_start_coord: Vector2i, nav_end_coord: Vector2i)
             var turn_direction := direction_after_corner
 
             if i == 1: # X - 1 is the starting point.
-                self.setNavHintAreaCache(
-                    prev_coord, # `X - 1`
-                    before_corner__nav_direction,
-                    Vector2i.ZERO,
-                    before_corner__nav_direction, # sfx_direction
-                    NavHintArea.HintType.normal_hint,
-                    true
-                )
-                self.setNavHintAreaCache(
-                    corner_coord, # `X`
-                    at_corner__nav_direction,
-                    Vector2i.ZERO,
-                    at_corner__nav_direction, # sfx_direction
-                    NavHintArea.HintType.none,
-                    true
-                )
+                match sound_nav_solution:
+                    SoundNavSystem.Solution.nav_hint_area:
+                        self.setNavPathpointCache(
+                            prev_coord, # `X - 1`
+                            before_corner__nav_direction,
+                            Vector2i.ZERO,
+                            before_corner__nav_direction, # sfx_direction
+                            NavHintArea.HintType.normal_hint,
+                            true
+                        )
+                        self.setNavPathpointCache(
+                            corner_coord, # `X`
+                            at_corner__nav_direction,
+                            Vector2i.ZERO,
+                            at_corner__nav_direction, # sfx_direction
+                            NavHintArea.HintType.none,
+                            true
+                        )
+                    SoundNavSystem.Solution.white_cane:
+                        self.setNavPathpointCache(
+                            prev_coord, # `X - 1`
+                            before_corner__nav_direction,
+                            Vector2i.ZERO,
+                            before_corner__nav_direction # sfx_direction
+                        )
+                        self.setNavPathpointCache(
+                            corner_coord, # `X`
+                            at_corner__nav_direction,
+                            Vector2i.ZERO,
+                            at_corner__nav_direction # sfx_direction
+                        )
             elif i == 2: # X - 2 is the starting point.
                 var prev_prev_coord: Vector2i = to_target__path_coords[i - 2]
-                self.setNavHintAreaCache(
-                    prev_prev_coord, # `X - 2`
-                    before_corner__nav_direction,
-                    Vector2i.ZERO,
-                    before_corner__nav_direction, # `s=n`
-                    NavHintArea.HintType.normal_hint,
-                    true
-                )
-                self.setNavHintAreaCache(
-                    prev_coord, # `X - 1`
-                    before_corner__nav_direction,
-                    turn_direction,
-                    turn_direction, # `s=t`
-                    NavHintArea.HintType.pre_hint,
-                    false
-                )
-                self.setNavHintAreaCache(
-                    corner_coord, # `X`
-                    at_corner__nav_direction,
-                    Vector2i.ZERO,
-                    Vector2i.ZERO, # no sfx_direction
-                    NavHintArea.HintType.none,
-                    true
-                )
+                match sound_nav_solution:
+                    SoundNavSystem.Solution.nav_hint_area:
+                        self.setNavPathpointCache(
+                            prev_prev_coord, # `X - 2`
+                            before_corner__nav_direction,
+                            Vector2i.ZERO,
+                            before_corner__nav_direction, # `s=n`
+                            NavHintArea.HintType.normal_hint,
+                            true
+                        )
+                        self.setNavPathpointCache(
+                            prev_coord, # `X - 1`
+                            before_corner__nav_direction,
+                            turn_direction,
+                            turn_direction, # `s=t`
+                            NavHintArea.HintType.pre_hint,
+                            false
+                        )
+                        self.setNavPathpointCache(
+                            corner_coord, # `X`
+                            at_corner__nav_direction,
+                            Vector2i.ZERO,
+                            Vector2i.ZERO, # no sfx_direction
+                            NavHintArea.HintType.none,
+                            true
+                        )
+                    SoundNavSystem.Solution.white_cane:
+                        self.setNavPathpointCache(
+                            prev_prev_coord, # `X - 2`
+                            before_corner__nav_direction,
+                            Vector2i.ZERO,
+                            before_corner__nav_direction # sfx_direction
+                        )
+                        self.setNavPathpointCache(
+                            corner_coord, # `X`
+                            at_corner__nav_direction,
+                            Vector2i.ZERO,
+                            at_corner__nav_direction # sfx_direction
+                        )
             else: # Not near starting point.
                 var prev_prev_coord: Vector2i = to_target__path_coords[i - 2]
-                self.setNavHintAreaCache(
-                    prev_prev_coord, # `X - 2`
-                    before_corner__nav_direction,
-                    turn_direction,
-                    turn_direction, # `s=t`
-                    NavHintArea.HintType.pre_hint,
-                    false
-                )
-                self.setNavHintAreaCache(
-                    prev_coord, # `X - 1`
-                    before_corner__nav_direction,
-                    turn_direction,
-                    turn_direction, # `s=t`
-                    NavHintArea.HintType.normal_hint,
-                    false
-                )
-                self.setNavHintAreaCache(
-                    corner_coord, # `X`
-                    at_corner__nav_direction,
-                    Vector2i.ZERO,
-                    Vector2i.ZERO, # no sfx_direction
-                    NavHintArea.HintType.none,
-                    true
-                )
+                match sound_nav_solution:
+                    SoundNavSystem.Solution.nav_hint_area:
+                        self.setNavPathpointCache(
+                            prev_prev_coord, # `X - 2`
+                            before_corner__nav_direction,
+                            turn_direction,
+                            turn_direction, # `s=t`
+                            NavHintArea.HintType.pre_hint,
+                            false
+                        )
+                        self.setNavPathpointCache(
+                            prev_coord, # `X - 1`
+                            before_corner__nav_direction,
+                            turn_direction,
+                            turn_direction, # `s=t`
+                            NavHintArea.HintType.normal_hint,
+                            false
+                        )
+                        self.setNavPathpointCache(
+                            corner_coord, # `X`
+                            at_corner__nav_direction,
+                            Vector2i.ZERO,
+                            Vector2i.ZERO, # no sfx_direction
+                            NavHintArea.HintType.none,
+                            true
+                        )
+                    SoundNavSystem.Solution.white_cane:
+                        self.setNavPathpointCache(
+                            corner_coord, # `X`
+                            at_corner__nav_direction,
+                            Vector2i.ZERO,
+                            at_corner__nav_direction, # sfx_direction
+                            NavHintArea.HintType.none,
+                            true
+                        )
 
         i += 1
 
-## Add or update one entry in [member nav_hint_area__coord_cache].
-func setNavHintAreaCache(
+## Add or update one entry in [member nav_pathpoint__cache].
+func setNavPathpointCache(
     coord: Vector2i,
     nav_direction: Vector2i,
     turn_direction: Vector2i,
     sfx_direction: Vector2i,
-    hint_type: NavHintArea.HintType,
-    is_checking: bool
+    hint_type: NavHintArea.HintType = NavHintArea.HintType.none,
+    is_checking: bool = false
 ):
-    if self.nav_hint_area__coord_cache.has(coord):
+    if self.nav_pathpoint__cache.has(coord):
         is_checking = is_checking \
-            or self.nav_hint_area__coord_cache[coord]["is_checking"]
+            or self.nav_pathpoint__cache[coord]["is_checking"]
 
-    self.nav_hint_area__coord_cache.set(coord, {
+    self.nav_pathpoint__cache.set(coord, {
         "nav_direction": nav_direction,
         "turn_direction": turn_direction,
         "sfx_direction": sfx_direction,
@@ -268,14 +345,27 @@ func clearNavHintAreas():
     # WARNING: Do NOT use `call_deferred` here,
     #  the outside is expected to call this method sync-ly.
     for c in self.nav_hint_area__container.get_children():
+        # Only remove it while it is still inside container.
+        # It could happens that `c` is already removed.
         if c.get_parent() == self.nav_hint_area__container:
             self.nav_hint_area__container.remove_child(c)
         if not c.is_queued_for_deletion():
             c.queue_free()
 
-## Used by [method generateNavHintAreaAtCoord],
-##  modified by [method createNavHintAreasCache].
-var generateNavHintAreaAtCoord__id_count := 1
+## Delete all [WhiteCaneDetectArea] in [member white_cane_detect_area__container].
+func clearWhiteCaneDetectAreas():
+    # WARNING: Do NOT use `call_deferred` here,
+    #  the outside is expected to call this method sync-ly.
+    for c in self.white_cane_detect_area__container.get_children():
+        # Only remove it while it is still inside container.
+        # It could happens that `c` is already removed.
+        self.white_cane_detect_area__container.remove_child(c)
+        if not c.is_queued_for_deletion():
+            c.queue_free()
+
+## Used by [method generateNavHintAreaAtCoord] or [method generateWhiteCaneDetectAreaAtCoord].[br]
+## Modified (reset-ed) by [method createNavPathpointCache].
+var generation__id_count := 1
 
 ## Generate one [NavHintArea] at specified maze coord.
 func generateNavHintAreaAtCoord(
@@ -296,10 +386,30 @@ func generateNavHintAreaAtCoord(
     nav_hint_area.turn_direction = turn_direction
     nav_hint_area.sfx_direction = sfx_direction
     nav_hint_area.position = self.map_to_local(coord) # This also returns centered position.
-    nav_hint_area.name = str("NavHintArea ", generateNavHintAreaAtCoord__id_count)
-    generateNavHintAreaAtCoord__id_count += 1
+    nav_hint_area.name = str("NavHintArea ", self.generation__id_count)
+    self.generation__id_count += 1
 
     return nav_hint_area
+
+## Generate one [WhiteCaneDetectArea] at specified maze coord.
+func generateWhiteCaneDetectAreaAtCoord(
+    coord: Vector2i,
+    nav_direction: Vector2i,
+    turn_direction: Vector2i,
+    sfx_direction: Vector2i
+) -> WhiteCaneDetectArea:
+    # Caution: Notice that the position of [WhiteCaneDetectArea] is its center of collision shape.
+    var detect_area: WhiteCaneDetectArea = self.white_cane_detect_area__scene.instantiate()
+    detect_area.monitoring = false
+    detect_area.monitorable = false
+    detect_area.nav_direction = nav_direction
+    detect_area.turn_direction = turn_direction
+    detect_area.sfx_direction = sfx_direction
+    detect_area.position = self.map_to_local(coord) # This also returns centered position.
+    detect_area.name = str("WhiteCaneDetectArea ", self.generation__id_count)
+    self.generation__id_count += 1
+
+    return detect_area
 
 ## Check whether the cell at given maze coord, is not a path.
 func isNotPathAt(x: int, y: int):
@@ -307,7 +417,7 @@ func isNotPathAt(x: int, y: int):
         or self.get_cell_atlas_coords(Vector2i(x, y)) != Maze.white_tile__atlas_coord
 
 ## Synchronously replace children of [member nav_hint_area__container] from
-##  [member nav_hint_area__coord_cache].
+##  [member nav_pathpoint__cache].
 ## New [NavHintArea] nodes are added with monitoring disabled.
 ## The caller is expected to call
 ##  [method enableNavHintAreaMonitoring] in a later physics tick.
@@ -316,8 +426,8 @@ func regenerateNavHintAreaToContainer():
     self.clearNavHintAreas()
 
     # # Add new.
-    for coord in self.nav_hint_area__coord_cache:
-        var cache: Dictionary = self.nav_hint_area__coord_cache[coord]
+    for coord in self.nav_pathpoint__cache:
+        var cache: Dictionary = self.nav_pathpoint__cache[coord]
         self.nav_hint_area__container.add_child(self.generateNavHintAreaAtCoord(
             coord,
             cache["nav_direction"],
@@ -327,12 +437,46 @@ func regenerateNavHintAreaToContainer():
             cache["is_checking"]
         ))
 
+## Synchronously replace children of [member white_cane_detect_area__container] from
+##  [member nav_pathpoint__cache].
+## New [WhiteCaneDetectArea] nodes are added with monitoring disabled.
+## The caller is expected to call
+##  [method enableWhiteCaneDetectAreaMonitoring] in a later physics tick.
+func regenerateWhiteCaneDetectAreaToContainer():
+    # # Clear old first.
+    self.clearWhiteCaneDetectAreas()
+
+    # # Add new.
+    for coord in self.nav_pathpoint__cache:
+        var cache: Dictionary = self.nav_pathpoint__cache[coord]
+        self.white_cane_detect_area__container.add_child(self.generateWhiteCaneDetectAreaAtCoord(
+            coord,
+            cache["nav_direction"],
+            cache["turn_direction"],
+            cache["sfx_direction"]
+        ))
+
+## Enable [member Area2D.monitoring] on [NavHintArea]
+##  in [member nav_hint_area__container].
 func enableNavHintAreaMonitoring():
     for area in self.nav_hint_area__container.get_children():
         if area is NavHintArea:
             area.monitoring = true
 
     self.nav_hint_areas__ready.emit()
+
+## Enable the [member Area2D.monitorable] on the first [WhiteCaneDetectArea]
+##  on the path to exit.
+func enableWhiteCaneDetectAreaMonitorable():
+    var children := self.white_cane_detect_area__container.get_children()
+    if children.size() < 1:
+        push_warning("No enough WhiteCaneDetectArea, stopping enabling monitoring.")
+        return
+
+    var area: WhiteCaneDetectArea = children.front()
+    area.monitorable = true
+
+    self.white_cane_detect_areas__ready.emit()
 
 ## Update [TileMapLayer]'s internal,
 ##  then update [member width] and [member height].

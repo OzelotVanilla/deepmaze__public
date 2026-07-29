@@ -9,9 +9,6 @@ extends TileMapLayer
 ## All [NavHintArea] monitoring is enabled and ready to connect/use.
 signal nav_hint_areas__ready()
 
-## [WhiteCaneDetectArea] in the maze is enabled and ready to connect/use.
-signal white_cane_detect_areas__ready()
-
 
 const nav_hint_area__scene := preload(
     "res://scripts/sound_nav_system/nav/nav_hint_area_sln/NavHintArea.tscn"
@@ -402,6 +399,7 @@ func generateWhiteCaneDetectAreaAtCoord(
     var detect_area: WhiteCaneDetectArea = self.white_cane_detect_area__scene.instantiate()
     detect_area.monitoring = false
     detect_area.monitorable = false
+    detect_area.length = self.length_of_tile
     detect_area.nav_direction = nav_direction
     detect_area.turn_direction = turn_direction
     detect_area.sfx_direction = sfx_direction
@@ -447,14 +445,27 @@ func regenerateWhiteCaneDetectAreaToContainer():
     self.clearWhiteCaneDetectAreas()
 
     # # Add new.
+    var detect_areas: Array[WhiteCaneDetectArea] = []
     for coord in self.nav_pathpoint__cache:
         var cache: Dictionary = self.nav_pathpoint__cache[coord]
-        self.white_cane_detect_area__container.add_child(self.generateWhiteCaneDetectAreaAtCoord(
+        var area := self.generateWhiteCaneDetectAreaAtCoord(
             coord,
             cache["nav_direction"],
             cache["turn_direction"],
             cache["sfx_direction"]
-        ))
+        )
+        self.white_cane_detect_area__container.add_child(area)
+        detect_areas.push_back(area)
+
+    # # Set the `next_area_to_enable__ref`.
+    if detect_areas.size() < 2:
+        return
+    # Notice: Godot `Dictionary` is ordered.
+    var first_area:    WhiteCaneDetectArea = detect_areas.front()
+    var previous_area: WhiteCaneDetectArea = first_area
+    for area in detect_areas.slice(1):
+        previous_area.next_area_to_enable__ref = area
+        previous_area = area
 
 ## Enable [member Area2D.monitoring] on [NavHintArea]
 ##  in [member nav_hint_area__container].
@@ -465,7 +476,7 @@ func enableNavHintAreaMonitoring():
 
     self.nav_hint_areas__ready.emit()
 
-## Enable the [member Area2D.monitorable] on the first [WhiteCaneDetectArea]
+## Enable [b]async-ly[/b] the [member Area2D.monitorable] on the first [WhiteCaneDetectArea]
 ##  on the path to exit.
 func enableWhiteCaneDetectAreaMonitorable():
     var children := self.white_cane_detect_area__container.get_children()
@@ -474,9 +485,7 @@ func enableWhiteCaneDetectAreaMonitorable():
         return
 
     var area: WhiteCaneDetectArea = children.front()
-    area.monitorable = true
-
-    self.white_cane_detect_areas__ready.emit()
+    area.setToMonitorableDeferred()
 
 ## Update [TileMapLayer]'s internal,
 ##  then update [member width] and [member height].
@@ -500,6 +509,21 @@ func refreshAstarGrid():
             var coord := Vector2i(x, y)
             if self.get_cell_atlas_coords(coord) == Maze.black_tile__atlas_coord:
                 self.astar_grid.set_point_solid(coord)
+
+## Return the first [WhiteCaneDetectArea]'s ref from container.
+func getFirstWhiteCaneDetectArea() -> WhiteCaneDetectArea:
+    # # Return first occurance.
+    var children := self.white_cane_detect_area__container.get_children()
+    for c in children:
+        if c is WhiteCaneDetectArea:
+            return c
+
+    # # If not found.
+    printerr(
+        "`Maze.getFirstWhiteCaneDetectArea` could not find the first detect area from: ",
+        children, "."
+    )
+    return null
 
 #region Debug/Print related
 func printMazeTile():

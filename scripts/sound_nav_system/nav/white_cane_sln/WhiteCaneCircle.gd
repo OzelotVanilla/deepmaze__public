@@ -80,4 +80,8 @@ func __on_area_entered(area: Area2D) -> void:
         self.__on_WhiteCaneDetectArea_entered(area)
 
 func __on_WhiteCaneDetectArea_entered(detect_area: WhiteCaneDetectArea):
+    # Only detect valid area.
+    if detect_area.is_consumed:
+        return
+
     self.detect_area_touched.emit(detect_area)

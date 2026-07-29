@@ -160,4 +160,9 @@ func moveTo(new_global_position: Vector2):
 
 ## Connected with [signal WhiteCaneCircle.detect_area_touched].
 func handleWhiteCaneDetectAreaTouched(detect_area: WhiteCaneDetectArea) -> void:
+    # # Emit signal (for sound playing).
     self.white_cane_touched_detect_area.emit(detect_area)
+
+    # # Consume if have next area.
+    if detect_area.next_area_to_enable__ref != null:
+        detect_area.consume()

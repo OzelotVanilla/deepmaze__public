@@ -54,13 +54,13 @@ var ability_ref: Ability:
 
 @onready var cooldown_timer__ref: Timer = $CooldownTimer
 
-@onready var cooldown_mask__ref: ColorRect = $VisualRoot/CooldownMask
+@onready var cooldown_mask__ref: ColorRect = $CooldownMask
 
-@onready var cooldown_time_label__ref: Label = $VisualRoot/CooldownMask/TimeLabel
+@onready var cooldown_time_label__ref: Label = $CooldownMask/TimeLabel
 
-@onready var anime_rect__ref: AnimatedTextureRect = $VisualRoot/Anime
+@onready var anime_rect__ref: AnimatedTextureRect = $Anime
 
-@onready var chant_mask__ref: AbilityButtonChantMask = $VisualRoot/ChantMask
+@onready var chant_mask__ref: AbilityButtonChantMask = $ChantMask
 
 @onready var ui_anime_player__ref: AnimationPlayer = $UIAnimationPlayer
 

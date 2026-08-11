@@ -14,3 +14,4 @@ script = ExtResource("1_dd07d")
 shape = SubResource("CircleShape2D_xm33v")
 
 [connection signal="area_entered" from="." to="." method="__on_area_entered"]
+[connection signal="area_exited" from="." to="." method="__on_area_exited"]

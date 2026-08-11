@@ -9,6 +9,7 @@ signal detect_area_touched(detect_area: WhiteCaneDetectArea)
 
 
 func _ready() -> void: self.__onReady__()
+func _physics_process(delta: float) -> void: self.__onPhysicsProcess__(delta)
 func _draw() -> void: self.__onDraw__()
 
 
@@ -47,10 +48,47 @@ var radius: float = 20:
         self.syncCollisionShapeRadius()
         self.queue_redraw()
 
+## Storing the [WhiteCaneDetectArea] that already entered the [WhiteCaneCircle],
+##  and wait for the ray-casting test on next physics frame.
+var overlapping_candidates: Array[WhiteCaneDetectArea]
+
+## Cache for the area that should be deleted at the start of next physics frame.
+var overlapping_candidates__element_to_delete: Array[WhiteCaneDetectArea]
+
 
 func __onReady__():
     self.syncCollisionShapeRadius()
     self.queue_redraw()
+
+func __onPhysicsProcess__(delta: float):
+    # # Re-build `overlapping_candidates`.
+    for detect_area_to_delete in self.overlapping_candidates__element_to_delete:
+        self.overlapping_candidates.erase(detect_area_to_delete)
+    # Clear the cache.
+    self.overlapping_candidates__element_to_delete.clear()
+
+    # # Check if `overlapping_candidates` can directly be "seen" by the circle's center.
+    # Using ray-casting to test.
+    for detect_area in self.overlapping_candidates:
+        # # Only detect valid area.
+        if not detect_area.is_enabled:
+            self.overlapping_candidates__element_to_delete.push_back(detect_area)
+            continue
+
+        # # Test ray-cast.
+        var collision_dict := \
+            get_world_2d().direct_space_state.intersect_ray(PhysicsRayQueryParameters2D.create(
+                self.global_position,        # from
+                detect_area.global_position, # to
+            ))
+        if collision_dict.size() > 0:
+            # Collided with wall in the maze.
+            continue
+
+        # # If all test pass, emit collision signal, and erase from the array.
+        self.detect_area_touched.emit(detect_area)
+        # Delete at next physics frame.
+        self.overlapping_candidates__element_to_delete.push_back(detect_area)
 
 func __onDraw__():
     # # Draw circle.
@@ -79,9 +117,14 @@ func __on_area_entered(area: Area2D) -> void:
     if area is WhiteCaneDetectArea:
         self.__on_WhiteCaneDetectArea_entered(area)
 
-func __on_WhiteCaneDetectArea_entered(detect_area: WhiteCaneDetectArea):
-    # Only detect valid area.
-    if detect_area.is_consumed:
-        return
+func __on_area_exited(area: Area2D) -> void:
+    if area is WhiteCaneDetectArea:
+        self.__on_WhiteCaneDetectArea_exited(area)
 
-    self.detect_area_touched.emit(detect_area)
+func __on_WhiteCaneDetectArea_entered(detect_area: WhiteCaneDetectArea):
+    if not self.overlapping_candidates.has(detect_area):
+        self.overlapping_candidates.push_back(detect_area)
+
+func __on_WhiteCaneDetectArea_exited(detect_area: WhiteCaneDetectArea):
+    if self.overlapping_candidates.has(detect_area):
+        self.overlapping_candidates__element_to_delete.push_back(detect_area)

@@ -63,6 +63,12 @@ var sfx_direction: Vector2i = Vector2i.ZERO:
 ## Whether current area is already detected by [WhiteCaneCircle].
 var is_consumed: bool = false
 
+## Whether current area is detectable by [WhiteCaneCircle], and not yet detected
+##  (monitorable and not consumed).
+var is_enabled: bool:
+    get():
+        return self.monitorable and not self.is_consumed
+
 ## The next [WhiteCaneDetectArea] to enable [member Area2D.monitable]
 ##  for white cane to detect.
 var next_area_to_enable__ref: WhiteCaneDetectArea = null

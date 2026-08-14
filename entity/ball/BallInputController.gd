@@ -70,7 +70,8 @@ var motor_velocity: Vector2 = Vector2.ZERO
 
 ## Stands for the facing direction of the ball.
 ## Init-ed when new level starts.
-## Should be set-ed otherwise the ball will not move ![br][br]
+## [b]Should be set-ed[/b] before reading input (before [method enable]),
+##  otherwise the ball will not move ![br][br]
 ##
 ## Only meaningful if [constant BallInputParadigm.body_4way_relative].
 var facing: Vector2 = Vector2.ZERO
@@ -109,7 +110,7 @@ var should_invert_input: bool = false
 ## Relative to the pixel size of maze.
 ## Unit: [code]px/s[/code].
 @export_custom(PropertyHint.PROPERTY_HINT_NONE, "suffix:px/s")
-var speed: float = 400.0
+var speed: float = 200.0
 
 ## When input device is [constant BallInputSource.keyboard_or_controller],
 ##  make the movement of ball with inertia by giving acceleration factor to movement.
@@ -126,6 +127,14 @@ func _unhandled_input(event: InputEvent) -> void: self.__onUnhandledInput__(even
 func enable():
     self.set_process(true)
     self.input_source = self.detectInputSource()
+
+    if self.input_paradigm == BallInputParadigm.body_4way_relative \
+       and self.facing.is_zero_approx():
+        printerr(
+            "Facing vector should be set for `BallInputController`",
+            " when using `BallInputParadigm.body_4way_relative` paradigm. ",
+            "Ball will NOT move until a correct facing vector is set-ed."
+        )
 
 ## Stop listening to the input device and reset.
 func disable():

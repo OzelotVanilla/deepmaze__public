@@ -17,10 +17,25 @@ const svg_sprite_radius := 256
 ##  with the information of collision.
 signal hit_wall(collision: KinematicCollision2D)
 
+## Emitted when white cane touches detect area.
+## Could be used to generate sound to hint player to turn.
+signal white_cane_touched_detect_area(detect_area: WhiteCaneDetectArea)
+
+
+## The curve for converting [i]ball speed[/i]
+##  to [i]radius factor of white cane[/i].
+## The final radius is calculated by current rendered ball radius
+##  multiply with the radius factor got from this curve.
+@export var white_cane_speed_radius_factor_curve: Curve
+
+
+@onready var sprite__ref: Sprite2D = $Sprite2D
 
 @onready var input_controller: BallInputController = $InputController
 
 @onready var facing_indicator: Sprite2D = $FacingIndicator
+
+@onready var white_cane__ref: WhiteCaneCircle = $WhiteCane
 
 
 ## Used in the physics calculation ([method __physicsProcess__])
@@ -44,6 +59,11 @@ var type: MazeGame.BallType = MazeGame.BallType.wall_clip:
         type = new_type
         self.updateBallFromType()
 
+## Rendered radius on the screen. Unit: [code]px[/code].
+var rendered_radius: float:
+    get():
+        return self.sprite__ref.get_rect().size.y / 2
+
 ## Reference of the game.
 var ref__maze_game: MazeGame
 
@@ -64,7 +84,13 @@ func __onReady__():
 
 func __physicsProcess__():
     # # Calculate velocity for Character2D.
-    self.velocity = self.input_controller.motor_velocity * self.velocity_factor
+    var v := self.input_controller.motor_velocity * self.velocity_factor
+    self.velocity = v
+
+    # # Set radius of white cane.
+    var v_len := v.length()
+    self.white_cane__ref.radius = self.rendered_radius \
+        * self.white_cane_speed_radius_factor_curve.sample_baked(v_len)
 
     # # Collision and Bouncing.
     var had_collide := self.move_and_slide()
@@ -131,3 +157,12 @@ func getMazeCoordOffset() -> Vector2i:
 ## Move the ball to a new global position.
 func moveTo(new_global_position: Vector2):
     self.global_position = new_global_position
+
+## Connected with [signal WhiteCaneCircle.detect_area_touched].
+func handleWhiteCaneDetectAreaTouched(detect_area: WhiteCaneDetectArea) -> void:
+    # # Emit signal (for sound playing).
+    self.white_cane_touched_detect_area.emit(detect_area)
+
+    # # Consume if have next area.
+    if detect_area.next_area_to_enable__ref != null:
+        detect_area.consume()

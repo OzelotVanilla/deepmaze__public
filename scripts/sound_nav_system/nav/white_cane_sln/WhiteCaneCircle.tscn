@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bxv2dwd8xra0c"]
+
+[ext_resource type="Script" uid="uid://bj335g10jq5ki" path="res://scripts/sound_nav_system/nav/white_cane_sln/WhiteCaneCircle.gd" id="1_dd07d"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xm33v"]
+radius = 20.0
+
+[node name="WhiteCaneCircle" type="Area2D" unique_id=864941559]
+collision_layer = 512
+collision_mask = 1024
+script = ExtResource("1_dd07d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=372425429]
+shape = SubResource("CircleShape2D_xm33v")
+
+[connection signal="area_entered" from="." to="." method="__on_area_entered"]
+[connection signal="area_exited" from="." to="." method="__on_area_exited"]

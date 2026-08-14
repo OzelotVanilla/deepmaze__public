@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b67yl7xppywnu"]
 
-[ext_resource type="Script" uid="uid://ciwvfh2a2xppy" path="res://entity/maze/NavHintArea.gd" id="1_sucmh"]
+[ext_resource type="Script" uid="uid://ciwvfh2a2xppy" path="res://scripts/sound_nav_system/nav/nav_hint_area_sln/NavHintArea.gd" id="1_sucmh"]
 [ext_resource type="Texture2D" uid="uid://c8o04trkek5o3" path="res://assets/vector_graphics/ui_elements/white_filled_triangle.svg" id="2_s646s"]
 [ext_resource type="Texture2D" uid="uid://o1220ghvtkq5" path="res://assets/vector_graphics/ui_elements/white_dashed_square.svg" id="3_n2j0u"]
 [ext_resource type="Texture2D" uid="uid://yocv3bvydawd" path="res://assets/vector_graphics/ui_elements/small_white_ball_no_stroke.svg" id="3_xuteb"]

@@ -2,14 +2,17 @@
 
 [ext_resource type="Texture2D" uid="uid://cryuquuadj1rg" path="res://assets/vector_graphics/maze_entities/black_ball.svg" id="1_1a30b"]
 [ext_resource type="Script" uid="uid://ckqwo1jgeytm0" path="res://entity/ball/Ball.gd" id="1_qviuk"]
+[ext_resource type="Curve" uid="uid://c4vc4osretwgf" path="res://scripts/sound_nav_system/nav/white_cane_sln/ball_white_cane_speed_radius_factor_curve.tres" id="2_1ri0c"]
 [ext_resource type="Script" uid="uid://b0g7bq0g8qh52" path="res://entity/ball/BallInputController.gd" id="2_dq6q2"]
 [ext_resource type="Texture2D" uid="uid://qn53q8lnpfh" path="res://assets/vector_graphics/maze_entities/white_triangle.svg" id="4_iiiv7"]
+[ext_resource type="PackedScene" uid="uid://bxv2dwd8xra0c" path="res://scripts/sound_nav_system/nav/white_cane_sln/WhiteCaneCircle.tscn" id="5_qgkym"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dq6q2"]
 radius = 256.0
 
 [node name="Ball" type="CharacterBody2D" unique_id=1693566313]
 script = ExtResource("1_qviuk")
+white_cane_speed_radius_factor_curve = ExtResource("2_1ri0c")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=314009726]
 texture = ExtResource("1_1a30b")
@@ -26,4 +29,7 @@ scale = Vector2(1.5, 1.5)
 texture = ExtResource("4_iiiv7")
 offset = Vector2(0, -80)
 
+[node name="WhiteCane" parent="." unique_id=864941559 instance=ExtResource("5_qgkym")]
+
 [connection signal="input_paradigm_changed" from="InputController" to="." method="__setupFromInputParadigm__"]
+[connection signal="detect_area_touched" from="WhiteCane" to="." method="handleWhiteCaneDetectAreaTouched"]

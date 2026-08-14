@@ -110,7 +110,7 @@ var should_invert_input: bool = false
 ## Relative to the pixel size of maze.
 ## Unit: [code]px/s[/code].
 @export_custom(PropertyHint.PROPERTY_HINT_NONE, "suffix:px/s")
-var speed: float = 400.0
+var speed: float = 200.0
 
 ## When input device is [constant BallInputSource.keyboard_or_controller],
 ##  make the movement of ball with inertia by giving acceleration factor to movement.

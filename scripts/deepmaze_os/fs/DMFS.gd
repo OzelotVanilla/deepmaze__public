@@ -190,6 +190,83 @@ func checkDirTraversal(
 
     return DMFSResult.createOK()
 
+## List the meta inside a directory of [param path] (should be absolute path).[br]
+## Returns array of [DMFSNode.Meta] if success.[br][br]
+##
+## Checks permission for:[br]
+## * Intermediate Directory: [code]x[/code].[br]
+## * Parent Directory: [code]x[/code].[br]
+## * Final Directory: [code]r+x[/code].[br][br]
+##
+## Returns error for these conditions:[br]
+## * [enum DMFSResult.Error.not_found]:
+##   If given [param path] does not exists.[br]
+## * [enum DMFSResult.Error.not_folder]:
+##   If one of the name in the given [param path] resolves to a file.[br]
+## * [enum DMFSResult.Error.permission_denied]:
+##   If no enough permission for accessing one of the folder in the given [param path].[br]
+func listDir(
+    path: String, actor: DMPermission.Level
+) -> DMFSResult:
+    # # Check existance, `x` permission and folder-ness.
+    var traverse_result := self.checkDirTraversal(path, actor)
+    if traverse_result.is_error:
+        return traverse_result
+
+    # # Check read permission of target node.
+    var fs_node := self.getRawFSNode(path)
+    if fs_node.read_permission > actor:
+        return DMFSResult.createError(
+            DMFSResult.Error.permission_denied,
+            str(
+                "No enough permission to read the content of folder: `",
+                path, "`."
+            )
+        )
+
+    # # Return the meta info.
+    var meta_arrar: Array[DMFSNode.Meta] = []
+    for child_node in fs_node.children:
+        meta_arrar.append(child_node.meta)
+
+    return DMFSResult.createOK(meta_arrar)
+
+## Get the meta information of the FS node at [param path] (should be absolute path).[br]
+## Returns [DMFSNode.Meta] if success.[br][br]
+##
+## Checks permission for:[br]
+## * Intermediate Directory: [code]x[/code].[br]
+## * Parent Directory: none.[br]
+## * Final Directory: none.[br][br]
+##
+## Returns error for these conditions:[br]
+## * [enum DMFSResult.Error.not_found]:
+##   If given [param path] does not exists.[br]
+## * [enum DMFSResult.Error.not_folder]:
+##   If one of the name in the given [param path] resolves to a file.[br]
+## * [enum DMFSResult.Error.permission_denied]:
+##   If no enough permission for accessing one of the folder in the given [param path].[br]
+func stat(
+    path: String, actor: DMPermission.Level
+) -> DMFSResult:
+    # # Check existance, `x` permission and folder-ness.
+    var traverse_result := self.checkDirTraversal(path.get_base_dir(), actor)
+    if traverse_result.is_error:
+        return traverse_result
+
+    # # OK to return the meta info
+    var fs_node := self.getRawFSNode(path)
+    if fs_node == null:
+        return DMFSResult.createError(
+            DMFSResult.Error.not_found,
+            str(
+                "Provided path does not exists: `",
+                path, "`."
+            )
+        )
+
+    return DMFSResult.createOK(fs_node.meta)
+
 ## Create an FS node at given dir.
 ## Will assign time-of-creation and modification at the time this method is executed.[br][br]
 ##
@@ -279,3 +356,105 @@ func create(
     fs_node.addChild(new_fs_node)
 
     return DMFSResult.createOK()
+
+## Update the last modification time of a file/folder.
+## If attempting to touch a non-exists file, create it instead.
+## However, if the parent folder does not exist,
+##  it will fail.[br][br]
+##
+## Checks permission for (if target exists):[br]
+## * Intermediate Directory: [code]x[/code].[br]
+## * Target: [code]w[/code].[br][br]
+##
+## Checks permission for (if target [b]not[/b] exists):[br]
+## * Intermediate Directory: [code]x[/code].[br]
+## * Parent Directory: [code]w+x[/code].[br][br]
+##
+## Returns error for these conditions:[br]
+## * [enum DMFSResult.Error.not_found]:
+##   If given [param path] does not exists.
+##   Or, creating a new file but parent folder does not exists.[br]
+## * [enum DMFSResult.Error.not_folder]:
+##   If given [param path] contains a name that is a file but used as a folder.[br]
+## * [enum DMFSResult.Error.permission_denied]:
+##   If no enough permission for accessing [param path],
+##    or does not have enough permission for parent dir to create a new file.[br]
+func touch(
+    path: String, actor: DMPermission.Level
+) -> DMFSResult:
+    # # Check if can traverse first.
+    var traverse_result := self.checkDirTraversal(path.get_base_dir(), actor)
+    if traverse_result.is_error:
+        return traverse_result # Might be permission error.
+
+    # # Check if target exists.
+    var resolve_result := self.resolveRawPath(path)
+    # If target exists and could be accessed, try update last modify timestamp.
+    if resolve_result.is_ok:
+        var fs_node: DMFSNode = resolve_result.value
+        var parent_path := DMFS.getParentPath(path)
+
+        # Check target `w` (intermediate `x` permission checked before).
+        var parent__fs_node := self.getRawFSNode(parent_path) # must exists
+        if parent__fs_node.exec_permission > actor:
+            return DMFSResult.createError(
+                DMFSResult.Error.permission_denied,
+                str(
+                    "No enough permission to access children inside this folder: `",
+                    parent_path, "`."
+                )
+            )
+        elif fs_node.write_permission > actor:
+            return DMFSResult.createError(
+                DMFSResult.Error.permission_denied,
+                str(
+                    "No enough permission to touch file: `",
+                    parent_path, "`."
+                )
+            )
+        else:
+            fs_node.updateTimeOfLastModify()
+            return DMFSResult.createOK(
+                null,
+                str("Last modification time updated: `", path, "`.")
+            )
+    # If `touch` target does not exists.
+    elif resolve_result.error == DMFSResult.Error.not_found:
+        # Check if touching a file.
+        if not path.ends_with("/"): # Create it instead.
+            # # Check if parent folder exists.
+            var parent_path := path.get_base_dir()
+            var parent__resolve_result := self.resolveRawPath(parent_path)
+            if parent__resolve_result.is_ok:
+                # Check parent `w+x` permission in `create`.
+                var create_result := self.create(
+                    parent_path, path.get_file(),
+                    DMFSNode.Type.file, actor
+                )
+                if create_result.is_ok:
+                    return DMFSResult.createOK(
+                        null,
+                        str("Created file: `", path, "`.")
+                    )
+                else:
+                    return create_result
+            else: # Cannot resolve parent folder of the file-to-create.
+                return parent__resolve_result
+        # Touching non-existing folder.
+        else:
+            # Just return the error.
+            return resolve_result
+    # If anything else not correct when resolving target path.
+    else:
+        # Just return the error.
+        return resolve_result
+
+## Returns the parent's path of given [param path], with trailing slash.
+## Returns [code]/[/code] for root directory.
+static func getParentPath(path: String) -> String:
+    if path == "/":
+        return "/"
+    elif path.ends_with("/"):
+        return path.rstrip("/").get_base_dir() + "/"
+    else:
+        return path.get_base_dir() + "/"

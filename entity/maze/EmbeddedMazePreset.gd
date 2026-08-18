@@ -8,12 +8,13 @@ extends Resource
 
 @export var sub_mazes: Array[SubMaze] = []
 
-## Array of Dictionaries defining inter-maze connections between ports.
-## Structure:
+## Array of [Dictionary] values defining inter-maze connections between ports.
+## [codeblock]
 ## [
-##   {
-##     "from_sub_maze_idx": 0, "from_port_idx": 0,
-##     "to_sub_maze_idx": 1, "to_port_idx": 0
-##   }, ...
+##     {
+##         "from_sub_maze_idx": 0, "from_port_idx": 0,
+##         "to_sub_maze_idx": 1, "to_port_idx": 0,
+##     },
 ## ]
+## [/codeblock]
 @export var connections: Array[Dictionary] = []

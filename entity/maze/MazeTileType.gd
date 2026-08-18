@@ -3,7 +3,7 @@ extends RefCounted
 ## Shared enum for maze tile data representation across embedded sub-mazes and generators.
 
 
-enum Type
+enum
 {
     path = 0,
     wall = 1,
@@ -11,7 +11,10 @@ enum Type
     exit = 3,
     quarter = 4,
     relic = 5,
+    ## For special level [constant MazeGame.SpecialLevel.la_barbe_bleue].
     gate_key = 6,
+    ## For special level [constant MazeGame.SpecialLevel.veronique].
     fake_exit = 7,
-    unclaimed = 99 # Used for non-rectangular sub-maze bounds padding
+    ## For non-rectangular sub-maze bounds padding
+    unclaimed = 99 
 }

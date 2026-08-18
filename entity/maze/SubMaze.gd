@@ -7,9 +7,10 @@ extends Resource
 @export var width: int = 7
 @export var height: int = 7
 
-## 2D grid matrix of MazeTileType.Type values representing the sub-maze layout.
-## Size: height x width. Values can be MazeTileType.Type.wall, MazeTileType.Type.path, etc.
-## Use MazeTileType.Type.unclaimed (99) for transparent cells in non-rectangular shapes.
+## 2D grid matrix of [MazeTileType] values representing the sub-maze layout.
+## Size: height x width. Values can be [constant MazeTileType.wall],
+##  [constant MazeTileType.path], etc.
+## Use [constant MazeTileType.unclaimed] for transparent cells in non-rectangular shapes.
 @export var grid: Array[PackedInt32Array] = []
 
 ## Boundary connection port offsets relative to top-left of this sub-maze (0, 0).
@@ -19,7 +20,7 @@ extends Resource
 @export var origin: Vector2i = Vector2i.ZERO
 
 
-## Helper factory to create a sub-maze with a given pattern.
+## Creates a sub-maze from the given [param inner_pattern].
 static func createSimpleRect(
     p_name: String,
     p_width: int,
@@ -45,15 +46,15 @@ static func createSimpleRect(
             # Default: outer border is wall, interior is path.
             for x in range(p_width):
                 if x == 0 or x == p_width - 1 or y == 0 or y == p_height - 1:
-                    row[x] = MazeTileType.Type.wall
+                    row[x] = MazeTileType.wall
                 else:
-                    row[x] = MazeTileType.Type.path
+                    row[x] = MazeTileType.path
         sub.grid[y] = row
 
     # Ensure port cells on perimeter are set as paths.
     for port in p_ports:
         if port.x >= 0 and port.x < p_width and port.y >= 0 and port.y < p_height:
-            sub.grid[port.y][port.x] = MazeTileType.Type.path
+            sub.grid[port.y][port.x] = MazeTileType.path
 
     return sub
 
@@ -61,8 +62,8 @@ static func createSimpleRect(
 ## Validates whether this sub-maze data is structurally valid for embedding:
 ## 1. Grid matrix matches width and height dimensions.
 ## 2. Ports are within bounds.
-## 3. Fits inside wrapper bounds (if wrapper_size is provided).
-## 4. (Optional) Strict odd/even lattice alignment if strict_lattice_mode is enabled.
+## 3. Fits inside wrapper bounds when [param wrapper_size] is provided.
+## 4. Optionally checks odd/even lattice alignment when [param strict_lattice_mode] is enabled.
 func validateEmbeddability(
     target_origin: Vector2i = Vector2i(-1, -1),
     wrapper_size: Vector2i = Vector2i.ZERO,

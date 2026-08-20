@@ -1,10 +1,11 @@
 class_name DMFSNode
 extends Resource
 ## Represents a DeepMazeOS file or folder
-
-
-## Emits when the [member children] or [member content] is modified.
-signal modified()
+##
+## This is the data class for the actual data in OS,
+##  NOT meant to be provided as the FS's API.
+## Should NEVER be accessed by DeepMaze OS's commands,
+##  instead, use the API provided by [DMFS].
 
 
 enum Type
@@ -14,6 +15,43 @@ enum Type
     ## Folder, [member children] is available.
     folder
 }
+
+
+## Meta information for [DMFSNode].
+class Meta:
+    ## The type of this FS node.
+    var type: Type
+
+    ## The name of this FS node.[br][br]
+    ##
+    ## If [member type] is [enum Type.file], this stands for the file's name.[br]
+    ## If [member type] is [enum Type.folder], this stands for the folder's name.
+    var name: String
+
+    ## The time (real-world-time) of creation for this FS node.
+    var time_of_creation: float
+
+    ## The time (real-world-time) of last modification for this FS node.
+    var time_of_last_modify: float
+
+    ## Read permission of the FS node.
+    var read_permission: DMPermission.Level
+
+    ## Write permission of the FS node.
+    var write_permission: DMPermission.Level
+
+    ## Exec/Search permission of the FS node.
+    var exec_permission: DMPermission.Level
+
+    ## If current FS node is a file.
+    var is_file:
+        get():
+            return self.type == Type.file
+
+    ## If current FS node is a folder.
+    var is_folder:
+        get():
+            return self.type == Type.folder
 
 
 ## The type of this FS node.
@@ -31,8 +69,14 @@ enum Type
 ## The time (real-world-time) of last modification for this FS node.
 @export var time_of_last_modify: float
 
-## Access permission of the FS node.
-@export var permission: DMPermission.User
+## Read permission of the FS node.
+@export var read_permission: DMPermission.Level
+
+## Write permission of the FS node.
+@export var write_permission: DMPermission.Level
+
+## Exec/Search permission of the FS node.
+@export var exec_permission: DMPermission.Level
 
 ## Content of this file (FS node).[br][br]
 ##
@@ -56,6 +100,22 @@ var is_file:
 var is_folder:
     get():
         return self.type == Type.folder
+
+## Get the meta information of this FS node.
+## It is safe to pass it to outer script,
+##  since it does not hold pointer for the actual content of this FS node.
+var meta: Meta:
+    get():
+        var result = Meta.new()
+        result.type = self.type
+        result.name = self.name
+        result.time_of_creation = self.time_of_creation
+        result.time_of_last_modify = self.time_of_last_modify
+        result.read_permission = self.read_permission
+        result.write_permission = self.write_permission
+        result.exec_permission = self.exec_permission
+
+        return result
 
 
 ## Create an empty named file.
@@ -88,7 +148,6 @@ func addChild(fs_node: DMFSNode) -> Error:
     fs_node.updateTimeOfLastModify()
     self.children.append(fs_node)
 
-    self.modified.emit()
     return Error.OK
 
 ## Remove the child [param fs_node] from this [b]folder-typed[/b] FS node.[br][br]
@@ -181,10 +240,3 @@ func appendContent() -> Error:
 
 func updateTimeOfLastModify() -> void:
     self.time_of_last_modify = DMPC.getZonedTimestamp()
-
-func _init() -> void:
-    if not self.modified.is_connected(self.__on_modified):
-        self.modified.connect(self.__on_modified)
-
-func __on_modified():
-    self.updateTimeOfLastModify()

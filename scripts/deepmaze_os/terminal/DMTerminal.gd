@@ -35,6 +35,12 @@ var max_columns: int = 20
 ## Current working directory.
 var cwd: String = "/"
 
+## Current user name.
+var user_name: StringName
+
+## Current user permission level.
+var user_permission: DMPermission.Level
+
 ## Return code of the command,
 ##  stands for the success/fail of processed command.
 var cmd_return_code: int = 0

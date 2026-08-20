@@ -1,3 +1,4 @@
+@tool
 class_name DMFSNode
 extends Resource
 ## Represents a DeepMazeOS file or folder
@@ -53,9 +54,22 @@ class Meta:
         get():
             return self.type == Type.folder
 
+    ## The way that data is stored in resource file (if current FS node is a file).
+    var content_storage_type: DMFSContent.StorageType = DMFSContent.StorageType.not_set
+
+    ## The form of the content (if current FS node is a file).
+    var content_data_type: DMFSContent.DataType = DMFSContent.DataType.not_set
+
+    ## If current FS can be executed (if current FS node is a file).
+    var is_exectuable: bool = false
+
 
 ## The type of this FS node.
-@export var type: Type
+@export var type: Type:
+    set(new_type):
+        if type != new_type:
+            type = new_type
+            self.notify_property_list_changed()
 
 ## The name of this FS node.[br][br]
 ##
@@ -114,8 +128,16 @@ var meta: Meta:
         result.read_permission = self.read_permission
         result.write_permission = self.write_permission
         result.exec_permission = self.exec_permission
+        if self.is_file and self.content != null:
+            result.content_data_type = self.content.data_type
+            result.content_storage_type = self.content.storage_type
+            result.is_exectuable = \
+                (self.content.is_referring_asset and self.content.asset_ref is DMFSScriptRef)
 
         return result
+
+
+func _validate_property(property: Dictionary) -> void: self.__onValidateProperty__(property)
 
 
 ## Create an empty named file.
@@ -240,3 +262,9 @@ func appendContent() -> Error:
 
 func updateTimeOfLastModify() -> void:
     self.time_of_last_modify = DMPC.getZonedTimestamp()
+
+func __onValidateProperty__(property: Dictionary):
+    if property.name == "content" and self.is_folder:
+        property.usage = PropertyUsageFlags.PROPERTY_USAGE_NO_EDITOR
+    if property.name == "children" and self.is_file:
+        property.usage = PropertyUsageFlags.PROPERTY_USAGE_NO_EDITOR

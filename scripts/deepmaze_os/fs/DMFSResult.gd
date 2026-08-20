@@ -20,6 +20,9 @@ enum Error
     already_exists,
     ## The required operation does not have enough permission level and it is denied.
     permission_denied,
+    ## Attempt to perform a text-based operation on a non-text-based file
+    ##  (e.g., trying to append text to WAV files).
+    not_text_file,
     ## The required operation is not allowed by system.
     operation_not_allowed
 }
@@ -38,7 +41,7 @@ var message: String
 ## Raise an assertion error if debugging.
 var value: Variant = null:
     get():
-        assert(self.is_ok, "Cannot get `DMFSResult.value` from a error result.")
+        #assert(self.is_ok, "Cannot get `DMFSResult.value` from a error result.")
         return value
 
 ## Current result is an error result.
@@ -51,6 +54,13 @@ var is_ok: bool:
     get():
         return self.error == DMFSResult.Error.ok
 
+
+func _validate_property(property: Dictionary) -> void: self.__onValidateProperty__(property)
+
+
+func __onValidateProperty__(property: Dictionary):
+    if property.name == "value" and self.is_error:
+        property.usage = PropertyUsageFlags.PROPERTY_USAGE_NO_EDITOR
 
 ## Create a new OK-typed result with a value.
 static func createOK(

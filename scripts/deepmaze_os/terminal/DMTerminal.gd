@@ -260,12 +260,12 @@ func invoke_autocompletion() -> void:
     if is_preceded_by_other_words:
         return
 
-    var commands: Array = _commands.get_available_commands()
+    var builtin_commands: Array = _commands.get_available_builtin_commands()
     var matches: Array = []
 
-    for command: String in commands:
-        if command.begins_with(current_word):
-            matches.append(command)
+    for builtin_command: String in builtin_commands:
+        if builtin_command.begins_with(current_word):
+            matches.append(builtin_command)
 
     if matches.is_empty():
         # No matches: can't autocomplete.

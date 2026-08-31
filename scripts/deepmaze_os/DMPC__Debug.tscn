@@ -4,7 +4,10 @@
 [ext_resource type="Script" uid="uid://cjcyu6vm55mpq" path="res://scripts/deepmaze_os/fs/DMFSNode.gd" id="2_cmubk"]
 [ext_resource type="PackedScene" uid="uid://wtmvtpaclo0u" path="res://scripts/deepmaze_os/terminal/DMTerminal.tscn" id="2_wbq4e"]
 [ext_resource type="Script" uid="uid://bfg66rl7hquvm" path="res://scripts/deepmaze_os/fs/DMFS.gd" id="3_0gwk5"]
+[ext_resource type="Script" uid="uid://gyrod1fhnp4s" path="res://scripts/deepmaze_os/tool/hello.gd" id="3_8ks34"]
+[ext_resource type="Script" uid="uid://cx5n0uyrdwox7" path="res://scripts/deepmaze_os/fs/DMFSContent.gd" id="3_aixw3"]
 [ext_resource type="Script" uid="uid://bvxlvfbobkg72" path="res://scripts/deepmaze_os/DMPC.gd" id="4_aixw3"]
+[ext_resource type="Script" uid="uid://de4o8cst85gj" path="res://scripts/deepmaze_os/fs/asset_ref_type/DMFSScriptRef.gd" id="4_vdxo2"]
 
 [sub_resource type="Resource" id="Resource_cmubk"]
 script = ExtResource("2_cmubk")
@@ -32,13 +35,38 @@ write_permission = 1
 exec_permission = 1
 metadata/_custom_type_script = "uid://cjcyu6vm55mpq"
 
+[sub_resource type="Resource" id="Resource_8uwmu"]
+script = ExtResource("4_vdxo2")
+ref_script = ExtResource("3_8ks34")
+metadata/_custom_type_script = "uid://de4o8cst85gj"
+
+[sub_resource type="Resource" id="Resource_n6vy4"]
+script = ExtResource("3_aixw3")
+storage_type = 2
+data_type = 2
+asset_ref = SubResource("Resource_8uwmu")
+metadata/_custom_type_script = "uid://cx5n0uyrdwox7"
+
+[sub_resource type="Resource" id="Resource_b54l2"]
+script = ExtResource("2_cmubk")
+name = "hello"
+content = SubResource("Resource_n6vy4")
+metadata/_custom_type_script = "uid://cjcyu6vm55mpq"
+
+[sub_resource type="Resource" id="Resource_aixw3"]
+script = ExtResource("2_cmubk")
+type = 1
+name = "bin"
+children = Array[ExtResource("2_cmubk")]([SubResource("Resource_b54l2")])
+metadata/_custom_type_script = "uid://cjcyu6vm55mpq"
+
 [sub_resource type="Resource" id="Resource_1iptr"]
 script = ExtResource("2_cmubk")
 type = 1
 time_of_creation = 1786858179.0
 time_of_last_modify = 1786858200.0
 write_permission = 2
-children = Array[ExtResource("2_cmubk")]([SubResource("Resource_cmubk"), SubResource("Resource_0gwk5"), SubResource("Resource_1aof3")])
+children = Array[ExtResource("2_cmubk")]([SubResource("Resource_cmubk"), SubResource("Resource_0gwk5"), SubResource("Resource_1aof3"), SubResource("Resource_aixw3")])
 metadata/_custom_type_script = "uid://cjcyu6vm55mpq"
 
 [sub_resource type="Resource" id="Resource_2iuy0"]

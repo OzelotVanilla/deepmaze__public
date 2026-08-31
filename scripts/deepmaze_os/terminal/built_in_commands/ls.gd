@@ -10,6 +10,8 @@ const colour__folder_name := Color("#0095d9")
 
 const colour__file_name   := Color("#9e9478")
 
+const colour__executable  := Color("#67a70c")
+
 
 func _init() -> void:
     self.name = "ls"
@@ -191,9 +193,26 @@ func writeDetailListToCache(
             str(time_modified_dict["minute"]).lpad(2, "0"), ":",
             str(time_modified_dict["second"]).lpad(2, "0")
         )
+
+        var type: String
+        if fs_node_meta.is_folder:
+            type = "dir"
+        elif fs_node_meta.is_exectuable:
+            type = "exec"
+        else:
+            type = ""
+
+        var colour: Color
+        if fs_node_meta.is_folder:
+            colour = self.colour__folder_name
+        elif fs_node_meta.is_exectuable:
+            colour = self.colour__executable
+        else:
+            colour = self.colour__file_name
+
         self.terminal__ref.print_on_terminal(
             str(
-                ("d" if fs_node_meta.is_folder else "").rpad(space_for_type), separation_str,
+                type.rpad(space_for_type), separation_str,
                 fs_node_meta.name.rpad(space_for_name), separation_str,
                 read_permission.rpad(space_for_permission), separation_str,
                 write_permission.rpad(space_for_permission), separation_str,
@@ -201,5 +220,5 @@ func writeDetailListToCache(
                 time_created.rpad(space_for_date), separation_str,
                 time_modified.rpad(space_for_date), separation_str
             ),
-            self.colour__folder_name if fs_node_meta.is_folder else self.colour__file_name
+            colour
         )

@@ -59,7 +59,10 @@ func process_command(full_command: String) -> void:
         _parsed_args = DMTerminalArguments.parse(_argv, cmd_obj.schema)
         if not _parsed_args.errors.is_empty():
             for err: String in _parsed_args.errors:
-                self.terminal.print_on_terminal(err, Color.RED)
+                self.terminal.print_on_terminal(
+                    err,
+                    self.terminal.semantic_colour__error
+                )
             command_finished.emit()
             return
     else:

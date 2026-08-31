@@ -10,6 +10,7 @@ enum OptionType
 
 class ParsedArgs:
     var positionals: Array[String] = []
+    var variadic: Array[String] = []
     var flags: Dictionary = {}
     var options: Dictionary = {}
     var raw: String = ""
@@ -172,15 +173,30 @@ static func _validate_positionals(
     parsed: ParsedArgs,
     schema: DMTerminalCommandSchema
 ) -> void:
-    for j in range(schema.positional_definitions.size()):
+    # # Get the variadic if exists.
+    var variadic: DMTerminalCommandSchema.Positional = null
+    if not schema.positional_definitions.is_empty() \
+       and schema.positional_definitions.back().variadic:
+        variadic = schema.positional_definitions.pop_back()
+
+    var i := 0
+    while i < schema.positional_definitions.size():
         var positional_definition: DMTerminalCommandSchema.Positional \
-            = schema.positional_definitions[j]
-        if j < collected.size():
-            parsed.positionals.append(collected[j])
+            = schema.positional_definitions[i]
+        if i < collected.size():
+            parsed.positionals.append(collected[i])
         elif positional_definition.required:
             parsed.errors.append("Missing required argument: <%s>" % positional_definition.name)
         else:
             parsed.positionals.append(str(positional_definition.default_value))
 
-    for k in range(schema.positional_definitions.size(), collected.size()):
-        parsed.errors.append("Unexpected extra argument: '%s'" % collected[k])
+        i += 1
+
+    # # Extra arg found.
+    # If allows variadic args, collects.
+    if variadic != null:
+        parsed.variadic = collected.slice(i)
+    # If do not, records error.
+    else:
+        for k in range(schema.positional_definitions.size(), collected.size()):
+            parsed.errors.append("Unexpected extra argument: '%s'" % collected[k])

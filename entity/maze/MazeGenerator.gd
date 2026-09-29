@@ -3,24 +3,7 @@ extends Node
 ## Generate a maze represented in 2D array
 ##
 ## For the data of param [code]map[/code] used as intermediate,
-##  see [enum MapData].
-
-
-## ID of tiles/entities when generating [Maze],
-##  used for the intermediate var [code]map[/code] in this file.
-enum MapData
-{
-    path = 0,
-    wall = 1,
-    start = 2,
-    exit = 3,
-    quarter = 4,
-    relic = 5,
-    ## For special level [constant MazeGame.SpecialLevel.la_barbe_bleue].
-    gate_key = 6,
-    ## For special level [constant MazeGame.SpecialLevel.veronique].
-    fake_exit = 7
-}
+##  see [enum MazeTile..
 
 
 const maze_scene = preload("res://entity/maze/Maze.tscn")
@@ -82,27 +65,27 @@ static func generate(
         for x in range(map[y].size()):
             var atlas_coords: Vector2i
             match map[y][x]:
-                MapData.path:
+                MazeTile.path:
                     atlas_coords = Maze.white_tile__atlas_coord
-                MapData.wall:
+                MazeTile.wall:
                     atlas_coords = Maze.black_tile__atlas_coord
                     maze_astar_grid.set_point_solid(Vector2i(x, y))
-                MapData.start: # Starting point
+                MazeTile.start: # Starting point
                     atlas_coords = Maze.white_tile__atlas_coord
                     maze.start__coord = Vector2i(x, y)
-                MapData.exit: # Exit gate
+                MazeTile.exit: # Exit gate
                     atlas_coords = Maze.white_tile__atlas_coord
                     maze.exit_gate__coord = Vector2i(x, y)
-                MapData.quarter:
+                MazeTile.quarter:
                     atlas_coords = Maze.white_tile__atlas_coord
                     maze.quarter__coord = Vector2i(x, y)
-                MapData.relic:
+                MazeTile.relic:
                     atlas_coords = Maze.white_tile__atlas_coord
                     maze.relic__coord = Vector2i(x, y)
-                MapData.gate_key:
+                MazeTile.gate_key:
                     atlas_coords = Maze.white_tile__atlas_coord
                     maze.gate_key__coord = Vector2i(x, y)
-                MapData.fake_exit:
+                MazeTile.fake_exit:
                     atlas_coords = Maze.white_tile__atlas_coord
                     maze.fake_exit__coord = Vector2i(x, y)
 
@@ -114,9 +97,9 @@ static func generate(
 
     # Generate exclusive items, avoiding them to be generated behind exit.
     if should_generate_quarter:
-        MazeGenerator.generateExclusiveEntities(map, maze, special_level_type, MapData.quarter)
+        MazeGenerator.generateExclusiveEntities(map, maze, special_level_type, MazeTile.quarter)
     if should_generate_relic:
-        MazeGenerator.generateExclusiveEntities(map, maze, special_level_type, MapData.relic)
+        MazeGenerator.generateExclusiveEntities(map, maze, special_level_type, MazeTile.relic)
 
     return maze
 
@@ -137,7 +120,7 @@ static func carve(map: Array[PackedInt32Array], starting_x: int, starting_y: int
         starting_x > 0 and starting_x < maze_width - 1
         and starting_y > 0 and starting_y < maze_height - 1
     ):
-        map[starting_y][starting_x] = MapData.path
+        map[starting_y][starting_x] = MazeTile.path
 
     var directions = [[0,2], [2,0], [0,-2], [-2,0]]
     directions.shuffle()
@@ -154,10 +137,10 @@ static func carve(map: Array[PackedInt32Array], starting_x: int, starting_y: int
             new_x > 0 and new_x < maze_width - 1
             and new_y > 0 and new_y < maze_height - 1
             # And is a wall
-            and map[new_y][new_x] == MapData.wall
+            and map[new_y][new_x] == MazeTile.wall
         ):
             # Also break the wall between starting point and new point.
-            map[starting_y + offset_y/2][starting_x + offset_x/2] = MapData.path
+            map[starting_y + offset_y/2][starting_x + offset_x/2] = MazeTile.path
 
             # Start new recursion.
             MazeGenerator.carve(map, new_x, new_y)
@@ -171,7 +154,7 @@ static func carve(map: Array[PackedInt32Array], starting_x: int, starting_y: int
         # If inside maze.
         if random_x > 0 and random_x < maze_width and random_y > 0 and random_y < maze_height:
             # Then make it path.
-            map[random_y][random_x] = MapData.path
+            map[random_y][random_x] = MazeTile.path
 
 ## Generate a legal start point for the maze.
 ## Try until the coord is not pointed to wall.[br][br]
@@ -192,7 +175,7 @@ static func generateStart(
     ]
 
     # Regenerate until it is a path.
-    while map[start__coord_y][start__coord_x] != MapData.path:
+    while map[start__coord_y][start__coord_x] != MazeTile.path:
         var random_direction: Vector2i = eight_direction_offset.pick_random()
         var x := start__coord_x + random_direction.x
         var y := start__coord_y + random_direction.y
@@ -202,7 +185,7 @@ static func generateStart(
         start__coord_x = x
         start__coord_y = y
 
-    map[start__coord_y][start__coord_x] = MapData.start
+    map[start__coord_y][start__coord_x] = MazeTile.start
 
     return Vector2i(start__coord_x, start__coord_y)
 
@@ -224,7 +207,7 @@ static func generateExit(
         exit_gate__y = floori(randf() * (maze_height - 2)) + 1
         var exit_gate__coord := Vector2i(exit_gate__x, exit_gate__y)
 
-        var is_not_a_path := map[exit_gate__y][exit_gate__x] != MapData.path
+        var is_not_a_path := map[exit_gate__y][exit_gate__x] != MazeTile.path
         var is_impossible_for_exit_gate := (exit_gate__y < 3 and exit_gate__x < 3)
         var is_too_close_to_last_exit := \
             last_level_exit_gate__coord.distance_to(exit_gate__coord) < 3
@@ -234,7 +217,7 @@ static func generateExit(
             or is_impossible_for_exit_gate \
             or is_too_close_to_last_exit
 
-    map[exit_gate__y][exit_gate__x] = MapData.exit
+    map[exit_gate__y][exit_gate__x] = MazeTile.exit
 
     return Vector2i(exit_gate__x, exit_gate__y)
 
@@ -246,13 +229,13 @@ static func generateGateKey(
     var x := 0
     var y := 0
     # When the key is too near with ball or exit.
-    while map[y][x] != MapData.path \
+    while map[y][x] != MazeTile.path \
         or Vector2(x, y).distance_to(start__coord) < 3 \
         or Vector2(x, y).distance_to(exit__coord) < 3:
         x = randi_range(0, map[0].size() - 1) # 0..width
         y = randi_range(0, map.size() - 1) # 0..height
 
-    map[y][x] = MapData.gate_key
+    map[y][x] = MazeTile.gate_key
 
     return Vector2i(x, y)
 
@@ -264,13 +247,13 @@ static func generateFakeExit(
     var x := 0
     var y := 0
     # When the fake exit gate is too near with ball or exit.
-    while map[y][x] != MapData.path \
+    while map[y][x] != MazeTile.path \
         or Vector2(x, y).distance_to(start__coord) < 3 \
         or Vector2(x, y).distance_to(exit__coord) < 3:
         x = randi_range(0, map[0].size() - 1) # 0..width
         y = randi_range(0, map.size() - 1) # 0..height
 
-    map[y][x] = MapData.fake_exit
+    map[y][x] = MazeTile.fake_exit
 
     return Vector2i(x, y)
 
@@ -282,8 +265,8 @@ static func generateFakeExit(
 ##  do not call this until A* is init-ed.[br][br]
 ##
 ## Notice: [param map_data__id] should only be:[br]
-## * [code]MapData.quarter[/code].[br]
-## * [code]MapData.relic[/code].[br]
+## * [code]MazeTile.quarter[/code].[br]
+## * [code]MazeTile.relic[/code].[br]
 static func generateExclusiveEntities(
     map: Array[PackedInt32Array],
     maze: Maze,
@@ -310,7 +293,7 @@ static func generateExclusiveEntities(
         entity__y = floori(randf() * (maze_height - 2)) + 1
 
         # # If not a path, should re-pick.
-        if map[entity__y][entity__x] != MapData.path:
+        if map[entity__y][entity__x] != MazeTile.path:
             continue
 
         # # If before exit, should consider pick.

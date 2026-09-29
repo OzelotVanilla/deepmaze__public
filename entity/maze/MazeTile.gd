@@ -1,6 +1,6 @@
-class_name MazeTileType
+class_name MazeTile
 extends RefCounted
-## Shared enum for maze tile data representation across embedded sub-mazes and generators.
+## ID of tiles/entities when generating [Maze] (used across embedded sub-mazes and generators).
 
 
 enum

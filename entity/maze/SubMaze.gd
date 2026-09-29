@@ -7,10 +7,10 @@ extends Resource
 @export var width: int = 7
 @export var height: int = 7
 
-## 2D grid matrix of [MazeTileType] values representing the sub-maze layout.
-## Size: height x width. Values can be [constant MazeTileType.wall],
-##  [constant MazeTileType.path], etc.
-## Use [constant MazeTileType.unclaimed] for transparent cells in non-rectangular shapes.
+## 2D grid matrix of [MazeTile] values representing the sub-maze layout.
+## Size: height x width. Values can be [constant MazeTile.wall],
+##  [constant MazeTile.path], etc.
+## Use [constant MazeTile.unclaimed] for transparent cells in non-rectangular shapes.
 @export var grid: Array[PackedInt32Array] = []
 
 ## Boundary connection port offsets relative to top-left of this sub-maze (0, 0).
@@ -46,15 +46,15 @@ static func createSimpleRect(
             # Default: outer border is wall, interior is path.
             for x in range(p_width):
                 if x == 0 or x == p_width - 1 or y == 0 or y == p_height - 1:
-                    row[x] = MazeTileType.wall
+                    row[x] = MazeTile.wall
                 else:
-                    row[x] = MazeTileType.path
+                    row[x] = MazeTile.path
         sub.grid[y] = row
 
     # Ensure port cells on perimeter are set as paths.
     for port in p_ports:
         if port.x >= 0 and port.x < p_width and port.y >= 0 and port.y < p_height:
-            sub.grid[port.y][port.x] = MazeTileType.path
+            sub.grid[port.y][port.x] = MazeTile.path
 
     return sub
 
